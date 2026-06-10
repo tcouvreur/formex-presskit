@@ -3,76 +3,550 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FORMEX — Press Kit</title>
-<meta name="description" content="FORMEX — DJ Hardcore basé à Lille. Press kit : bios, photos, vidéos, technical rider et contact.">
+<title>FORMEX — DJ Hardcore · Lille</title>
+<meta name="description" content="FORMEX — DJ Hardcore basé à Lille. Bios, photos, vidéos, technical rider, sets et contact booking. Hardcore will never die.">
 
-<!-- ===== APERÇU SOCIAL (Open Graph / Twitter) =====
-     IMPORTANT : remplace https://formexhardcore.com par TON URL finale
-     (2 endroits : og:url et og:image, + twitter:image) si ton site Netlify a un autre nom. -->
+<!-- ===== APERÇU SOCIAL (Open Graph / Twitter) ===== -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FORMEX">
-<meta property="og:title" content="FORMEX — DJ Hardcore · Press Kit">
+<meta property="og:title" content="FORMEX — DJ Hardcore · Lille">
 <meta property="og:description" content="Bios, photos, vidéos, technical rider et contact. Hardcore will never die.">
 <meta property="og:url" content="https://formexhardcore.com/">
 <meta property="og:image" content="https://formexhardcore.com/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="FORMEX — DJ Hardcore · Press Kit">
+<meta name="twitter:title" content="FORMEX — DJ Hardcore · Lille">
 <meta name="twitter:description" content="Bios, photos, vidéos, technical rider et contact. Hardcore will never die.">
 <meta name="twitter:image" content="https://formexhardcore.com/og.jpg">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-  :root { --bg:#0c0c0c; --fg:#ededed; --muted:#9a9a9a; --red:#e21c1c; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--fg);
-         font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
-         -webkit-font-smoothing:antialiased; line-height:1.5; }
-  .wrap { max-width:760px; margin:0 auto; padding:28px 20px 60px; }
-  .hero { width:100%; border-radius:14px; display:block; box-shadow:0 10px 40px rgba(0,0,0,.6); }
-  h1 { font-size:13px; letter-spacing:.35em; color:var(--muted); font-weight:600;
-       text-transform:uppercase; margin:34px 0 6px; }
-  .tag { color:var(--red); font-weight:700; letter-spacing:.06em; margin:0 0 24px; }
-  .btns { display:flex; flex-wrap:wrap; gap:12px; margin:24px 0 8px; }
-  .btn { flex:1 1 220px; text-align:center; text-decoration:none; padding:16px 20px;
-         border-radius:10px; font-weight:700; letter-spacing:.04em; font-size:16px; }
-  .btn-primary { background:var(--red); color:#fff; }
-  .btn-ghost { border:1px solid #333; color:var(--fg); }
-  .btn:hover { opacity:.88; }
-  .sep { height:1px; background:#222; margin:34px 0; }
-  .lbl { font-size:11px; letter-spacing:.3em; color:var(--muted); text-transform:uppercase; margin-bottom:10px; }
-  .links { display:flex; flex-wrap:wrap; gap:10px 22px; }
-  .links a { color:var(--fg); text-decoration:none; border-bottom:1px solid var(--red); padding-bottom:2px; font-size:15px; }
-  .links a:hover { color:var(--red); }
-  .foot { margin-top:38px; color:var(--muted); font-size:13px; }
-  .foot a { color:var(--fg); text-decoration:none; border-bottom:1px solid #444; }
+  :root{
+    --bg:#0a0a0a; --bg2:#101010; --panel:#141414; --line:#222;
+    --fg:#ededed; --muted:#9a9a9a; --red:#e21c1c; --red-d:#b31515;
+    --head:'Oswald',Impact,sans-serif;
+    --body:'Inter','Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);
+       line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .container{max-width:1080px;margin:0 auto;padding:0 24px;}
+  section{padding:96px 0;scroll-margin-top:64px;}
+  .eyebrow{font-family:var(--head);font-weight:600;letter-spacing:.32em;
+           text-transform:uppercase;font-size:13px;color:var(--red);margin:0 0 14px;}
+  h2.title{font-family:var(--head);font-weight:700;text-transform:uppercase;
+           letter-spacing:.02em;font-size:clamp(30px,5vw,52px);margin:0 0 40px;line-height:1;}
+
+  /* ===== NAV ===== */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 24px;background:rgba(10,10,10,0);transition:background .3s,border-color .3s,padding .3s;
+    border-bottom:1px solid transparent;}
+  header.nav.scrolled{background:rgba(10,10,10,.82);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);padding:10px 24px;}
+  .brand{font-family:var(--head);font-weight:700;font-size:22px;letter-spacing:.18em;
+         text-decoration:none;color:var(--fg);}
+  .brand b{color:var(--red);}
+  nav.menu{display:flex;align-items:center;gap:26px;}
+  nav.menu a.lnk{font-family:var(--head);font-weight:500;letter-spacing:.14em;
+    text-transform:uppercase;font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+  nav.menu a.lnk:hover{color:var(--fg);}
+  .nav-right{display:flex;align-items:center;gap:16px;}
+  .lang{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .lang button{background:transparent;border:0;color:var(--muted);font-family:var(--head);
+    font-weight:600;letter-spacing:.1em;font-size:12px;padding:6px 11px;cursor:pointer;transition:.2s;}
+  .lang button.on{background:var(--red);color:#fff;}
+  .pdf-btn{font-family:var(--head);font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    font-size:12px;text-decoration:none;color:#fff;background:var(--red);
+    padding:9px 16px;border-radius:6px;display:inline-flex;align-items:center;gap:7px;transition:.2s;}
+  .pdf-btn:hover{background:var(--red-d);}
+  .burger{display:none;background:none;border:0;color:var(--fg);cursor:pointer;}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;
+    background:linear-gradient(180deg,rgba(10,10,10,.45) 0%,rgba(10,10,10,.35) 45%,rgba(10,10,10,.96) 100%),
+      url('hero.jpg') center 22%/cover no-repeat;padding:0;}
+  .hero .container{position:relative;z-index:2;width:100%;}
+  .hero .kick{font-family:var(--head);font-weight:600;letter-spacing:.42em;text-transform:uppercase;
+    font-size:clamp(12px,2.4vw,16px);color:var(--fg);margin:0 0 10px;text-shadow:0 2px 18px #000;}
+  .hero h1{font-family:var(--head);font-weight:700;text-transform:uppercase;
+    font-size:clamp(74px,19vw,210px);line-height:.82;letter-spacing:.01em;margin:0;
+    text-shadow:0 6px 40px rgba(0,0,0,.6);}
+  .hero .tag{font-family:var(--head);font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--red);font-size:clamp(15px,3vw,26px);margin:18px 0 0;text-shadow:0 2px 18px #000;}
+  .hero .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:38px;}
+  .scrolldown{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;
+    color:var(--muted);font-size:22px;animation:bob 1.8s ease-in-out infinite;text-decoration:none;}
+  @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+  .btn{font-family:var(--head);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:14px;
+    text-decoration:none;padding:15px 26px;border-radius:8px;display:inline-flex;align-items:center;gap:9px;
+    transition:transform .15s,background .2s,border-color .2s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--red);color:#fff;}
+  .btn-primary:hover{background:var(--red-d);}
+  .btn-ghost{border:1px solid #3a3a3a;color:var(--fg);}
+  .btn-ghost:hover{border-color:var(--red);color:#fff;}
+
+  /* ===== BIO ===== */
+  #bio{background:var(--bg);}
+  .bio-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+    justify-content:space-between;margin-bottom:30px;}
+  .tabs{display:inline-flex;gap:8px;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:6px;}
+  .tabs button{background:transparent;border:0;color:var(--muted);cursor:pointer;
+    font-family:var(--head);font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    font-size:13px;padding:9px 18px;border-radius:7px;transition:.2s;}
+  .tabs button.on{background:var(--red);color:#fff;}
+  .tabs button:not(.on):hover{color:var(--fg);}
+  .bio-wrap{display:grid;grid-template-columns:1.55fr 1fr;gap:48px;align-items:start;}
+  .bio-text{font-size:clamp(16px,1.6vw,19px);color:#cfcfcf;max-width:62ch;min-height:240px;}
+  .bio-text p{margin:0 0 18px;}
+  .bio-text p:first-letter{}
+  .bio-block{display:none;animation:fade .4s ease;}
+  .bio-block.on{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .bio-portrait{position:relative;}
+  .bio-portrait img{border-radius:14px;width:100%;object-fit:cover;aspect-ratio:4/5;
+    box-shadow:0 18px 50px rgba(0,0,0,.6);filter:grayscale(.15) contrast(1.05);}
+  .bio-portrait .cap{font-size:12px;color:var(--muted);margin-top:10px;letter-spacing:.04em;}
+
+  /* ===== MEDIAS ===== */
+  #medias{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:30px 22px;text-decoration:none;color:var(--fg);overflow:hidden;
+    transition:transform .18s,border-color .2s,background .2s;display:flex;flex-direction:column;gap:14px;min-height:190px;}
+  .card:hover{transform:translateY(-5px);border-color:var(--red);background:#181818;}
+  .card .ic{width:34px;height:34px;color:var(--red);}
+  .card .ic svg{width:100%;height:100%;}
+  .card h3{font-family:var(--head);font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    font-size:21px;margin:6px 0 0;}
+  .card p{margin:0;color:var(--muted);font-size:14px;}
+  .card .go{margin-top:auto;font-family:var(--head);font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;font-size:12px;color:var(--red);display:inline-flex;align-items:center;gap:6px;}
+  .card:hover .go{gap:11px;}
+
+  /* photo strip */
+  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px;}
+  .strip a{display:block;border-radius:10px;overflow:hidden;position:relative;aspect-ratio:1/1;border:1px solid var(--line);}
+  .strip img{width:100%;height:100%;object-fit:cover;transition:transform .35s,filter .35s;filter:grayscale(.2);}
+  .strip a:hover img{transform:scale(1.07);filter:grayscale(0);}
+
+  /* ===== ECOUTER ===== */
+  #ecouter{background:var(--bg2);}
+  .listen-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+  .sc-embed{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000;}
+  .socials{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;}
+  .chip{font-family:var(--head);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:13px;
+    text-decoration:none;color:var(--fg);border:1px solid #333;border-radius:8px;padding:11px 16px;
+    display:inline-flex;align-items:center;gap:8px;transition:.2s;}
+  .chip:hover{border-color:var(--red);color:#fff;transform:translateY(-2px);}
+  .chip small{color:var(--muted);font-family:var(--body);font-weight:400;letter-spacing:0;text-transform:none;}
+
+  /* ===== RIDER ===== */
+  #rider{background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);}
+  .rider-block{display:none;}
+  .rider-block.on{display:block;animation:fade .4s ease;}
+  .rider-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .rider-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:32px 30px;}
+  .rider-card h3{font-family:var(--head);font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--red);font-size:20px;margin:0 0 6px;}
+  .rider-sub{font-family:var(--head);font-weight:600;letter-spacing:.04em;color:var(--fg);
+    font-size:15px;margin:22px 0 10px;}
+  .rider-list{list-style:none;margin:0;padding:0;}
+  .rider-list li{position:relative;padding-left:20px;margin-bottom:11px;color:#cfcfcf;font-size:15.5px;line-height:1.5;}
+  .rider-list li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;
+    border-radius:50%;background:var(--red);}
+
+  /* ===== LIGHTBOX ===== */
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:200;
+    display:none;align-items:center;justify-content:center;padding:24px;}
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:92vw;max-height:88vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.7);}
+  .lightbox .close{position:absolute;top:18px;right:28px;color:#fff;font-size:40px;line-height:1;
+    cursor:pointer;font-family:var(--head);opacity:.8;transition:.2s;}
+  .lightbox .close:hover{opacity:1;color:var(--red);}
+
+  /* ===== CONTACT ===== */
+  #contact{background:linear-gradient(180deg,var(--bg) 0%,#000 100%);text-align:center;}
+  #contact .eyebrow{color:var(--red);}
+  .mail{font-family:var(--head);font-weight:700;text-transform:none;letter-spacing:.01em;
+    font-size:clamp(24px,4.5vw,46px);text-decoration:none;color:var(--fg);display:inline-block;
+    border-bottom:2px solid var(--red);padding-bottom:6px;transition:color .2s;}
+  .mail:hover{color:var(--red);}
+  .contact-cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:40px;}
+  .contact-socials{display:flex;flex-wrap:wrap;gap:14px 26px;justify-content:center;margin-top:34px;}
+  .contact-socials a{font-family:var(--head);font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+    font-size:13px;color:var(--muted);text-decoration:none;transition:.2s;}
+  .contact-socials a:hover{color:var(--red);}
+
+  footer{padding:34px 0;border-top:1px solid var(--line);background:#000;
+    color:#666;font-size:13px;text-align:center;}
+  footer a{color:#888;text-decoration:none;border-bottom:1px solid #333;}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:860px){
+    section{padding:72px 0;}
+    .bio-wrap{grid-template-columns:1fr;gap:30px;}
+    .bio-portrait{max-width:330px;}
+    .listen-wrap{grid-template-columns:1fr;gap:30px;}
+    .rider-grid{grid-template-columns:1fr;}
+    .cards{grid-template-columns:repeat(2,1fr);}
+    nav.menu{position:fixed;inset:0 0 0 auto;width:min(78vw,320px);background:#0d0d0d;
+      flex-direction:column;align-items:flex-start;justify-content:center;gap:30px;padding:40px;
+      transform:translateX(100%);transition:transform .3s;border-left:1px solid var(--line);z-index:120;}
+    nav.menu.open{transform:none;}
+    nav.menu a.lnk{font-size:18px;}
+    .burger{display:block;z-index:130;}
+  }
+  @media(max-width:520px){
+    .cards{grid-template-columns:1fr;}
+    .strip{grid-template-columns:repeat(2,1fr);}
+    .nav-right .pdf-btn span{display:none;}
+  }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <img class="hero" src="og.jpg" alt="FORMEX — DJ Hardcore">
 
-    <h1>Press Kit — 2026</h1>
-    <p class="tag">Hardcore will never die.</p>
-
-    <div class="btns">
-      <a class="btn btn-primary" href="FORMEX_Presskit_2026.pdf" target="_blank" rel="noopener">📄 Voir le press kit</a>
-      <a class="btn btn-ghost" href="FORMEX_Presskit_2026.pdf" download>⬇ Télécharger le PDF</a>
+<header class="nav" id="nav">
+  <a href="#home" class="brand">FOR<b>M</b>EX</a>
+  <nav class="menu" id="menu">
+    <a class="lnk" href="#bio" data-fr="Bio" data-en="Bio">Bio</a>
+    <a class="lnk" href="#medias" data-fr="Médias" data-en="Media">Médias</a>
+    <a class="lnk" href="#ecouter" data-fr="Écouter" data-en="Listen">Écouter</a>
+    <a class="lnk" href="#rider" data-fr="Rider" data-en="Rider">Rider</a>
+    <a class="lnk" href="#contact" data-fr="Booking" data-en="Booking">Booking</a>
+  </nav>
+  <div class="nav-right">
+    <div class="lang" id="lang">
+      <button data-set="fr" class="on">FR</button>
+      <button data-set="en">EN</button>
     </div>
+    <a class="pdf-btn" href="FORMEX_Presskit_2026.pdf" download>⬇ <span data-fr="PDF" data-en="PDF">PDF</span></a>
+    <button class="burger" id="burger" aria-label="Menu">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
 
-    <div class="sep"></div>
-
-    <div class="lbl">Écouter & suivre</div>
-    <div class="links">
-      <a href="https://soundcloud.com/formex" target="_blank" rel="noopener">SoundCloud ↗</a>
-      <a href="https://www.instagram.com/formex____/" target="_blank" rel="noopener">Instagram ↗</a>
-      <a href="https://www.tiktok.com/@formex____" target="_blank" rel="noopener">TikTok ↗</a>
-      <a href="https://linktr.ee/formex____" target="_blank" rel="noopener">Linktree ↗</a>
-    </div>
-
-    <div class="foot">
-      Booking / Management — <a href="mailto:booking@formexhardcore.com">booking@formexhardcore.com</a>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="container">
+    <p class="kick">DJ Hardcore — Lille</p>
+    <h1>FORMEX</h1>
+    <p class="tag">Hardcore will never die</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#bio" data-fr="Découvrir" data-en="Discover">Découvrir</a>
+      <a class="btn btn-ghost" href="#ecouter" data-fr="Écouter un set" data-en="Listen to a set">Écouter un set</a>
     </div>
   </div>
+  <a class="scrolldown" href="#bio" aria-label="Scroll">↓</a>
+</section>
+
+<!-- BIO -->
+<section id="bio">
+  <div class="container">
+    <p class="eyebrow reveal" data-fr="Biographie" data-en="Biography">Biographie</p>
+    <h2 class="title reveal" data-fr="Le projet" data-en="The project">Le projet</h2>
+
+    <div class="bio-controls reveal">
+      <div class="tabs" id="biotabs">
+        <button data-len="short" data-fr="Courte" data-en="Short">Courte</button>
+        <button data-len="med" data-fr="Moyenne" data-en="Medium">Moyenne</button>
+        <button data-len="long" class="on" data-fr="Longue" data-en="Long">Longue</button>
+      </div>
+    </div>
+
+    <div class="bio-wrap reveal">
+      <div class="bio-text" id="biotext">
+        <!-- FR -->
+        <div class="bio-block" data-lang="fr" data-len="short">
+          <p>Basé à Lille, Formex propose une immersion dans l'univers Hardcore avec une sélection sans concession. Passionné par cette musique, il allie l'héritage du Gabber / Early Hardcore à la puissance des productions modernes. Que ce soit à travers ses vidéos sur vinyles ou ses sets en club, son objectif reste le même : partager l'énergie brute de cette culture.</p>
+        </div>
+        <div class="bio-block" data-lang="fr" data-len="med">
+          <p>Basé à Lille, Formex façonne son univers autour de la culture Hardcore. Son parcours prend un tournant décisif en 2007 à la découverte de l'univers hollandais Thunderdome. Cette culture et ses classiques définissent les fondations de son identité musicale.</p>
+          <p>Après avoir développé son style en club et cofondé le projet événementiel Circle avec sa meilleure amie Lisa pour organiser des soirées et promouvoir la scène locale, Formex se recentre sur le projet solo.</p>
+          <p>S'il partage sa sélection à travers des sessions vinyles oldschool axées sur sa collection personnelle, il propose en club des sets plus dynamiques, mêlant les classiques Gabber / Early Hardcore aux productions les plus récentes et puissantes.</p>
+        </div>
+        <div class="bio-block on" data-lang="fr" data-len="long">
+          <p>Pour Formex, le déclic se produit en 2007 : la découverte du trailer de Thunderdome et du titre Welcome Down de DJ Mad Dog. Ce mélange d'énergie brute et de kicks puissants devient une révélation qui scelle son attachement au mouvement Hardcore.</p>
+          <p>Dès l'adolescence, il s'empare de FL Studio pour comprendre la synthèse sonore. Après ses débuts près de Reims, Formex s'installe à Lille en 2016. Il y peaufine sa technique, devenant une figure active de la nuit lilloise. Quelques années après, il lance Circle avec sa meilleure amie Lisa, un projet événementiel visant à y organiser des soirées de tous horizons musicaux pour mettre en avant les artistes locaux.</p>
+          <p>S'il affectionne particulièrement les classiques Gabber / Early Hardcore qui constituent ses fondations, Formex est avant tout un DJ Hardcore complet, capable de naviguer à travers toutes les époques et toutes les variations du genre. Pour ses vidéos en ligne, il s'exprime sur vinyles issus de sa collection personnelle, une manière de faire vivre l'histoire de cette culture. En club, il déploie un mix rapide, intense, connectant les racines du genre aux productions modernes les plus percutantes.</p>
+        </div>
+        <!-- EN -->
+        <div class="bio-block" data-lang="en" data-len="short">
+          <p>Based in Lille, Formex offers an uncompromising immersion into the Hardcore universe. Passionate about this music, he blends the heritage of Gabber / Early Hardcore with the power of modern productions. Whether through his vinyl-only videos or his club sets, his goal remains the same: sharing the raw energy of this culture.</p>
+        </div>
+        <div class="bio-block" data-lang="en" data-len="med">
+          <p>Based in Lille, Formex shapes his universe around Hardcore culture. His journey took a decisive turn in 2007 upon discovering the Dutch Thunderdome universe. This culture and its classics defined the foundations of his musical identity.</p>
+          <p>After developing his style in clubs and co-founding the Circle event project with his best friend Lisa to host events and promote the local scene, Formex is now refocusing on his solo project.</p>
+          <p>While he shares his selection online through oldschool vinyl sessions centered on his personal collection, in clubs he delivers more dynamic sets, blending Gabber / Early Hardcore classics with the most recent and powerful productions.</p>
+        </div>
+        <div class="bio-block" data-lang="en" data-len="long">
+          <p>For Formex, the turning point came in 2007 with the discovery of the Thunderdome trailer and the track Welcome Down by DJ Mad Dog. This combination of raw energy and powerful kicks was a revelation that cemented his dedication to the Hardcore movement.</p>
+          <p>As a teenager, he took up FL Studio to understand sound synthesis. After his early days near Reims, Formex moved to Lille in 2016. There, he refined his technique, becoming an active figure in the Lille nightlife. A few years later, he launched Circle with his best friend Lisa, an event project aimed at organizing events of all musical horizons to showcase local talent.</p>
+          <p>While he is particularly fond of the Gabber / Early Hardcore classics that form his foundation, Formex is first and foremost a complete Hardcore DJ, capable of navigating through all eras and variations of the genre. For his online videos, he performs on vinyl from his personal collection, keeping the history of this culture alive. In clubs, he delivers a fast, intense mix, connecting the roots of the genre to the most hard-hitting modern productions.</p>
+        </div>
+      </div>
+      <div class="bio-portrait">
+        <img src="photo1.jpg" alt="FORMEX">
+        <p class="cap">📷 Leo Villalba</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEDIAS -->
+<section id="medias">
+  <div class="container">
+    <p class="eyebrow reveal" data-fr="Ressources" data-en="Resources">Ressources</p>
+    <h2 class="title reveal" data-fr="Médias & dossier" data-en="Media & kit">Médias & dossier</h2>
+    <div class="cards">
+      <a class="card reveal" href="https://drive.google.com/drive/folders/1WF5FR9cuhPSr26zrIOFO7fF9dbhw3KL9" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.2"/><path d="M8 6l1.5-2h5L16 6"/></svg></span>
+        <h3>Photos</h3>
+        <p data-fr="Photos HD presse" data-en="HD press photos">Photos HD presse</p>
+        <span class="go" data-fr="Ouvrir ↗" data-en="Open ↗">Ouvrir ↗</span>
+      </a>
+      <a class="card reveal" href="https://drive.google.com/drive/folders/1WLvMDOOZc5NwqjD44wU5R9X8FrUB6H6z" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg></span>
+        <h3>Vidéos</h3>
+        <p data-fr="Sets & sessions" data-en="Sets & sessions">Sets & sessions</p>
+        <span class="go" data-fr="Ouvrir ↗" data-en="Open ↗">Ouvrir ↗</span>
+      </a>
+      <a class="card reveal" href="#rider">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></svg></span>
+        <h3 data-fr="Rider" data-en="Rider">Rider</h3>
+        <p data-fr="Fiche technique" data-en="Technical rider">Fiche technique</p>
+        <span class="go" data-fr="Voir ↓" data-en="View ↓">Voir ↓</span>
+      </a>
+      <a class="card reveal" href="https://linktr.ee/formex____" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 15l6-6"/><path d="M11 6l1.5-1.5a4 4 0 0 1 5.7 5.7L16 12"/><path d="M13 18l-1.5 1.5a4 4 0 0 1-5.7-5.7L8 12"/></svg></span>
+        <h3>Linktree</h3>
+        <p data-fr="Tous mes liens" data-en="All my links">Tous mes liens</p>
+        <span class="go" data-fr="Ouvrir ↗" data-en="Open ↗">Ouvrir ↗</span>
+      </a>
+    </div>
+
+    <div class="strip reveal">
+      <a class="lb" href="photo1.jpg"><img src="photo1.jpg" alt="FORMEX live"></a>
+      <a class="lb" href="photo2.jpg"><img src="photo2.jpg" alt="FORMEX live"></a>
+      <a class="lb" href="photo3.jpg"><img src="photo3.jpg" alt="FORMEX live"></a>
+      <a class="lb" href="photo4.jpg"><img src="photo4.jpg" alt="FORMEX live"></a>
+    </div>
+  </div>
+</section>
+
+<!-- ECOUTER -->
+<section id="ecouter">
+  <div class="container">
+    <p class="eyebrow reveal" data-fr="Écouter" data-en="Listen">Écouter</p>
+    <h2 class="title reveal" data-fr="Dernier set" data-en="Latest set">Dernier set</h2>
+    <div class="listen-wrap">
+      <div class="sc-embed reveal">
+        <iframe width="100%" height="320" scrolling="no" frameborder="no" allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user-system-d/system-d-podcast-044-formex&color=%23e21c1c&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
+      </div>
+      <div class="reveal">
+        <h3 style="font-family:var(--head);font-weight:700;text-transform:uppercase;font-size:26px;margin:0 0 10px;">System-D Podcast #044</h3>
+        <p style="color:var(--muted);margin:0 0 22px;" data-fr="Le dernier podcast officiel — une heure de Hardcore sans concession." data-en="The latest official podcast — an hour of uncompromising Hardcore.">Le dernier podcast officiel — une heure de Hardcore sans concession.</p>
+        <div class="socials">
+          <a class="chip" href="https://soundcloud.com/formex" target="_blank" rel="noopener">SoundCloud <small>/formex</small></a>
+          <a class="chip" href="https://www.instagram.com/formex____/" target="_blank" rel="noopener">Instagram <small>@formex____</small></a>
+          <a class="chip" href="https://www.tiktok.com/@formex____" target="_blank" rel="noopener">TikTok <small>@formex____</small></a>
+          <a class="chip" href="https://www.instagram.com/circlevents_/" target="_blank" rel="noopener">Circle <small>@circlevents_</small></a>
+          <a class="chip" href="https://www.instagram.com/xem.music/" target="_blank" rel="noopener">XEM <small data-fr="techno alias" data-en="techno alias">techno alias</small></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RIDER -->
+<section id="rider">
+  <div class="container">
+    <p class="eyebrow reveal" data-fr="Rider" data-en="Rider">Rider</p>
+    <h2 class="title reveal" data-fr="Fiche technique" data-en="Technical rider">Fiche technique</h2>
+    <p class="reveal" style="color:var(--muted);max-width:70ch;margin:-22px 0 36px;" data-fr="Ce document fait partie intégrante du contrat de booking. Merci de le transmettre au responsable technique ou au régisseur scène de l'événement." data-en="This document is an integral part of the booking contract. Please forward it to the event's technical manager or stage engineer.">Ce document fait partie intégrante du contrat de booking. Merci de le transmettre au responsable technique ou au régisseur scène de l'événement.</p>
+
+    <div class="reveal">
+      <!-- FR -->
+      <div class="rider-block on" data-lang="fr">
+        <div class="rider-grid">
+          <div class="rider-card">
+            <h3>Fiche technique</h3>
+            <p class="rider-sub">Configuration DJ</p>
+            <ul class="rider-list">
+              <li>Lecteurs : 3× Pioneer CDJ-3000 ou CDJ-2000NXS2 (reliés en réseau).</li>
+              <li>Table de mixage : 1× Pioneer DJM-900NXS2 ou DJM-A9.</li>
+            </ul>
+            <p class="rider-sub">Retours de cabine (Booth monitor)</p>
+            <ul class="rider-list">
+              <li>2× enceintes de retour actives pro, à hauteur d'oreille de chaque côté de la cabine.</li>
+              <li>Volume des retours réglable depuis le bouton « Booth Monitor » de la table.</li>
+              <li>Signal de retour propre, sans distorsion ni retard par rapport à la façade.</li>
+            </ul>
+          </div>
+          <div class="rider-card">
+            <h3>Hospitalité</h3>
+            <p class="rider-sub">Boissons (loge ou cabine)</p>
+            <ul class="rider-list">
+              <li>2× petites bouteilles d'eau minérale plate.</li>
+              <li>2× canettes de Red Bull.</li>
+              <li>Quelques bières ou tickets boisson pour le bar.</li>
+            </ul>
+            <p class="rider-sub">Invitations</p>
+            <ul class="rider-list">
+              <li>2 ou 3 accès « Guestlist » (entrée + backstage) pour les accompagnateurs, vidéaste ou photographe.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- EN -->
+      <div class="rider-block" data-lang="en">
+        <div class="rider-grid">
+          <div class="rider-card">
+            <h3>Technical rider</h3>
+            <p class="rider-sub">DJ Configuration</p>
+            <ul class="rider-list">
+              <li>Players: 3× Pioneer CDJ-3000 or CDJ-2000NXS2 (linked).</li>
+              <li>Mixer: 1× Pioneer DJM-900NXS2 or DJM-A9.</li>
+            </ul>
+            <p class="rider-sub">Booth monitor</p>
+            <ul class="rider-list">
+              <li>2× high-quality active monitors, at ear level on both sides of the booth.</li>
+              <li>Booth volume controllable from the « Booth Monitor » knob on the mixer.</li>
+              <li>Clean monitor signal, no distortion or latency vs the FOH PA.</li>
+            </ul>
+          </div>
+          <div class="rider-card">
+            <h3>Hospitality</h3>
+            <p class="rider-sub">Drinks (dressing room or booth)</p>
+            <ul class="rider-list">
+              <li>2× small bottles of still mineral water.</li>
+              <li>2× cans of Red Bull.</li>
+              <li>A few beers or drink tokens for the bar.</li>
+            </ul>
+            <p class="rider-sub">Guest List</p>
+            <ul class="rider-list">
+              <li>2 or 3 guest passes (entry + backstage) for the artist's guests, videographer or photographer.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:34px;">
+      <a class="btn btn-primary" href="FORMEX_Technical_Rider.pdf" download data-fr="⬇ Télécharger le rider (PDF)" data-en="⬇ Download the rider (PDF)">⬇ Télécharger le rider (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="eyebrow reveal" data-fr="Contact" data-en="Contact">Contact</p>
+    <h2 class="title reveal" style="margin-bottom:30px;" data-fr="Booking & management" data-en="Booking & management">Booking & management</h2>
+    <a class="mail reveal" href="mailto:booking@formexhardcore.com">booking@formexhardcore.com</a>
+    <div class="contact-cta reveal">
+      <a class="btn btn-primary" href="FORMEX_Presskit_2026.pdf" download data-fr="⬇ Télécharger le press kit (PDF)" data-en="⬇ Download the press kit (PDF)">⬇ Télécharger le press kit (PDF)</a>
+      <a class="btn btn-ghost" href="https://drive.google.com/drive/folders/1n0tF7pdhoMCVUUCwPN6-a4u6vTp_bjTi" target="_blank" rel="noopener" data-fr="Dossier complet ↗" data-en="Full kit folder ↗">Dossier complet ↗</a>
+    </div>
+    <div class="contact-socials reveal">
+      <a href="https://soundcloud.com/formex" target="_blank" rel="noopener">SoundCloud</a>
+      <a href="https://www.instagram.com/formex____/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@formex____" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://linktr.ee/formex____" target="_blank" rel="noopener">Linktree</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="yr">2026</span> FORMEX — DJ Hardcore · Lille &nbsp;·&nbsp; <span data-fr="Photos" data-en="Photos">Photos</span> : Leo Villalba &nbsp;·&nbsp; <a href="mailto:booking@formexhardcore.com">booking@formexhardcore.com</a><br>
+  <span style="display:inline-block;margin-top:10px;">
+    <a href="FORMEX_Presskit_2026.pdf" download data-fr="Télécharger le press kit (PDF)" data-en="Download the press kit (PDF)">Télécharger le press kit (PDF)</a>
+    &nbsp;·&nbsp;
+    <a href="FORMEX_Technical_Rider.pdf" download data-fr="Télécharger le rider (PDF)" data-en="Download the rider (PDF)">Télécharger le rider (PDF)</a>
+  </span>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="close" id="lbClose" aria-label="Fermer">×</span>
+  <img src="" alt="FORMEX">
+</div>
+
+<script>
+  // nav scrolled state
+  var nav=document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('scrolled', window.scrollY>40); }
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+
+  // burger menu (mobile)
+  var burger=document.getElementById('burger'), menu=document.getElementById('menu');
+  burger.addEventListener('click',function(){ menu.classList.toggle('open'); });
+  menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ menu.classList.remove('open'); }); });
+
+  // language + bio state
+  var state={lang:'fr',len:'long'};
+  function applyLang(){
+    document.documentElement.lang=state.lang;
+    document.querySelectorAll('[data-fr]').forEach(function(el){
+      var v=el.getAttribute('data-'+state.lang); if(v!==null) el.textContent=v;
+    });
+    document.querySelectorAll('#lang button').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-set')===state.lang);
+    });
+  }
+  function applyBio(){
+    document.querySelectorAll('.bio-block').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-lang')===state.lang && b.getAttribute('data-len')===state.len);
+    });
+    document.querySelectorAll('#biotabs button').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-len')===state.len);
+    });
+  }
+  function applyRider(){
+    document.querySelectorAll('.rider-block').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-lang')===state.lang);
+    });
+  }
+  document.querySelectorAll('#lang button').forEach(function(b){
+    b.addEventListener('click',function(){ state.lang=b.getAttribute('data-set'); applyLang(); applyBio(); applyRider(); });
+  });
+  document.querySelectorAll('#biotabs button').forEach(function(b){
+    b.addEventListener('click',function(){ state.len=b.getAttribute('data-len'); applyBio(); });
+  });
+
+  // reveal on scroll
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  // lightbox
+  var lb=document.getElementById('lightbox'), lbImg=lb.querySelector('img');
+  document.querySelectorAll('a.lb').forEach(function(a){
+    a.addEventListener('click',function(e){ e.preventDefault(); lbImg.src=a.getAttribute('href'); lb.classList.add('open'); });
+  });
+  function closeLb(){ lb.classList.remove('open'); lbImg.src=''; }
+  document.getElementById('lbClose').addEventListener('click',closeLb);
+  lb.addEventListener('click',function(e){ if(e.target===lb) closeLb(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLb(); });
+
+  applyLang(); applyBio(); applyRider();
+</script>
 </body>
 </html>
