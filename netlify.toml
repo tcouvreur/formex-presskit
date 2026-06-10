@@ -15,3 +15,10 @@
   to = "/FORMEX_Presskit_2026.pdf"
   status = 200
   force = true
+
+# rider.formexhardcore.com sert directement le PDF du rider technique
+[[redirects]]
+  from = "https://rider.formexhardcore.com/*"
+  to = "/FORMEX_Technical_Rider.pdf"
+  status = 200
+  force = true
