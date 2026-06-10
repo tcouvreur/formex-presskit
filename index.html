@@ -71,8 +71,8 @@
 
   /* ===== HERO ===== */
   .hero{position:relative;min-height:100svh;display:flex;align-items:center;
-    background:linear-gradient(180deg,rgba(10,10,10,.45) 0%,rgba(10,10,10,.35) 45%,rgba(10,10,10,.96) 100%),
-      url('hero.jpg') center 22%/cover no-repeat;padding:0;}
+    background:linear-gradient(180deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,.22) 48%,rgba(10,10,10,.92) 100%),
+      url('hero.jpg') center 33%/cover no-repeat;padding:0;}
   .hero .container{position:relative;z-index:2;width:100%;}
   .hero .kick{font-family:var(--head);font-weight:600;letter-spacing:.42em;text-transform:uppercase;
     font-size:clamp(12px,2.4vw,16px);color:var(--fg);margin:0 0 10px;text-shadow:0 2px 18px #000;}
@@ -210,6 +210,8 @@
   /* ===== RESPONSIVE ===== */
   @media(max-width:860px){
     section{padding:72px 0;}
+    .hero{align-items:flex-end;background-position:center 30%;}
+    .hero .container{padding-bottom:78px;}
     .bio-wrap{grid-template-columns:1fr;gap:30px;}
     .bio-portrait{max-width:330px;}
     .listen-wrap{grid-template-columns:1fr;gap:30px;}
@@ -370,7 +372,7 @@
     <h2 class="title reveal" data-fr="En mouvement" data-en="In motion">En mouvement</h2>
     <div class="videos-single">
       <div class="vid reveal">
-        <iframe src="https://www.instagram.com/reel/DYuDZuwMge_/embed" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen></iframe>
+        <iframe src="https://www.instagram.com/reel/DWv6d7XDIlP/embed" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen></iframe>
       </div>
     </div>
     <div class="reveal" style="margin-top:30px;">
