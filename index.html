@@ -151,6 +151,16 @@
   .chip:hover{border-color:var(--red);color:#fff;transform:translateY(-2px);}
   .chip small{color:var(--muted);font-family:var(--body);font-weight:400;letter-spacing:0;text-transform:none;}
 
+  /* ===== VIDEOS ===== */
+  #videos{background:var(--bg2);}
+  .videos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;justify-items:center;}
+  .vid{width:100%;max-width:380px;}
+  .vid iframe{width:100%;height:680px;border:0;border-radius:14px;background:#fff;
+    box-shadow:0 14px 40px rgba(0,0,0,.5);}
+  .sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+  .sc-label{font-family:var(--head);font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--fg);font-size:15px;margin:0 0 12px;}
+
   /* ===== RIDER ===== */
   #rider{background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);}
   .rider-block{display:none;}
@@ -202,6 +212,8 @@
     .bio-wrap{grid-template-columns:1fr;gap:30px;}
     .bio-portrait{max-width:330px;}
     .listen-wrap{grid-template-columns:1fr;gap:30px;}
+    .videos-grid{grid-template-columns:1fr;}
+    .sc-grid{grid-template-columns:1fr;}
     .rider-grid{grid-template-columns:1fr;}
     .cards{grid-template-columns:repeat(2,1fr);}
     nav.menu{position:fixed;inset:0 0 0 auto;width:min(78vw,320px);background:#0d0d0d;
@@ -225,6 +237,7 @@
   <nav class="menu" id="menu">
     <a class="lnk" href="#bio" data-fr="Bio" data-en="Bio">Bio</a>
     <a class="lnk" href="#medias" data-fr="Médias" data-en="Media">Médias</a>
+    <a class="lnk" href="#videos" data-fr="Vidéos" data-en="Videos">Vidéos</a>
     <a class="lnk" href="#ecouter" data-fr="Écouter" data-en="Listen">Écouter</a>
     <a class="lnk" href="#rider" data-fr="Rider" data-en="Rider">Rider</a>
     <a class="lnk" href="#contact" data-fr="Booking" data-en="Booking">Booking</a>
@@ -320,11 +333,11 @@
         <p data-fr="Photos HD presse" data-en="HD press photos">Photos HD presse</p>
         <span class="go" data-fr="Ouvrir ↗" data-en="Open ↗">Ouvrir ↗</span>
       </a>
-      <a class="card reveal" href="https://drive.google.com/drive/folders/1WLvMDOOZc5NwqjD44wU5R9X8FrUB6H6z" target="_blank" rel="noopener">
+      <a class="card reveal" href="#videos">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg></span>
         <h3>Vidéos</h3>
         <p data-fr="Sets & sessions" data-en="Sets & sessions">Sets & sessions</p>
-        <span class="go" data-fr="Ouvrir ↗" data-en="Open ↗">Ouvrir ↗</span>
+        <span class="go" data-fr="Voir ↓" data-en="View ↓">Voir ↓</span>
       </a>
       <a class="card reveal" href="#rider">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></svg></span>
@@ -349,27 +362,52 @@
   </div>
 </section>
 
+<!-- VIDEOS -->
+<section id="videos">
+  <div class="container">
+    <p class="eyebrow reveal" data-fr="Vidéos" data-en="Videos">Vidéos</p>
+    <h2 class="title reveal" data-fr="En mouvement" data-en="In motion">En mouvement</h2>
+    <div class="videos-grid">
+      <div class="vid reveal">
+        <iframe src="https://www.instagram.com/reel/DYuDZuwMge_/embed" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen></iframe>
+      </div>
+      <div class="vid reveal">
+        <iframe src="https://www.instagram.com/reel/DWv6d7XDIlP/embed" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:30px;">
+      <a class="btn btn-ghost" href="https://drive.google.com/drive/folders/1WLvMDOOZc5NwqjD44wU5R9X8FrUB6H6z" target="_blank" rel="noopener" data-fr="Plus de vidéos ↗" data-en="More videos ↗">Plus de vidéos ↗</a>
+    </div>
+  </div>
+</section>
+
 <!-- ECOUTER -->
 <section id="ecouter">
   <div class="container">
     <p class="eyebrow reveal" data-fr="Écouter" data-en="Listen">Écouter</p>
-    <h2 class="title reveal" data-fr="Dernier set" data-en="Latest set">Dernier set</h2>
-    <div class="listen-wrap">
-      <div class="sc-embed reveal">
-        <iframe width="100%" height="320" scrolling="no" frameborder="no" allow="autoplay"
-          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user-system-d/system-d-podcast-044-formex&color=%23e21c1c&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
-      </div>
+    <h2 class="title reveal" data-fr="Sets & sons" data-en="Sets & sounds">Sets & sons</h2>
+    <div class="sc-grid">
       <div class="reveal">
-        <h3 style="font-family:var(--head);font-weight:700;text-transform:uppercase;font-size:26px;margin:0 0 10px;">System-D Podcast #044</h3>
-        <p style="color:var(--muted);margin:0 0 22px;" data-fr="Le dernier podcast officiel — une heure de Hardcore sans concession." data-en="The latest official podcast — an hour of uncompromising Hardcore.">Le dernier podcast officiel — une heure de Hardcore sans concession.</p>
-        <div class="socials">
-          <a class="chip" href="https://soundcloud.com/formex" target="_blank" rel="noopener">SoundCloud <small>/formex</small></a>
-          <a class="chip" href="https://www.instagram.com/formex____/" target="_blank" rel="noopener">Instagram <small>@formex____</small></a>
-          <a class="chip" href="https://www.tiktok.com/@formex____" target="_blank" rel="noopener">TikTok <small>@formex____</small></a>
-          <a class="chip" href="https://www.instagram.com/circlevents_/" target="_blank" rel="noopener">Circle <small>@circlevents_</small></a>
-          <a class="chip" href="https://www.instagram.com/xem.music/" target="_blank" rel="noopener">XEM <small data-fr="techno alias" data-en="techno alias">techno alias</small></a>
+        <p class="sc-label">System-D Podcast #044</p>
+        <div class="sc-embed">
+          <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/user-system-d/system-d-podcast-044-formex&color=%23e21c1c&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
         </div>
       </div>
+      <div class="reveal">
+        <p class="sc-label">Gabba Dimension</p>
+        <div class="sc-embed">
+          <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/formex/gabba-dimension&color=%23e21c1c&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="socials reveal" style="margin-top:30px;">
+      <a class="chip" href="https://soundcloud.com/formex" target="_blank" rel="noopener">SoundCloud <small>/formex</small></a>
+      <a class="chip" href="https://www.instagram.com/formex____/" target="_blank" rel="noopener">Instagram <small>@formex____</small></a>
+      <a class="chip" href="https://www.tiktok.com/@formex____" target="_blank" rel="noopener">TikTok <small>@formex____</small></a>
+      <a class="chip" href="https://www.instagram.com/circlevents_/" target="_blank" rel="noopener">Circle <small>@circlevents_</small></a>
+      <a class="chip" href="https://www.instagram.com/xem.music/" target="_blank" rel="noopener">XEM <small data-fr="techno alias" data-en="techno alias">techno alias</small></a>
     </div>
   </div>
 </section>
