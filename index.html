@@ -154,7 +154,8 @@
   /* ===== VIDEOS ===== */
   #videos{background:var(--bg2);}
   .videos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;justify-items:center;}
-  .vid{width:100%;max-width:380px;}
+  .videos-single{display:flex;justify-content:center;}
+  .vid{width:100%;max-width:420px;}
   .vid iframe{width:100%;height:680px;border:0;border-radius:14px;background:#fff;
     box-shadow:0 14px 40px rgba(0,0,0,.5);}
   .sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
@@ -367,12 +368,9 @@
   <div class="container">
     <p class="eyebrow reveal" data-fr="Vidéos" data-en="Videos">Vidéos</p>
     <h2 class="title reveal" data-fr="En mouvement" data-en="In motion">En mouvement</h2>
-    <div class="videos-grid">
+    <div class="videos-single">
       <div class="vid reveal">
         <iframe src="https://www.instagram.com/reel/DYuDZuwMge_/embed" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen></iframe>
-      </div>
-      <div class="vid reveal">
-        <iframe src="https://www.instagram.com/reel/DWv6d7XDIlP/embed" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen></iframe>
       </div>
     </div>
     <div class="reveal" style="margin-top:30px;">
