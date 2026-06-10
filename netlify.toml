@@ -7,3 +7,11 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=31536000"
     Permissions-Policy = "geolocation=(), camera=(), microphone=(), payment=()"
+
+# presskit.formexhardcore.com sert directement le PDF du press kit
+# (rewrite 200 : l'URL reste presskit.formexhardcore.com dans la barre)
+[[redirects]]
+  from = "https://presskit.formexhardcore.com/*"
+  to = "/FORMEX_Presskit_2026.pdf"
+  status = 200
+  force = true
