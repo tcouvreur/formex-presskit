@@ -194,13 +194,16 @@
   .lightbox .close{position:absolute;top:18px;right:28px;color:#fff;font-size:40px;line-height:1;
     cursor:pointer;font-family:var(--head);opacity:.8;transition:.2s;}
   .lightbox .close:hover{opacity:1;color:var(--red);}
-  .lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);color:#fff;
-    font-size:64px;line-height:1;cursor:pointer;font-family:var(--head);opacity:.7;
-    transition:.2s;user-select:none;padding:0 8px;z-index:2;}
-  .lightbox .lb-nav:hover{opacity:1;color:var(--red);}
-  .lightbox .lb-prev{left:18px;}
-  .lightbox .lb-next{right:18px;}
-  @media(max-width:860px){.lightbox .lb-nav{font-size:48px;}}
+  .lightbox .lb-nav{position:absolute;top:0;bottom:0;width:22%;max-width:240px;
+    display:flex;align-items:center;color:#fff;font-size:64px;line-height:1;
+    cursor:pointer;font-family:var(--head);user-select:none;z-index:2;transition:background .2s;}
+  .lightbox .lb-nav span{opacity:.7;transition:.2s;padding:0 22px;}
+  .lightbox .lb-prev{left:0;justify-content:flex-start;}
+  .lightbox .lb-next{right:0;justify-content:flex-end;}
+  .lightbox .lb-prev:hover{background:linear-gradient(90deg,rgba(255,40,40,.18),transparent);}
+  .lightbox .lb-next:hover{background:linear-gradient(270deg,rgba(255,40,40,.18),transparent);}
+  .lightbox .lb-nav:hover span{opacity:1;color:var(--red);}
+  @media(max-width:860px){.lightbox .lb-nav{font-size:48px;width:28%;}.lightbox .lb-nav span{padding:0 14px;}}
 
   /* ===== CONTACT ===== */
   #contact{background:linear-gradient(180deg,var(--bg) 0%,#000 100%);text-align:center;}
@@ -522,9 +525,9 @@
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
   <span class="close" id="lbClose" aria-label="Fermer">×</span>
-  <span class="lb-nav lb-prev" id="lbPrev" aria-label="Précédent">‹</span>
+  <div class="lb-nav lb-prev" id="lbPrev" aria-label="Précédent"><span>‹</span></div>
   <img src="" alt="FORMEX">
-  <span class="lb-nav lb-next" id="lbNext" aria-label="Suivant">›</span>
+  <div class="lb-nav lb-next" id="lbNext" aria-label="Suivant"><span>›</span></div>
 </div>
 
 <script>
