@@ -299,8 +299,8 @@
     <div class="bio-controls reveal">
       <div class="tabs" id="biotabs">
         <button data-len="short" data-fr="Courte" data-en="Short">Courte</button>
-        <button data-len="med" data-fr="Moyenne" data-en="Medium">Moyenne</button>
-        <button data-len="long" class="on" data-fr="Longue" data-en="Long">Longue</button>
+        <button data-len="med" class="on" data-fr="Moyenne" data-en="Medium">Moyenne</button>
+        <button data-len="long" data-fr="Longue" data-en="Long">Longue</button>
       </div>
     </div>
 
@@ -310,12 +310,12 @@
         <div class="bio-block" data-lang="fr" data-len="short">
           <p>Basé à Lille, Formex propose une immersion dans l'univers Hardcore avec une sélection sans concession. Passionné par cette musique, il allie l'héritage du Gabber / Early Hardcore à la puissance des productions modernes. Que ce soit à travers ses vidéos sur vinyles ou ses sets en club, son objectif reste le même : partager l'énergie brute de cette culture.</p>
         </div>
-        <div class="bio-block" data-lang="fr" data-len="med">
+        <div class="bio-block on" data-lang="fr" data-len="med">
           <p>Basé à Lille, Formex façonne son univers autour de la culture Hardcore. Son parcours prend un tournant décisif en 2007 à la découverte de l'univers hollandais Thunderdome. Cette culture et ses classiques définissent les fondations de son identité musicale.</p>
           <p>Après avoir développé son style en club et cofondé le projet événementiel Circle avec sa meilleure amie Lisa pour organiser des soirées et promouvoir la scène locale, Formex se recentre sur le projet solo.</p>
           <p>S'il partage sa sélection à travers des sessions vinyles oldschool axées sur sa collection personnelle, il propose en club des sets plus dynamiques, mêlant les classiques Gabber / Early Hardcore aux productions les plus récentes et puissantes.</p>
         </div>
-        <div class="bio-block on" data-lang="fr" data-len="long">
+        <div class="bio-block" data-lang="fr" data-len="long">
           <p>Pour Formex, le déclic se produit en 2007 : la découverte du trailer de Thunderdome et du titre Welcome Down de DJ Mad Dog. Ce mélange d'énergie brute et de kicks puissants devient une révélation qui scelle son attachement au mouvement Hardcore.</p>
           <p>Dès l'adolescence, il s'empare de FL Studio pour comprendre la synthèse sonore. Après ses débuts près de Reims, Formex s'installe à Lille en 2016. Il y peaufine sa technique, devenant une figure active de la nuit lilloise. Quelques années après, il lance Circle avec sa meilleure amie Lisa, un projet événementiel visant à y organiser des soirées de tous horizons musicaux pour mettre en avant les artistes locaux.</p>
           <p>S'il affectionne particulièrement les classiques Gabber / Early Hardcore qui constituent ses fondations, Formex est avant tout un DJ Hardcore complet, capable de naviguer à travers toutes les époques et toutes les variations du genre. Pour ses vidéos en ligne, il s'exprime sur vinyles issus de sa collection personnelle, une manière de faire vivre l'histoire de cette culture. En club, il déploie un mix rapide, intense, connectant les racines du genre aux productions modernes les plus percutantes.</p>
@@ -543,7 +543,7 @@
   menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ menu.classList.remove('open'); }); });
 
   // language + bio state
-  var state={lang:'fr',len:'long'};
+  var state={lang:'fr',len:'med'};
   function applyLang(){
     document.documentElement.lang=state.lang;
     document.querySelectorAll('[data-fr]').forEach(function(el){
