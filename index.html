@@ -167,7 +167,8 @@
   .vid{width:100%;max-width:400px;}
   .vid iframe{width:100%;aspect-ratio:9/16;height:auto;display:block;border:0;border-radius:14px;background:#000;
     box-shadow:0 14px 40px rgba(0,0,0,.5);}
-  .sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+  .sc-grid>.reveal:first-child{grid-column:1 / -1;}
   .sc-label{font-family:var(--head);font-weight:600;letter-spacing:.08em;text-transform:uppercase;
     color:var(--fg);font-size:15px;margin:0 0 12px;}
 
