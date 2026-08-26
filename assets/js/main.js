@@ -59,12 +59,30 @@
   var burger = document.querySelector('.burger');
   var menu   = document.getElementById('menu');
 
+  /* Bloquer le défilement de la page passe par height: 100svh sur la racine,
+     ce qui écrase sa hauteur et fait donc perdre la position de défilement.
+     On la mémorise à la fermeture et on la remet, sinon on se retrouve
+     projeté en haut de page en refermant la lightbox ou le menu. */
+  var lockY = 0;
+
+  function lockPage(on) {
+    if (!page) { return; }
+    if (on) {
+      lockY = window.scrollY || window.pageYOffset || 0;
+      page.classList.add('is-locked');
+      document.body.classList.add('is-over');
+    } else {
+      page.classList.remove('is-locked');
+      document.body.classList.remove('is-over');
+      window.scrollTo({ top: lockY, left: 0, behavior: 'instant' });
+    }
+  }
+
   function setMenu(open) {
     if (!burger || !menu || !page) { return; }
     menu.hidden = !open;
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    page.classList.toggle('is-locked', open);
-    document.body.classList.toggle('is-over', open);
+    lockPage(open);
   }
 
   if (burger && menu) {
@@ -340,16 +358,14 @@
     function openLb(i) {
       showLb(i, false);
       lb.hidden = false;
-      page.classList.add('is-locked');
-      document.body.classList.add('is-over');
-      lb.querySelector('.lb__close').focus();
+      lockPage(true);
+      lb.querySelector('.lb__close').focus({ preventScroll: true });
     }
 
     function closeLb() {
       lb.hidden = true;
-      page.classList.remove('is-locked');
-      document.body.classList.remove('is-over');
-      if (items[idx]) { items[idx].focus(); }
+      lockPage(false);
+      if (items[idx]) { items[idx].focus({ preventScroll: true }); }
     }
 
     Array.prototype.forEach.call(items, function (el, i) {

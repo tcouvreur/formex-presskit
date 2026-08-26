@@ -156,6 +156,15 @@ ul, ol { padding: 0; list-style: none; }
    Sélecteur img nu, volontairement global : toute image ajoutée plus tard
    est couverte sans intervention. Ne pas restreindre à une section.
    Le pendant JavaScript est l'écouteur contextmenu de main.js. */
+/* Le <picture> enveloppe l'image pour servir du WebP avec repli JPEG.
+   display: contents le retire de l'arbre de mise en page, l'image se
+   comporte donc exactement comme avant, sans toucher au reste du CSS.
+   Le poster du hero fait exception, c'est le <picture> lui-même qui porte
+   le cadrage et le filtre. */
+.gal__item picture,
+.shot picture,
+.portrait__frame picture { display: contents; }
+
 img {
   display: block;
   max-width: 100%;
@@ -738,7 +747,11 @@ body.is-over .snd--float { display: none !important; }
 .hero__bg--press { opacity: .5; }
 
 .hero__shot {
+  /* Un fond CSS ne peut pas passer par <picture>. image-set sert le WebP
+     aux navigateurs qui le gerent, les autres gardent la ligne au-dessus. */
   background-image: url("/assets/img/booth.jpg");
+  background-image: image-set(url("/assets/img/booth.webp") type("image/webp"),
+                              url("/assets/img/booth.jpg")  type("image/jpeg"));
   background-size: cover;
   background-position: 62% 30%;
   filter: grayscale(1) contrast(1.15) brightness(.5);

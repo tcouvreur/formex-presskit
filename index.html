@@ -102,7 +102,9 @@
   <section class="hero" id="hero">
     <div class="hero__bg" aria-hidden="true">
       <picture class="hero__poster">
-        <source media="(max-width: 767px)" srcset="/assets/img/hero-poster-mobile.jpg" width="720" height="1280">
+        <source media="(max-width: 767px)" type="image/webp" srcset="/assets/img/hero-poster-mobile.webp">
+        <source media="(max-width: 767px)" srcset="/assets/img/hero-poster-mobile.jpg">
+        <source type="image/webp" srcset="/assets/img/hero-poster.webp">
         <img src="/assets/img/hero-poster.jpg" alt="" width="1280" height="720" fetchpriority="high" draggable="false">
       </picture>
       <video class="hero__video" data-audio muted playsinline loop autoplay preload="none"
@@ -327,7 +329,10 @@
 
       <div class="portrait rv">
         <div class="portrait__frame">
-          <img src="/assets/img/portrait.jpg" alt="FORMEX" width="1069" height="1600" draggable="false">
+          <picture>
+            <source type="image/webp" srcset="/assets/img/portrait.webp">
+            <img src="/assets/img/portrait.jpg" alt="FORMEX" width="1067" height="1600" draggable="false">
+          </picture>
         </div>
         <span class="portrait__credit">Leo Villalba</span>
       </div>
@@ -343,16 +348,34 @@
 
       <div class="gal">
         <button class="gal__item gal__item--bw rv" type="button" data-src="/assets/img/booth.jpg">
-          <img src="/assets/img/booth.jpg" alt="" loading="lazy" width="1069" height="1600" draggable="false">
+          <picture>
+            <source type="image/webp" sizes="(min-width: 900px) 312px, 45vw"
+                    srcset="/assets/img/booth-400.webp 400w, /assets/img/booth-800.webp 800w">
+            <img src="/assets/img/booth-800.jpg" sizes="(min-width: 900px) 312px, 45vw"
+                 srcset="/assets/img/booth-400.jpg 400w, /assets/img/booth-800.jpg 800w"
+                 alt="" loading="lazy" width="800" height="1198" draggable="false">
+          </picture>
           <span class="gal__num">01</span>
         </button>
         <button class="gal__item gal__item--color rv" type="button" data-src="/assets/img/club-red.jpg">
-          <img src="/assets/img/club-red.jpg" alt="" loading="lazy" width="846" height="721" draggable="false">
+          <picture>
+            <source type="image/webp" sizes="(min-width: 900px) 312px, 45vw"
+                    srcset="/assets/img/club-red-400.webp 400w, /assets/img/club-red-800.webp 800w">
+            <img src="/assets/img/club-red-800.jpg" sizes="(min-width: 900px) 312px, 45vw"
+                 srcset="/assets/img/club-red-400.jpg 400w, /assets/img/club-red-800.jpg 800w"
+                 alt="" loading="lazy" width="800" height="682" draggable="false">
+          </picture>
           <span class="gal__num">02</span>
           <span class="gal__play" aria-hidden="true">&#9654;</span>
         </button>
         <button class="gal__item gal__item--bw rv" type="button" data-src="/assets/img/portrait.jpg">
-          <img src="/assets/img/portrait.jpg" alt="" loading="lazy" width="1069" height="1600" draggable="false">
+          <picture>
+            <source type="image/webp" sizes="(min-width: 900px) 312px, 45vw"
+                    srcset="/assets/img/portrait-400.webp 400w, /assets/img/portrait-800.webp 800w">
+            <img src="/assets/img/portrait-800.jpg" sizes="(min-width: 900px) 312px, 45vw"
+                 srcset="/assets/img/portrait-400.jpg 400w, /assets/img/portrait-800.jpg 800w"
+                 alt="" loading="lazy" width="800" height="1200" draggable="false">
+          </picture>
           <span class="gal__num">03</span>
         </button>
         <a class="gal__more rv" href="https://drive.google.com/drive/folders/1WLvMDOOZc5NwqjD44wU5R9X8FrUB6H6z" target="_blank" rel="noopener">
