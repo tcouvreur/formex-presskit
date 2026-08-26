@@ -708,7 +708,7 @@ img {
 .hero__back:hover span:last-child { color: inherit; }
 
 @media (min-width: 900px) {
-  .hero { padding: 40px 56px 72px; }
+  .hero { padding: 40px 56px 82px; }
   .hero--press { padding: 56px 56px 72px; }
 }
 
