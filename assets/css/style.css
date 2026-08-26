@@ -83,8 +83,8 @@
 
   /* Espacements */
   --wrap:         1280px;
-  --pad-x:        16px;
-  --pad-y:        76px;
+  --pad-x:        20px;
+  --pad-y:        20px;
   --head-h:       65px;
 
   /* Mouvement. Une seule courbe, trois durées et pas une de plus. */
@@ -97,7 +97,7 @@
 @media (min-width: 900px) {
   :root {
     --pad-x: 56px;
-    --pad-y: 132px;
+    --pad-y: 60px;
   }
 }
 
