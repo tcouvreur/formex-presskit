@@ -102,14 +102,46 @@
 
 
   <!-- ==================================================================
-       HERO — étape 2 (contenu) et étape 8 (vidéo)
+       HERO
+       La vidéo arrive à l'étape 8. Le poster s'affiche instantanément et
+       la vidéo se chargera derrière, sans jamais bloquer le premier rendu.
        =================================================================== -->
   <section class="hero" id="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <video class="hero__video" poster="/assets/img/club-red.jpg"
+             autoplay muted loop playsinline preload="auto"></video>
+      <div class="hero__fade"></div>
+      <div class="scanlines hero__scan"></div>
+      <div class="hero__halo"></div>
+    </div>
+
+    <p class="hero__kick">
+      <span class="hero__dot" aria-hidden="true"></span>
+      <span>DJ Hardcore · Lille</span>
+    </p>
+
+    <h1 class="hero__logo" aria-label="FORMEX">
+      <span aria-hidden="true">F</span><span aria-hidden="true">O</span><span aria-hidden="true">R</span><em aria-hidden="true"><span>M</span></em><span aria-hidden="true">E</span><span aria-hidden="true">X</span>
+    </h1>
+
+    <p class="hero__sig">Hardcore will never die</p>
+
+    <p class="hero__sub" data-i18n="heroSub">Retour aux racines. Gabber, Early Hardcore et Millennium, du closing de club aux scènes de festival.</p>
+
+    <div class="hero__cta">
+      <a class="btn btn--primary" href="#dates" data-i18n="cta1">Prochaines dates</a>
+      <a class="btn btn--ghost" href="#ecouter" data-i18n="cta2">Écouter un set</a>
+    </div>
+
+    <p class="hero__cue">
+      <span data-i18n="scroll">Faites défiler</span>
+      <i aria-hidden="true"></i>
+    </p>
   </section>
 
 
   <!-- ==================================================================
-       01 / AGENDA — étape 2
+       01 / AGENDA
        Toutes les dates dans un seul bloc identifiable, une structure de
        balisage identique pour chacune, un gabarit unique pour le rendu.
        En phase 2 il suffira de lui passer un objet de l'API.
@@ -124,13 +156,121 @@
         <span class="section-aside">2026</span>
       </div>
 
-      <div id="dates-list"><!-- lignes de date, état vide et archive --></div>
+      <!-- Toutes les dates dans un seul bloc, une structure identique pour
+           chacune. En phase 2, main.js remplacera ces lignes écrites à la
+           main par le même gabarit alimenté par l'API. -->
+      <div class="dates" id="dates-list">
+
+        <a class="date rv" href="https://shotgun.live/fr/events/systemdclaudemurder" target="_blank" rel="noopener">
+          <span class="date__day">
+            <span class="date__num">10</span><span class="date__mon">Sep</span>
+          </span>
+          <span class="date__info">
+            <span class="date__venue">Kodz</span>
+            <span class="date__city">Lille, France</span>
+            <span class="date__tags"><span class="pill">Hardcore</span></span>
+            <span class="date__ctx">System D invite Claude Murder</span>
+          </span>
+          <span class="date__meta">
+            <span class="badge"><i class="badge__dot" aria-hidden="true"></i><span data-i18n="bConf">Confirmé</span></span>
+            <span class="date__cta"><span data-i18n="bTickets">Billets</span> <span aria-hidden="true">↗</span></span>
+          </span>
+        </a>
+
+        <div class="date date--alias rv">
+          <span class="date__day">
+            <span class="date__num">24</span><span class="date__mon">Sep</span>
+          </span>
+          <span class="date__info">
+            <span class="alias" data-i18n="dAlias">Alias XEM</span>
+            <span class="date__venue">Nox Club</span>
+            <span class="date__city">Lille, France</span>
+            <span class="date__tags"><span class="pill pill--techno">Techno</span></span>
+          </span>
+          <span class="date__meta">
+            <span class="badge"><i class="badge__dot" aria-hidden="true"></i><span data-i18n="bConf">Confirmé</span></span>
+            <span class="date__cta date__cta--wait" data-i18n="bSoon">Bientôt</span>
+          </span>
+        </div>
+
+        <div class="date date--tba rv">
+          <span class="date__day">
+            <span class="date__num">25</span><span class="date__mon">Sep</span>
+          </span>
+          <span class="date__info">
+            <span class="date__venue">Slalom</span>
+            <span class="date__city">Lille, France</span>
+            <span class="date__tags"><span class="pill">Hardcore</span></span>
+            <span class="date__ctx" data-i18n="dTba">Horaire et détails à venir</span>
+          </span>
+          <span class="date__meta">
+            <span class="badge badge--tba" data-i18n="bTba">À confirmer</span>
+            <span class="date__cta date__cta--wait" data-i18n="bSoon">Bientôt</span>
+          </span>
+        </div>
+
+      </div>
+
+      <!-- État vide, masqué tant qu'il reste des dates. Il servira dès que
+           l'agenda sera branché sur l'API en phase 2. -->
+      <div class="empty" id="dates-empty" hidden>
+        <p class="empty__title" data-i18n="eTitle">Aucune date annoncée</p>
+        <p class="empty__body" data-i18n="eBody">Rien d'officiel pour le moment. Les prochaines annonces passent d'abord par Instagram.</p>
+        <a class="btn empty__cta" href="https://www.instagram.com/formex____/" target="_blank" rel="noopener" data-i18n="eCta">Suivre les annonces</a>
+      </div>
+
+      <div class="archive">
+        <button class="archive__toggle" type="button" aria-expanded="false" aria-controls="archive-panel">
+          <span data-i18n="pastLabel">Voir les dates passées</span>
+          <span class="archive__sign" aria-hidden="true">+</span>
+        </button>
+        <div class="archive__wrap">
+          <div class="archive__inner">
+            <div class="archive__panel" id="archive-panel">
+              <p class="archive__note" data-i18n="pastNote">Sélection 2026</p>
+
+              <div class="arch">
+                <span>
+                  <span class="arch__name">Bonningues Outdoor</span>
+                  <span class="arch__meta">Bonningues-les-Ardres</span>
+                </span>
+                <span class="arch__date">22.08.2026</span>
+              </div>
+
+              <div class="arch">
+                <span>
+                  <span class="arch__name">Bazaar St So · Eclipse Lunar</span>
+                  <span class="arch__meta">Lille · <span data-i18n="aVinyl">vinyl set</span></span>
+                </span>
+                <span class="arch__date">21.08.2026</span>
+              </div>
+
+              <a class="arch" href="https://shotgun.live/fr/events/slalom-closing-all-stars-electro" target="_blank" rel="noopener">
+                <span>
+                  <span class="arch__name">Slalom · Closing All Stars</span>
+                  <span class="arch__meta">Lille · 24.07.2026</span>
+                </span>
+                <span class="arch__cta"><span data-i18n="aEvent">Voir l'event</span> <span aria-hidden="true">↗</span></span>
+              </a>
+
+              <a class="arch" href="https://shotgun.live/fr/events/origins-ekseropenair" target="_blank" rel="noopener">
+                <span>
+                  <span class="arch__name">Kodz × Ekser × Origins</span>
+                  <span class="arch__meta">Englos · 18.07.2026</span>
+                </span>
+                <span class="arch__cta"><span data-i18n="aEvent">Voir l'event</span> <span aria-hidden="true">↗</span></span>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
 
   <!-- ==================================================================
-       02 / SONS — étape 2
+       02 / SONS
        =================================================================== -->
   <section class="section section--alt section--ruled" id="ecouter">
     <div class="wrap">
@@ -139,28 +279,89 @@
         <h2 class="section-title" data-i18n="t3">Écouter</h2>
       </div>
 
-      <div><!-- trois cartes de set, puis les liens de plateforme --></div>
-    </div>
-  </section>
+      <!-- L'iframe SoundCloud n'est jamais chargée au chargement de la page.
+           Au clic, la carte se transforme en vrai lecteur. -->
+      <div class="sets">
 
+        <a class="set set--lead rv" href="https://soundcloud.com/formex/gabba-dimension-2"
+           target="_blank" rel="noopener" data-sc="https://soundcloud.com/formex/gabba-dimension-2">
+          <span class="set__head">
+            <span class="set__play" aria-hidden="true">&#9654;</span>
+            <span style="min-width:0">
+              <span class="set__title">Gabba Dimension .02</span>
+              <span class="set__type">Podcast · Hardcore</span>
+            </span>
+          </span>
+          <span class="wave" aria-hidden="true"><span style="height:40%"></span><span style="height:70%"></span><span style="height:50%"></span><span style="height:90%"></span><span style="height:60%"></span><span style="height:80%"></span><span style="height:45%"></span><span style="height:65%"></span><span style="height:95%"></span><span style="height:55%"></span><span style="height:75%"></span><span style="height:40%"></span><span style="height:85%"></span><span style="height:50%"></span><span style="height:70%"></span><span style="height:60%"></span><span style="height:90%"></span><span style="height:45%"></span><span style="height:65%"></span><span style="height:35%"></span></span>
+        </a>
 
-  <!-- ==================================================================
-       03 / BIO — étape 2
-       =================================================================== -->
-  <section class="section section--ruled" id="bio">
-    <div class="wrap">
-      <div class="section-head rv">
-        <p class="eyebrow">03 / <span data-i18n="lblBio">Bio</span></p>
-        <h2 class="section-title" data-i18n="t4">Le projet</h2>
+        <a class="set rv" href="https://soundcloud.com/user-system-d/system-d-podcast-044-formex"
+           target="_blank" rel="noopener" data-sc="https://soundcloud.com/user-system-d/system-d-podcast-044-formex">
+          <span class="set__head">
+            <span class="set__play" aria-hidden="true">&#9654;</span>
+            <span style="min-width:0">
+              <span class="set__title">System-D Podcast #044</span>
+              <span class="set__type">Podcast · System D</span>
+            </span>
+          </span>
+          <span class="wave" aria-hidden="true"><span style="height:55%"></span><span style="height:80%"></span><span style="height:45%"></span><span style="height:70%"></span><span style="height:95%"></span><span style="height:50%"></span><span style="height:65%"></span><span style="height:85%"></span><span style="height:40%"></span><span style="height:75%"></span><span style="height:60%"></span><span style="height:90%"></span><span style="height:48%"></span><span style="height:68%"></span><span style="height:88%"></span><span style="height:52%"></span><span style="height:72%"></span><span style="height:42%"></span><span style="height:62%"></span><span style="height:38%"></span></span>
+        </a>
+
+        <a class="set rv" href="https://soundcloud.com/formex/gabba-dimension"
+           target="_blank" rel="noopener" data-sc="https://soundcloud.com/formex/gabba-dimension">
+          <span class="set__head">
+            <span class="set__play" aria-hidden="true">&#9654;</span>
+            <span style="min-width:0">
+              <span class="set__title">Gabba Dimension .01</span>
+              <span class="set__type">Podcast · Hardcore</span>
+            </span>
+          </span>
+          <span class="wave" aria-hidden="true"><span style="height:65%"></span><span style="height:40%"></span><span style="height:85%"></span><span style="height:55%"></span><span style="height:75%"></span><span style="height:95%"></span><span style="height:45%"></span><span style="height:60%"></span><span style="height:80%"></span><span style="height:50%"></span><span style="height:70%"></span><span style="height:42%"></span><span style="height:88%"></span><span style="height:58%"></span><span style="height:78%"></span><span style="height:48%"></span><span style="height:68%"></span><span style="height:92%"></span><span style="height:52%"></span><span style="height:36%"></span></span>
+        </a>
+
       </div>
 
-      <div><!-- bio courte, signature, pastilles, portrait crédité --></div>
+      <div class="plats">
+        <a class="plat" href="https://soundcloud.com/formex" target="_blank" rel="noopener">SoundCloud <span aria-hidden="true">↗</span></a>
+        <a class="plat" href="https://www.youtube.com/@formex____" target="_blank" rel="noopener">YouTube <span aria-hidden="true">↗</span></a>
+        <a class="plat" href="https://linktr.ee/formex____" target="_blank" rel="noopener">Linktree <span aria-hidden="true">↗</span></a>
+      </div>
     </div>
   </section>
 
 
   <!-- ==================================================================
-       04 / LIVE — étape 2
+       03 / BIO
+       =================================================================== -->
+  <section class="section section--ruled" id="bio">
+    <div class="wrap bio">
+      <div class="rv">
+        <p class="eyebrow">03 / <span data-i18n="lblBio">Bio</span></p>
+        <h2 class="section-title" data-i18n="t4">Le projet</h2>
+
+      <p class="bio__lead" data-i18n="bioShort">Basé à Lille, Formex propose une immersion dans l'univers Hardcore avec une sélection sans concession. Passionné par cette musique, il allie l'héritage du Gabber et de l'Early Hardcore à la puissance des productions modernes. En club comme en festival, l'objectif reste le même : partager l'énergie brute de cette culture.</p>
+        <p class="bio__sig">Hardcore will never die</p>
+        <div class="bio__tags">
+          <span class="chip">Gabber</span>
+          <span class="chip">Early Hardcore</span>
+          <span class="chip">Millennium</span>
+        </div>
+      </div>
+
+      <!-- Le crédit Leo Villalba ne figure QUE sur cette photo. Les autres
+           photos du site sont d'auteurs non identifiés. -->
+      <div class="portrait rv">
+        <div class="portrait__frame">
+          <img src="/assets/img/portrait.jpg" alt="FORMEX" width="1069" height="1600" draggable="false">
+        </div>
+        <span class="portrait__credit">Leo Villalba</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==================================================================
+       04 / LIVE
        =================================================================== -->
   <section class="section section--alt section--ruled" id="galerie">
     <div class="wrap">
@@ -169,13 +370,31 @@
         <h2 class="section-title" data-i18n="t5">Galerie</h2>
       </div>
 
-      <div><!-- grille de vignettes, lien Drive, lightbox --></div>
+      <div class="gal">
+        <button class="gal__item gal__item--bw rv" type="button" data-src="/assets/img/booth.jpg">
+          <img src="/assets/img/booth.jpg" alt="" loading="lazy" width="1069" height="1600" draggable="false">
+          <span class="gal__num">01</span>
+        </button>
+        <button class="gal__item gal__item--color rv" type="button" data-src="/assets/img/club-red.jpg">
+          <img src="/assets/img/club-red.jpg" alt="" loading="lazy" width="846" height="721" draggable="false">
+          <span class="gal__num">02</span>
+          <span class="gal__play" aria-hidden="true">&#9654;</span>
+        </button>
+        <button class="gal__item gal__item--bw rv" type="button" data-src="/assets/img/portrait.jpg">
+          <img src="/assets/img/portrait.jpg" alt="" loading="lazy" width="1069" height="1600" draggable="false">
+          <span class="gal__num">03</span>
+        </button>
+        <a class="gal__more rv" href="https://drive.google.com/drive/folders/1WLvMDOOZc5NwqjD44wU5R9X8FrUB6H6z" target="_blank" rel="noopener">
+          <b>+ 24</b>
+          <span data-i18n="galMore">Voir le dossier</span>
+        </a>
+      </div>
     </div>
   </section>
 
 
   <!-- ==================================================================
-       05 / RÉSEAUX — étape 2
+       05 / RÉSEAUX
        =================================================================== -->
   <section class="section section--ruled" id="reseaux">
     <div class="wrap">
@@ -184,7 +403,28 @@
         <h2 class="section-title" data-i18n="t6">Me suivre</h2>
       </div>
 
-      <div><!-- cinq lignes de réseau --></div>
+      <div class="socials">
+        <a class="social rv" href="https://www.instagram.com/formex____/" target="_blank" rel="noopener">
+          <span class="social__name">Instagram</span>
+          <span class="social__id">@formex____ <i aria-hidden="true">↗</i></span>
+        </a>
+        <a class="social rv" href="https://www.tiktok.com/@formex____" target="_blank" rel="noopener">
+          <span class="social__name">TikTok</span>
+          <span class="social__id">@formex____ <i aria-hidden="true">↗</i></span>
+        </a>
+        <a class="social rv" href="https://soundcloud.com/formex" target="_blank" rel="noopener">
+          <span class="social__name">SoundCloud</span>
+          <span class="social__id">/formex <i aria-hidden="true">↗</i></span>
+        </a>
+        <a class="social rv" href="https://www.youtube.com/@formex____" target="_blank" rel="noopener">
+          <span class="social__name">YouTube</span>
+          <span class="social__id">@formex____ <i aria-hidden="true">↗</i></span>
+        </a>
+        <a class="social rv" href="https://www.facebook.com/formexhardcore" target="_blank" rel="noopener">
+          <span class="social__name">Facebook</span>
+          <span class="social__id">/formexhardcore <i aria-hidden="true">↗</i></span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -216,6 +456,25 @@
     </div>
   </footer>
 
+
+  <!-- ==================================================================
+       LIGHTBOX
+       Aucun href vers un fichier image, la source est lue dans data-src.
+       =================================================================== -->
+  <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo" hidden>
+    <div class="lb__bar">
+      <span class="lb__count" id="lb-count">1 / 3</span>
+      <button class="lb__close" type="button" aria-label="Fermer">×</button>
+    </div>
+    <div class="lb__view">
+      <img src="" alt="" draggable="false">
+    </div>
+    <div class="lb__foot">
+      <button class="lb__nav" type="button" data-lb="prev">‹ <span data-i18n="lbPrev">Préc</span></button>
+      <span class="lb__gap"></span>
+      <button class="lb__nav" type="button" data-lb="next"><span data-i18n="lbNext">Suiv</span> ›</button>
+    </div>
+  </div>
 
   <!-- ==================================================================
        BANDEAU DÉFILANT

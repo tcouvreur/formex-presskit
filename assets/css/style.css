@@ -18,8 +18,14 @@
      11. Hamburger et menu mobile
      12. Bandeau défilant
      13. Pied de page
-     14. Animations
-     15. prefers-reduced-motion
+     14. Section Dates
+     15. Section Écouter
+     16. Section Bio
+     17. Section Galerie et lightbox
+     18. Section Réseaux
+     19. Presskit
+     20. Animations
+     21. prefers-reduced-motion
    ========================================================================== */
 
 
@@ -468,6 +474,149 @@ img {
   z-index: 1;
 }
 
+/* Empilement de l'arrière-plan du hero, du fond vers l'avant. */
+.hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  filter: grayscale(.35) contrast(1.18) brightness(.72);
+  animation: fx-ken 22s ease-in-out infinite alternate;
+}
+
+.hero__fade {
+  background: linear-gradient(180deg,
+    rgba(10, 10, 10, .72) 0%,
+    rgba(10, 10, 10, .18) 34%,
+    rgba(10, 10, 10, .86) 76%,
+    var(--bg) 100%);
+}
+
+.hero__scan { opacity: .5; }
+
+.hero__halo {
+  mix-blend-mode: overlay;
+  opacity: .35;
+  background: radial-gradient(120% 80% at 50% 30%, rgba(226, 28, 28, .55), transparent 70%);
+}
+
+
+/* Contenu du hero de l'accueil. */
+.hero__kick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: auto;
+}
+
+.hero__dot {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  animation: fx-dot 1.6s steps(2) infinite;
+}
+
+.hero__kick span:last-child {
+  font-size: clamp(10px, 2.9cqi, 12px);
+  font-weight: 700;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+/* margin-left compense l'approche gauche naturelle du F d'Anton, qui
+   décalerait visuellement le mot par rapport aux autres textes. */
+.hero__logo {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0 0 4px;
+  margin-left: -.055em;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-logo-hero);
+  line-height: .82;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+}
+
+.hero__logo span { display: inline-block; }
+.hero__logo em { font-style: normal; color: var(--red); }
+
+.hero__sig {
+  margin: 0 0 14px;
+  font-family: var(--goth);
+  font-size: var(--fs-goth-hero);
+  line-height: 1;
+  letter-spacing: .01em;
+  color: var(--fg);
+}
+
+.hero__sub {
+  margin: 0 0 22px;
+  max-width: 46ch;
+  font-size: clamp(14px, 4cqi, 17px);
+  line-height: 1.5;
+  color: var(--fg-3);
+  text-wrap: pretty;
+}
+
+.hero__cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero__cta .btn {
+  min-height: 54px;
+  padding: 0 26px;
+  font-size: clamp(13px, 3.6cqi, 14px);
+  letter-spacing: .16em;
+}
+
+.hero__cta .btn--primary:hover { box-shadow: 6px 6px 0 var(--red); }
+
+.hero__cue {
+  margin-top: 26px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg-4);
+}
+
+.hero__cue span:first-child {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.hero__cue i {
+  display: inline-block;
+  width: 1px;
+  height: 26px;
+  background: linear-gradient(180deg, var(--red), transparent);
+  animation: fx-cue 1.8s ease-in-out infinite;
+}
+
+/* Presskit : mention d'accroche du hero. */
+.hero__kick--press {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 12px;
+  font-size: clamp(10px, 2.9cqi, 12px);
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+.hero__kick--press b { width: 7px; height: 7px; background: var(--red); }
+
+@media (min-width: 900px) {
+  .hero__cta { flex-direction: row; align-items: center; }
+}
+
 /* Presskit : bloc de texte centré verticalement et aligné à gauche.
    width: 100% et margin-right: auto, surtout pas margin: 0 auto, qui
    recentrerait le bloc dans un conteneur flex en colonne. */
@@ -483,6 +632,59 @@ img {
   max-width: var(--wrap);
   margin-right: auto;
 }
+
+/* Arrière-plan du hero du presskit, le tout à 50 % d'opacité. */
+.hero__bg--press { opacity: .5; }
+
+.hero__shot {
+  background-image: url("/assets/img/booth.jpg");
+  background-size: cover;
+  background-position: 62% 30%;
+  filter: grayscale(1) contrast(1.15) brightness(.5);
+}
+
+.hero__slant {
+  background: linear-gradient(100deg, var(--bg) 12%, rgba(10, 10, 10, .72) 58%, rgba(10, 10, 10, .35) 100%);
+}
+
+.hero__dots {
+  opacity: .35;
+  background-image: radial-gradient(var(--red) .9px, transparent 1.3px);
+  background-size: 5px 5px;
+}
+
+.hero__logo--press {
+  font-size: var(--fs-logo-press);
+  line-height: .84;
+  margin-bottom: 6px;
+}
+
+.hero__sig--press {
+  font-size: clamp(22px, 7cqi, 44px);
+  line-height: 1.05;
+  margin-bottom: 22px;
+}
+
+.hero__pos {
+  margin: 0 0 26px;
+  max-width: 52ch;
+  font-size: clamp(15px, 4.2cqi, 20px);
+  line-height: 1.5;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.hero__back {
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 56px;
+  padding: 0 20px;
+  background: rgba(20, 20, 20, .72);
+  font-size: clamp(12px, 3.4cqi, 13px);
+}
+
+.hero__back span:last-child { color: var(--red); }
+.hero__back:hover span:last-child { color: inherit; }
 
 @media (min-width: 900px) {
   .hero { padding: 40px 56px 72px; }
@@ -868,7 +1070,1190 @@ img {
 
 
 /* ==========================================================================
-   14. Animations
+   14. Section Dates
+   Le coeur de la page. Toutes les dates vivent dans un seul bloc et
+   partagent exactement le même balisage, pour qu'en phase 2 il suffise de
+   passer un objet de l'API au gabarit de main.js.
+   ========================================================================== */
+
+/* Le conteneur porte le même retrait négatif que les lignes, sinon son filet
+   supérieur est plus court que les séparateurs. */
+.dates {
+  border-top: 1px solid var(--line);
+  padding: 0 16px;
+  margin: 0 -16px;
+}
+
+.date {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px 16px;
+  padding: 24px 16px;
+  margin: 0 -16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  transition: background var(--t-hover) ease, padding var(--t-hover) ease;
+}
+
+a.date:hover { background: var(--panel-hover); color: var(--fg); }
+
+/* Annulé : toute la ligne à 40 %, le jour barré. */
+.date--off { opacity: .4; }
+.date--off .date__num { text-decoration: line-through; }
+
+.date__day {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.date__num {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-day);
+  line-height: .8;
+  letter-spacing: -.03em;
+}
+
+.date__mon {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(15px, 4.4cqi, 24px);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.date__info {
+  min-width: 0;
+  text-align: right;
+}
+
+.date__venue {
+  display: block;
+  margin: 0 0 6px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-venue);
+  line-height: 1;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+
+.date__city {
+  display: block;
+  margin: 0 0 4px;
+  font-size: var(--fs-body);
+  color: var(--fg-3);
+}
+
+.date__tags {
+  margin: 0 0 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.date__ctx {
+  display: block;
+  margin: 0;
+  font-size: clamp(12px, 3.3cqi, 13px);
+  color: var(--fg-4);
+}
+
+.date__meta {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  justify-items: stretch;
+}
+
+/* Pastille de style. Obligatoire sur chaque date, elle évite qu'on prenne
+   une date techno pour une date Hardcore. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid var(--red);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.pill--techno {
+  border-color: var(--line-strong);
+  color: var(--fg-3);
+}
+
+/* Une date encore à confirmer s'annonce en retrait, sans être éteinte. */
+.date--tba .date__num { color: var(--fg-3); }
+.date--tba .date__mon { color: var(--red-dark); }
+.date--tba .date__venue { color: var(--fg-2); }
+
+/* Alias XEM. Ces dates doivent être immédiatement identifiables comme
+   n'étant pas des dates FORMEX. Le rouge reste réservé à FORMEX. */
+.date--alias .date__num,
+.date--alias .date__mon { color: var(--fg-4); }
+.date--alias .date__venue { color: var(--fg-3); }
+
+.alias {
+  margin: 0 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: clamp(10px, 2.9cqi, 11px);
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* Badges d'état. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+/* Une diode, pas une respiration : deux pas, sans fondu. */
+.badge__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  animation: fx-dot 1.8s steps(2) infinite;
+}
+
+.date--alias .badge { color: var(--fg-3); }
+.date--alias .badge__dot { background: var(--fg-3); animation: none; }
+
+.badge--full { background: var(--red); border-color: var(--red); color: var(--bg); }
+.badge--tba { border-style: dashed; border-color: #444; color: var(--fg-3); }
+.badge--off { border-color: var(--line-soft); color: var(--fg-4); text-decoration: line-through; }
+
+.date__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 0 20px;
+  background: var(--red);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transition: background var(--t-micro) ease;
+}
+
+a.date:hover .date__cta { background: var(--fg); }
+
+.date__cta--wait {
+  background: none;
+  border: 1px solid var(--line-soft);
+  color: var(--fg-4);
+  cursor: not-allowed;
+}
+
+/* État vide. Il servira dès que l'agenda sera branché sur l'API. */
+.empty {
+  padding: 44px 20px;
+  border: 1px dashed var(--line-soft);
+  background: var(--bg-alt);
+  text-align: center;
+}
+
+.empty__title {
+  margin: 0 0 8px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(24px, 7cqi, 40px);
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: var(--fg-5);
+}
+
+.empty__body {
+  margin: 0 auto 20px;
+  max-width: 34ch;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--fg-3);
+}
+
+.empty__cta {
+  min-height: 50px;
+  padding: 0 22px;
+  border: 1px solid var(--line-strong);
+}
+.empty__cta:hover { border-color: var(--red); color: var(--red); }
+
+/* Dates passées, panneau dépliant. */
+.archive { margin-top: 22px; }
+
+.archive__toggle {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: var(--panel-hover);
+  border: 1px solid var(--line);
+  color: var(--fg-3);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  transition: color var(--t-micro) ease, border-color var(--t-micro) ease;
+}
+.archive__toggle:hover { color: var(--fg); border-color: var(--line-strong); }
+
+.archive__sign { color: var(--red); font-size: 16px; }
+
+/* Dépliage par transition sur grid-template-rows, seule façon d'animer
+   vers une hauteur automatique. */
+.archive__wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms var(--ease);
+}
+.archive__toggle[aria-expanded="true"] + .archive__wrap { grid-template-rows: 1fr; }
+
+.archive__inner { overflow: hidden; }
+
+.archive__panel {
+  padding: 6px 16px 16px;
+  border: 1px solid var(--line);
+  border-top: 0;
+  background: var(--bg-alt);
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+}
+.archive__toggle[aria-expanded="true"] + .archive__wrap .archive__panel { opacity: 1; }
+
+.archive__note {
+  margin: 12px 0 14px;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.arch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line-head);
+}
+
+a.arch { min-height: 68px; }
+
+.arch__name {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(15px, 4.4cqi, 20px);
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+.arch__meta {
+  display: block;
+  font-size: 12px;
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.arch__date {
+  flex: none;
+  font-size: 12px;
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Un vrai bouton visible, pas une flèche discrète. */
+.arch__cta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--red);
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background var(--t-micro) ease, color var(--t-micro) ease;
+}
+a.arch:hover .arch__cta { background: var(--red); color: var(--bg); }
+
+@media (min-width: 900px) {
+  .dates { padding: 0 24px; margin: 0 -24px; }
+  .date {
+    grid-template-columns: 190px minmax(0, 1fr) 230px;
+    align-items: center;
+    gap: 40px;
+    padding: 34px 24px;
+    margin: 0 -24px;
+  }
+  .date__info { text-align: left; }
+  .date__tags { justify-content: flex-start; }
+}
+
+
+/* ==========================================================================
+   15. Section Écouter
+   ========================================================================== */
+
+.sets {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.set {
+  display: block;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  transition: border-color var(--t-hover) ease, transform var(--t-hover) var(--ease);
+}
+.set:hover { border-color: var(--red); color: var(--fg); transform: translateY(-4px); }
+
+.set__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.set__play {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 15px;
+}
+
+.set--lead .set__play { background: var(--red); }
+
+.set__title {
+  display: block;
+  margin: 0 0 3px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-card);
+  letter-spacing: -.005em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.set__type {
+  display: block;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 44px;
+}
+
+.wave span {
+  flex: 1;
+  background: #3a3a3a;
+  transform-origin: bottom;
+}
+
+/* Cinq barres rouges qui pulsent, sur la carte mise en avant seulement. */
+.set--lead .wave span:nth-child(-n+5) {
+  background: var(--red);
+  animation: fx-bar 1.2s ease-in-out infinite;
+}
+.set--lead .wave span:nth-child(1) { animation-delay: 0s; }
+.set--lead .wave span:nth-child(2) { animation-delay: .08s; }
+.set--lead .wave span:nth-child(3) { animation-delay: .16s; }
+.set--lead .wave span:nth-child(4) { animation-delay: .24s; }
+.set--lead .wave span:nth-child(5) { animation-delay: .32s; }
+
+/* Le vrai lecteur SoundCloud remplace la carte au clic. L'iframe n'est
+   jamais chargée au chargement de la page. */
+.set__player {
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.set__player iframe { display: block; width: 100%; border: 0; }
+
+.plats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.plat {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 18px;
+  border: 1px solid var(--line-soft);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  transition: color var(--t-micro) ease, border-color var(--t-micro) ease;
+}
+.plat:hover { color: var(--fg); border-color: var(--red); }
+
+@media (min-width: 900px) {
+  .sets { grid-template-columns: repeat(3, 1fr); }
+}
+
+
+/* ==========================================================================
+   16. Section Bio
+   ========================================================================== */
+
+.bio {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.bio .section-title { margin-bottom: 20px; }
+
+.bio__lead {
+  margin: 0 0 18px;
+  max-width: 54ch;
+  font-size: var(--fs-lead);
+  line-height: 1.62;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.bio__sig {
+  margin: 0 0 24px;
+  font-family: var(--goth);
+  font-size: clamp(22px, 6.5cqi, 34px);
+  line-height: 1.1;
+  color: var(--red);
+}
+
+.bio__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 9px 13px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+.portrait { position: relative; }
+
+.portrait__frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.portrait__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  filter: grayscale(1) contrast(1.1);
+}
+
+.portrait__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .28;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(#000 1px, transparent 1.5px);
+  background-size: 4px 4px;
+}
+
+/* Le crédit Leo Villalba n'apparaît que sur cette photo. Toutes les photos
+   du site ne sont pas de lui. */
+.portrait__credit {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  padding: 7px 11px;
+  background: var(--red);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 900px) {
+  .bio { grid-template-columns: 1.05fr .95fr; gap: 56px; }
+}
+
+
+/* ==========================================================================
+   17. Section Galerie et lightbox
+   ========================================================================== */
+
+.gal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.gal__item {
+  position: relative;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.gal__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08);
+  transition: transform 500ms var(--ease), filter 400ms ease;
+}
+
+.gal__item:hover img { transform: scale(1.07); }
+
+/* Sur la photo couleur, le noir et blanc se retire au même moment. */
+.gal__item--color img { filter: none; }
+.gal__item--bw:hover img { filter: grayscale(0) contrast(1.15); }
+
+.gal__num {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  color: var(--fg);
+  text-shadow: 0 1px 6px #000;
+}
+
+.gal__play {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(226, 28, 28, .92);
+  color: var(--bg);
+  font-size: 10px;
+}
+
+.gal__more {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px dashed var(--line-soft);
+  background: var(--control);
+  text-align: center;
+  transition: border-color var(--t-hover) ease, background var(--t-hover) ease;
+}
+.gal__more:hover { border-color: var(--red); background: var(--panel); }
+
+.gal__more b {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(20px, 6cqi, 28px);
+  line-height: .95;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.gal__more span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+/* Lightbox. L'image est lue depuis un data-src, il n'y a jamais de href
+   vers un fichier image. */
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  background: rgba(6, 6, 6, .97);
+  animation: fx-in var(--t-hover) ease both;
+}
+.lb[hidden] { display: none; }
+
+.lb__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line-head);
+}
+
+.lb__count {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  color: var(--fg-3);
+}
+
+.lb__close {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.lb__view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.lb__view img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  transition: opacity 180ms ease;
+}
+
+.lb.is-swap .lb__view img { opacity: 0; }
+
+.lb__foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid var(--line-head);
+}
+
+.lb__nav {
+  flex: 1;
+  min-height: 54px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+.lb__nav:hover { border-color: var(--red); }
+
+.lb__gap { flex: 2; }
+
+@media (min-width: 900px) {
+  .gal { grid-template-columns: repeat(4, 1fr); }
+}
+
+
+/* ==========================================================================
+   18. Section Réseaux
+   ========================================================================== */
+
+.socials { border-top: 1px solid var(--line); }
+
+.social {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  transition: padding-left var(--t-hover) ease, background var(--t-hover) ease;
+}
+.social:hover { padding-left: 14px; background: var(--panel-hover); color: var(--fg); }
+
+.social__name {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(22px, 6.6cqi, 34px);
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+
+.social__id {
+  font-size: clamp(12px, 3.3cqi, 14px);
+  color: var(--fg-4);
+}
+
+.social__id i { font-style: normal; color: var(--red); }
+
+
+/* ==========================================================================
+   19. Presskit
+   ========================================================================== */
+
+/* Les trois bios, en onglets. */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  background: var(--control);
+}
+
+.tab {
+  flex: 1;
+  min-height: 48px;
+  border: 0;
+  background: none;
+  color: var(--fg-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transition: background var(--t-micro) ease, color var(--t-micro) ease;
+}
+
+.tab[aria-selected="true"] { background: var(--red); color: var(--bg); }
+
+.biobox {
+  border: 1px solid var(--line);
+  background: var(--bg-alt);
+}
+
+.biobox__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line-head);
+}
+
+.biobox__meta {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+/* Aucune alerte, aucun message bloquant : le bouton passe en rouge plein
+   pendant 1,8 s puis revient à son état de repos. */
+.copy {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  color: var(--fg-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transition: background var(--t-micro) ease, color var(--t-micro) ease, border-color var(--t-micro) ease;
+}
+.copy:hover { color: var(--fg); border-color: var(--line-strong); }
+
+.copy.is-done {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bg);
+}
+
+/* white-space: pre-line conserve les paragraphes des bios longues. */
+.biobox__text {
+  margin: 0;
+  padding: 20px 16px 24px;
+  font-size: clamp(15px, 4.1cqi, 18px);
+  line-height: 1.68;
+  color: var(--fg-2);
+  white-space: pre-line;
+  text-wrap: pretty;
+}
+
+.biobox__text.is-swap { opacity: 0; }
+.biobox__text { transition: opacity 350ms var(--ease); }
+
+/* Photos HD. Pas de crédit ici, seule la photo de la bio de l'accueil
+   est de Leo Villalba. */
+.shots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.shot {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08);
+  transition: transform 500ms var(--ease);
+}
+
+.shot--color img { filter: none; }
+.shot:hover img { transform: scale(1.06); }
+
+.drives {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.drive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 72px;
+  padding: 16px 18px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  color: var(--fg);
+  transition: border-color var(--t-hover) ease, transform var(--t-hover) ease;
+}
+.drive:hover { border-color: var(--red); color: var(--fg); transform: translateY(-3px); }
+
+.drive__name {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-card);
+  text-transform: uppercase;
+}
+
+.drive__sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--fg-4);
+}
+
+.drive__go { flex: none; color: var(--red); font-size: 20px; }
+
+/* Sets de référence. */
+.pksets { border-top: 1px solid var(--line); }
+
+.pkset {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  transition: background var(--t-hover) ease, padding-left var(--t-hover) ease;
+}
+.pkset:hover { background: var(--panel-hover); padding-left: 12px; color: var(--fg); }
+
+.pkset__play {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-strong);
+  color: var(--fg);
+  font-size: 13px;
+}
+
+.pkset--lead .pkset__play {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--bg);
+}
+
+.pkset__body { flex: 1; min-width: 0; }
+
+.pkset__title {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(18px, 5.4cqi, 26px);
+  letter-spacing: -.005em;
+  text-transform: uppercase;
+}
+
+.pkset__type {
+  display: block;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.pkset__go { flex: none; color: var(--red); }
+
+/* Rider technique. Seule section du site où le matériel se mentionne,
+   c'est un document contractuel destiné aux régisseurs. */
+.rider {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.card {
+  padding: 20px 18px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.card__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(19px, 5.6cqi, 26px);
+  letter-spacing: -.005em;
+  text-transform: uppercase;
+}
+
+.card__title i { width: 10px; height: 10px; background: var(--red); }
+.card__title--alt i { background: var(--fg); }
+
+.card__lbl {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.card__list {
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.card__list:last-child { margin-bottom: 0; }
+
+.card__list li {
+  display: flex;
+  gap: 10px;
+  font-size: clamp(14px, 3.9cqi, 16px);
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+
+.card__list li::before {
+  content: "·";
+  flex: none;
+  color: var(--red);
+}
+
+.rider__dl {
+  margin-top: 14px;
+  width: 100%;
+  min-height: 58px;
+  padding: 0 22px;
+  border: 1px solid var(--line-strong);
+  background: var(--control);
+  color: var(--fg);
+  font-size: 12px;
+  letter-spacing: .16em;
+}
+.rider__dl:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+
+/* Contact et téléchargements. */
+.contact {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 34px;
+}
+
+.contact__mail {
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--red);
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(19px, 5.8cqi, 38px);
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+.contact__note {
+  margin: 18px 0 0;
+  max-width: 44ch;
+  font-size: clamp(13px, 3.7cqi, 16px);
+  line-height: 1.6;
+  color: var(--fg-3);
+}
+
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.contact__links a {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+  border: 1px solid var(--line-soft);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  transition: color var(--t-micro) ease, border-color var(--t-micro) ease;
+}
+.contact__links a:hover { color: var(--fg); border-color: var(--red); }
+
+.dls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 84px;
+  padding: 18px;
+  color: var(--fg);
+  transition: transform 220ms var(--ease), box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.dl__name {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(19px, 5.6cqi, 26px);
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+
+.dl__sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.dl__go { flex: none; font-size: 26px; font-weight: 800; }
+
+.dl--main {
+  background: var(--red);
+  color: var(--bg);
+}
+.dl--main .dl__sub { color: inherit; opacity: .72; }
+.dl--main:hover {
+  color: var(--bg);
+  transform: translateY(-3px);
+  box-shadow: 8px 8px 0 rgba(226, 28, 28, .32);
+}
+
+.dl--alt {
+  border: 1px solid var(--line-strong);
+  background: var(--control);
+}
+.dl--alt .dl__go { color: var(--red); }
+.dl--alt:hover { color: var(--fg); border-color: var(--fg); transform: translateY(-3px); }
+
+.dl--drive {
+  min-height: 64px;
+  padding: 16px 18px;
+  border: 1px dashed var(--line-soft);
+  color: var(--fg-3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.dl--drive:hover { border-color: var(--red); color: var(--fg); }
+
+@media (min-width: 900px) {
+  .drives { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .rider { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .contact { grid-template-columns: .85fr 1.15fr; gap: 56px; }
+}
+
+
+/* ==========================================================================
+   20. Animations
    On n'anime que transform, opacity et filter, pour rester fluide sur un
    téléphone d'entrée de gamme.
    ========================================================================== */
@@ -955,7 +2340,7 @@ img {
 
 
 /* ==========================================================================
-   15. prefers-reduced-motion
+   21. prefers-reduced-motion
    Tout reste lisible, rien ne bouge, aucune fonctionnalité perdue.
    Le grain, le halftone et les scanlines ne sont pas des animations de
    contenu : ils restent visibles, la matière ne disparaît pas.
