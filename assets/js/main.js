@@ -275,6 +275,24 @@
     ]
   };
 
+  var COOKIE_JOURS = 30;
+
+  function litCookie(nom) {
+    try {
+      var m = document.cookie.match(new RegExp('(?:^|;\\s*)' + nom + '=([^;]*)'));
+      return m ? decodeURIComponent(m[1]) : null;
+    } catch (e) { return null; }
+  }
+
+  function ecritCookie(nom, valeur) {
+    try {
+      document.cookie = nom + '=' + encodeURIComponent(valeur)
+        + '; max-age=' + (COOKIE_JOURS * 86400)
+        + '; path=/; samesite=lax'
+        + (window.location.protocol === 'https:' ? '; secure' : '');
+    } catch (e) {}
+  }
+
   var STORE = 'formex-lang';
   var lang = 'fr';
 
@@ -284,16 +302,19 @@
   var renderBio = null;
   var paintSound = null;
 
-  /* localStorage peut échouer en navigation privée, d'où le try/catch. */
   function readLang() {
-    try {
-      var v = localStorage.getItem(STORE);
-      if (v === 'fr' || v === 'en') { return v; }
-    } catch (e) {}
+    var v = litCookie(STORE);
+    if (v !== 'fr' && v !== 'en') {
+      /* Reprise des visiteurs qui avaient déjà choisi avant le passage au
+         cookie, et filet si les cookies sont refusés. */
+      try { v = localStorage.getItem(STORE); } catch (e) { v = null; }
+    }
+    if (v === 'fr' || v === 'en') { return v; }
     return (navigator.language || 'fr').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
   }
 
   function saveLang(v) {
+    ecritCookie(STORE, v);
     try { localStorage.setItem(STORE, v); } catch (e) {}
   }
 
@@ -540,10 +561,16 @@
      ne fait rien est pire que pas de bouton.
      ======================================================================== */
 
+  var SND_STORE = 'formex-son';
   var snds = document.querySelectorAll('.snd');
+
+  function litSon()      { return litCookie(SND_STORE) === '1'; }
+  function ecritSon(on)  { ecritCookie(SND_STORE, on ? '1' : '0'); }
 
   if (snds.length && heroVideo && heroLoaded && heroVideo.hasAttribute('data-audio')) {
     Array.prototype.forEach.call(snds, function (b) { b.hidden = false; });
+
+    var enAttente = null;
 
     paintSound = function () {
       var on = !heroVideo.muted;
@@ -555,17 +582,69 @@
       });
     };
 
+    function desarme() {
+      if (!enAttente) { return; }
+      document.removeEventListener('pointerdown', enAttente, true);
+      document.removeEventListener('keydown', enAttente, true);
+      enAttente = null;
+    }
+
+    /* La lecture automatique avec le son est refusée tant que le visiteur
+       n'a pas interagi avec la page. Quand le choix mémorisé est « son
+       activé », on attend donc son premier geste pour le rétablir. */
+    function arme() {
+      if (enAttente) { return; }
+      enAttente = function (e) {
+        if (e.target.closest && e.target.closest('.snd')) { return; }
+        desarme();
+        active(true);
+      };
+      document.addEventListener('pointerdown', enAttente, true);
+      document.addEventListener('keydown', enAttente, true);
+    }
+
+    function active(on) {
+      heroVideo.muted = !on;
+      if (on) { heroVideo.volume = 1; }
+      var p = heroVideo.play();
+      if (p && p.catch) { p.catch(function () {}); }
+
+      if (on) {
+        /* Le navigateur peut avoir mis la vidéo en pause plutôt que de
+           laisser passer le son. On vérifie, et on retombe proprement sur
+           le muet plutôt que de laisser un hero figé. */
+        window.setTimeout(function () {
+          if (heroVideo.paused || heroVideo.muted) {
+            heroVideo.muted = true;
+            var r = heroVideo.play();
+            if (r && r.catch) { r.catch(function () {}); }
+            arme();
+          }
+          paintSound();
+        }, 120);
+      }
+      paintSound();
+    }
+
     Array.prototype.forEach.call(snds, function (b) {
       b.addEventListener('click', function () {
-        heroVideo.muted = !heroVideo.muted;
-        if (!heroVideo.muted) {
-          heroVideo.volume = 1;
-          var p = heroVideo.play();
-          if (p && p.catch) { p.catch(function () {}); }
-        }
-        paintSound();
+        desarme();
+        var on = heroVideo.muted;
+        ecritSon(on);
+        active(on);
       });
     });
+
+    /* Choix mémorisé un mois. C'est une préférence posée par un geste
+       explicite du visiteur, donc un cookie fonctionnel : il n'entre pas
+       dans le champ du consentement. */
+    if (litSon()) {
+      if (heroVideo.readyState >= 3 || !heroVideo.paused) {
+        active(true);
+      } else {
+        heroVideo.addEventListener('playing', function () { active(true); }, { once: true });
+      }
+    }
 
     paintSound();
   }
