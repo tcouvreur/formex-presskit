@@ -339,22 +339,38 @@
     });
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('[data-sc]'), function (card) {
-    card.addEventListener('click', function (e) {
-      e.preventDefault();
-      var url = card.getAttribute('data-sc');
-      var box = document.createElement('div');
-      box.className = 'set__player';
-      var f = document.createElement('iframe');
-      f.height = '166';
-      f.allow = 'autoplay';
-      f.title = card.querySelector('.set__title').textContent;
-      f.src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url)
-            + '&color=%23e21c1c&auto_play=true&hide_related=true&show_comments=false'
-            + '&show_user=true&show_reposts=false&show_teaser=false';
-      box.appendChild(f);
-      card.parentNode.replaceChild(box, card);
-    });
+  var lecteurOuvert = null;
+  var carteOuverte = null;
+
+  function ouvreSet(carte) {
+    if (lecteurOuvert && carteOuverte) {
+      lecteurOuvert.parentNode.replaceChild(carteOuverte, lecteurOuvert);
+    }
+
+    var url = carte.getAttribute('data-sc');
+    var boite = document.createElement('div');
+    boite.className = 'set__player';
+
+    var cadre = document.createElement('iframe');
+    cadre.height = '166';
+    cadre.allow = 'autoplay';
+    cadre.loading = 'lazy';
+    cadre.title = carte.querySelector('.set__title').textContent;
+    cadre.src = 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url)
+      + '&color=%23e21c1c&auto_play=true&hide_related=true&show_comments=false'
+      + '&show_user=true&show_reposts=false&show_teaser=false';
+
+    boite.appendChild(cadre);
+    carte.parentNode.replaceChild(boite, carte);
+    lecteurOuvert = boite;
+    carteOuverte = carte;
+  }
+
+  document.addEventListener('click', function (e) {
+    var carte = e.target.closest ? e.target.closest('[data-sc]') : null;
+    if (!carte) { return; }
+    e.preventDefault();
+    ouvreSet(carte);
   });
 
   var bioText = document.getElementById('bio-text');
@@ -457,41 +473,53 @@
       });
     };
 
+    function relance() {
+      var p = heroVideo.play();
+      if (p && p.catch) { p.catch(function () {}); }
+    }
+
+    heroVideo.addEventListener('pause', function () {
+      if (document.hidden || heroVideo.ended) { return; }
+      var p = heroVideo.play();
+      if (p && p.catch) {
+        p.catch(function () {
+          heroVideo.muted = true;
+          relance();
+          paintSound();
+        });
+      }
+    });
+
     function desarme() {
       if (!enAttente) { return; }
       document.removeEventListener('pointerdown', enAttente, true);
       document.removeEventListener('keydown', enAttente, true);
+      document.removeEventListener('touchstart', enAttente, true);
       enAttente = null;
     }
 
     function arme() {
       if (enAttente) { return; }
       enAttente = function (e) {
-        if (e.target.closest && e.target.closest('.snd')) { return; }
+        if (e.target && e.target.closest && e.target.closest('.snd')) { return; }
         desarme();
         active(true);
       };
       document.addEventListener('pointerdown', enAttente, true);
       document.addEventListener('keydown', enAttente, true);
+      document.addEventListener('touchstart', enAttente, true);
     }
 
     function active(on) {
       heroVideo.muted = !on;
       if (on) { heroVideo.volume = 1; }
       var p = heroVideo.play();
-      if (p && p.catch) { p.catch(function () {}); }
-
-      if (on) {
-
-        window.setTimeout(function () {
-          if (heroVideo.paused || heroVideo.muted) {
-            heroVideo.muted = true;
-            var r = heroVideo.play();
-            if (r && r.catch) { r.catch(function () {}); }
-            arme();
-          }
+      if (p && p.catch) {
+        p.catch(function () {
+          heroVideo.muted = true;
+          relance();
           paintSound();
-        }, 120);
+        });
       }
       paintSound();
     }
@@ -505,13 +533,7 @@
       });
     });
 
-    if (litSon()) {
-      if (heroVideo.readyState >= 3 || !heroVideo.paused) {
-        active(true);
-      } else {
-        heroVideo.addEventListener('playing', function () { active(true); }, { once: true });
-      }
-    }
+    if (litSon()) { arme(); }
 
     paintSound();
   }
