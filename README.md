@@ -89,7 +89,9 @@ Mécanisme, un CNAME **proxifié** (nuage orange obligatoire) plus une Redirect 
 
 **Les photos du bandeau sont volontairement en basse définition.** `live1.jpg` à `live4.jpg` sont plafonnées à **1600 px sur le grand côté, qualité 78**, soit environ 90 Ko chacune. Ne **jamais** y remettre les versions HD, elles pesaient 4 à 5 Mo pièce et plombaient le chargement mobile. Les originaux haute définition sont sur le **Google Drive**, et c'est là que les gens doivent aller les chercher. Sauvegarde locale des anciennes versions dans `PICTURES/_HD_site_backup/`, hors dépôt.
 
-**Le téléchargement direct des photos est bridé.** Pas de `href` vers le fichier (la lightbox lit un `data-src`), `draggable="false"`, clic droit neutralisé sur le bandeau et la lightbox, appui long iOS désactivé via `-webkit-touch-callout`. Ce n'est pas inviolable, rien ne l'est sur le web, mais le chemin courant est fermé et le fichier servi est de toute façon en basse définition.
+**Le téléchargement direct des photos est bridé, sur toute la page.** Pas de `href` vers le fichier (la lightbox lit un `data-src`), `draggable="false"`, appui long iOS désactivé via `-webkit-touch-callout`, et le clic droit est neutralisé sur **n'importe quelle balise `<img>`** du site, via un écouteur global qui filtre sur `e.target.tagName === 'IMG'`. Toute image ajoutée plus tard est donc protégée d'office, sans rien à câbler. Le hero n'a pas besoin de traitement, c'est un `background-image` CSS et le navigateur ne propose jamais de l'enregistrer.
+
+Ce n'est pas inviolable, rien ne l'est sur le web, mais le chemin courant est fermé et le fichier servi est de toute façon en basse définition.
 
 ---
 

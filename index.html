@@ -148,8 +148,8 @@
   .strip a{display:block;border-radius:10px;overflow:hidden;position:relative;aspect-ratio:1/1;border:1px solid var(--line);cursor:pointer;}
   .strip a:focus-visible{outline:2px solid var(--red);outline-offset:2px;}
   .strip img{width:100%;height:100%;object-fit:cover;transition:transform .35s,filter .35s;filter:grayscale(.2);}
-  /* protection : pas de glisser-deposer, pas de selection, pas d'appui long iOS */
-  .strip img,.lightbox img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
+  /* protection : pas de glisser-deposer, pas de selection, pas d'appui long iOS (toutes les images) */
+  img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
   .strip a:hover img{transform:scale(1.07);filter:grayscale(0);}
 
   /* ===== ECOUTER ===== */
@@ -380,7 +380,7 @@
         </div>
       </div>
       <div class="bio-portrait">
-        <img src="photo1.jpg" alt="FORMEX">
+        <img src="photo1.jpg" alt="FORMEX" draggable="false">
         <p class="cap">📷 Leo Villalba</p>
       </div>
     </div>
@@ -540,7 +540,7 @@
 <div class="lightbox" id="lightbox" aria-hidden="true">
   <span class="close" id="lbClose" aria-label="Fermer">×</span>
   <div class="lb-nav lb-prev" id="lbPrev" aria-label="Précédent"><span>‹</span></div>
-  <img src="" alt="FORMEX">
+  <img src="" alt="FORMEX" draggable="false">
   <div class="lb-nav lb-next" id="lbNext" aria-label="Suivant"><span>›</span></div>
 </div>
 
@@ -604,9 +604,9 @@
       if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openLb(i); }
     });
   });
-  // protection : neutralise le clic droit sur le bandeau photo et la lightbox
-  document.querySelectorAll('.strip, #lightbox').forEach(function(el){
-    el.addEventListener('contextmenu',function(e){ e.preventDefault(); });
+  // protection : neutralise le clic droit sur toutes les images du site
+  document.addEventListener('contextmenu',function(e){
+    if(e.target && e.target.tagName==='IMG') e.preventDefault();
   });
   function closeLb(){ lb.classList.remove('open'); document.body.classList.remove('lb-open'); lbImg.src=''; }
   document.getElementById('lbClose').addEventListener('click',closeLb);
