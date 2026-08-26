@@ -12,6 +12,7 @@
      7. Dates passées
      8. Lecteurs SoundCloud
      9. Presskit, onglets de bio et bouton copier
+     10. Vidéo du hero
    ========================================================================== */
 
 (function () {
@@ -457,6 +458,36 @@
       }
     });
   }
+
+
+  /* ========================================================================
+     10. Vidéo du hero
+     Un seul fichier est téléchargé, jamais les deux. Sous 768 px c'est la
+     boucle courte en portrait, un mégaoctet, au-dessus c'est le montage
+     complet. Le poster est déjà à l'écran, la vidéo ne fait que passer
+     devant une fois qu'elle joue.
+     Sous prefers-reduced-motion on ne charge rien du tout : le poster
+     suffit, et cinq mégaoctets ne partent pas pour rien.
+     ======================================================================== */
+
+  var heroVideo = document.querySelector('.hero__video');
+
+  if (heroVideo && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var small = window.matchMedia('(max-width: 767px)').matches;
+    var src = heroVideo.getAttribute(small ? 'data-mobile' : 'data-desktop');
+
+    heroVideo.addEventListener('playing', function () {
+      heroVideo.classList.add('is-on');
+    }, { once: true });
+
+    heroVideo.src = src;
+
+    /* La lecture automatique peut être refusée, notamment en économie de
+       données. Le poster reste alors affiché, il n'y a rien à rattraper. */
+    var played = heroVideo.play();
+    if (played && played.catch) { played.catch(function () {}); }
+  }
+
 
   setLang(readLang(), true);
 }());

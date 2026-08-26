@@ -474,15 +474,36 @@ img {
   z-index: 1;
 }
 
-/* Empilement de l'arrière-plan du hero, du fond vers l'avant. */
+/* Empilement de l'arrière-plan du hero, du fond vers l'avant.
+   Le poster est un vrai <picture>, servi en portrait sous 768 px. Il
+   s'affiche immédiatement et reste dessous : si la vidéo ne se charge
+   pas, ou si elle n'est jamais demandée, il prend le relais sans le
+   moindre saut de mise en page. */
+.hero__poster,
 .hero__video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: 50% 42%;
   filter: grayscale(.35) contrast(1.18) brightness(.72);
+}
+
+.hero__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: inherit;
+}
+
+/* La vidéo ne se dévoile qu'une fois qu'elle joue vraiment, sinon on
+   verrait une boîte vide passer devant le poster. */
+.hero__video {
+  opacity: 0;
+  transition: opacity 600ms ease;
   animation: fx-ken 22s ease-in-out infinite alternate;
 }
+
+.hero__video.is-on { opacity: 1; }
 
 .hero__fade {
   background: linear-gradient(180deg,

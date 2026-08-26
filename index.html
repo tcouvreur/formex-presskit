@@ -103,13 +103,24 @@
 
   <!-- ==================================================================
        HERO
-       La vidéo arrive à l'étape 8. Le poster s'affiche instantanément et
-       la vidéo se chargera derrière, sans jamais bloquer le premier rendu.
+       Le poster s'affiche instantanément et ne bloque jamais le premier
+       rendu. La vidéo se charge derrière, en un seul fichier : main.js
+       choisit hero-mobile sous 768 px et hero-desktop au-dessus, jamais
+       les deux. Si prefers-reduced-motion est actif, aucune vidéo n'est
+       chargée du tout et le poster reste.
+       Les deux montages sont muets, sans piste audio. La durée du
+       desktop, 65,434 s, est calée pour que le rebouclage enchaîne sur le
+       drop d'ouverture. Ne pas y toucher.
        =================================================================== -->
   <section class="hero" id="hero">
     <div class="hero__bg" aria-hidden="true">
-      <video class="hero__video" poster="/assets/img/club-red.jpg"
-             autoplay muted loop playsinline preload="auto"></video>
+      <picture class="hero__poster">
+        <source media="(max-width: 767px)" srcset="/assets/img/hero-poster-mobile.jpg" width="720" height="1280">
+        <img src="/assets/img/hero-poster.jpg" alt="" width="1280" height="720" fetchpriority="high" draggable="false">
+      </picture>
+      <video class="hero__video" muted playsinline loop autoplay preload="none"
+             data-mobile="/assets/video/hero-mobile.mp4"
+             data-desktop="/assets/video/hero-desktop.mp4"></video>
       <div class="hero__fade"></div>
       <div class="scanlines hero__scan"></div>
       <div class="hero__halo"></div>
