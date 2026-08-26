@@ -1309,6 +1309,14 @@ a.date:hover { background: var(--panel-hover); color: var(--fg); }
   color: var(--fg-3);
 }
 
+.date__time {
+  display: block;
+  margin: 0 0 4px;
+  font-size: clamp(12px, 3.3cqi, 13px);
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
 .date__tags {
   margin: 0 0 8px;
   display: flex;
@@ -1590,7 +1598,15 @@ a.arch:hover .arch__cta { background: var(--red); color: var(--bg); }
   .date__aside { text-align: left; }
   .date__aside { align-self: start; }
   .date__ctx { padding-bottom: 0; }
-  .date__tags { justify-content: flex-start; }
+  .date__time {
+  display: block;
+  margin: 0 0 4px;
+  font-size: clamp(12px, 3.3cqi, 13px);
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.date__tags { justify-content: flex-start; }
 }
 
 
