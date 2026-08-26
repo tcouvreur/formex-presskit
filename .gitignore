@@ -1,2 +1,5 @@
 .DS_Store
 Thumbs.db
+
+# Outils de travail local, jamais deployes
+_dev-*
