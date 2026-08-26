@@ -1,35 +1,5 @@
-/* ==========================================================================
-   FORMEX — script unique, partagé par index.html et presskit.html
-   Refonte 2026. Aucune dépendance, aucun CDN, aucun build.
-
-   Sommaire
-     1. Protection des images
-     2. Année du pied de page
-     3. Menu mobile
-     4. Apparitions au scroll
-     5. Bilingue
-     6. Lightbox
-     7. Dates passées
-     8. Lecteurs SoundCloud
-     9. Presskit, onglets de bio et bouton copier
-     10. Vidéo du hero
-     11. Son de la vidéo
-     12. Bandeau défilant, sans raccord visible
-     13. Ancres internes, sans les montrer dans l'URL
-   ========================================================================== */
-
 (function () {
   'use strict';
-
-  /* ========================================================================
-     1. Protection des images
-     Mise en place le 26/08/2026, reconduite telle quelle dans la refonte.
-     L'écouteur est posé sur document et filtre sur la balise, il est donc
-     global : toute image ajoutée plus tard est couverte sans intervention.
-     Le pendant CSS (user-drag, touch-callout) cible le sélecteur img nu.
-     La vraie protection reste ailleurs, le fichier servi est en basse
-     définition et les HD vivent sur le Drive.
-     ======================================================================== */
 
   document.addEventListener('contextmenu', function (e) {
     if (e.target && e.target.tagName === 'IMG') {
@@ -37,32 +7,15 @@
     }
   });
 
-
-  /* ========================================================================
-     2. Année du pied de page
-     ======================================================================== */
-
   var year = String(new Date().getFullYear());
   Array.prototype.forEach.call(document.querySelectorAll('[data-year]'), function (el) {
     el.textContent = year;
   });
 
-
-  /* ========================================================================
-     3. Menu mobile
-     Le panneau est masqué par l'attribut hidden. À l'ouverture on pose
-     .is-locked sur la racine, ce qui lui retire toute amplitude de
-     défilement : la page derrière ne bouge plus.
-     ======================================================================== */
-
   var page   = document.querySelector('.page');
   var burger = document.querySelector('.burger');
   var menu   = document.getElementById('menu');
 
-  /* Bloquer le défilement de la page passe par height: 100svh sur la racine,
-     ce qui écrase sa hauteur et fait donc perdre la position de défilement.
-     On la mémorise à la fermeture et on la remet, sinon on se retrouve
-     projeté en haut de page en refermant la lightbox ou le menu. */
   var lockY = 0;
 
   function lockPage(on) {
@@ -90,7 +43,6 @@
       setMenu(menu.hidden);
     });
 
-    /* Tout lien du menu le referme, y compris les ancres internes. */
     menu.addEventListener('click', function (e) {
       if (e.target.closest('a')) { setMenu(false); }
     });
@@ -102,24 +54,11 @@
       }
     });
 
-    /* Repasser en desktop pendant que le menu est ouvert laisserait la page
-       bloquée en défilement. */
     var wide = window.matchMedia('(min-width: 900px)');
     wide.addEventListener('change', function (e) {
       if (e.matches) { setMenu(false); }
     });
   }
-
-
-  /* ========================================================================
-     4. Apparitions au scroll
-     Deux chemins, jamais les deux à la fois.
-     .no-vt est posée dès le <head> quand animation-timeline manque : on
-     observe alors les blocs et on pose .is-in une seule fois.
-     Sinon le CSS fait tout, mais une view timeline sans amplitude de
-     défilement reste inactive et laisserait le contenu invisible. Sur une
-     page trop courte, on neutralise donc l'effet.
-     ======================================================================== */
 
   var blocks = document.querySelectorAll('.rv');
 
@@ -151,18 +90,9 @@
     });
   }
 
-  /* ========================================================================
-     5. Bilingue
-     Un dictionnaire clé par clé, des attributs data-i18n sur les noeuds de
-     texte. La bascule met à jour le texte, l'attribut lang du document et
-     mémorise le choix. Détection initiale sur navigator.language, français
-     par défaut. Le français reste la version canonique.
-     Les textes sont repris tels quels des fichiers de référence.
-     ======================================================================== */
-
   var DICT = {
     fr: {
-      /* Accueil */
+
       nav1: "Dates", nav2: "Écouter", nav3: "Bio", nav4: "Galerie", nav5: "Réseaux",
       mBooking: "Contact booking",
       heroSub: "Retour aux racines. Gabber, Early Hardcore et Millenium, du closing de club aux scènes de festival.",
@@ -183,7 +113,6 @@
       sndOn: "Couper le son", sndOff: "Activer le son",
       e404Lbl: "Page introuvable", e404Body: "Cette page n'existe pas ou n'existe plus. Le reste du site, lui, est toujours là.", e404Cta: "Retour à l'accueil", e404Dates: "Voir les dates",
 
-      /* Presskit */
       backSite: "Retour au site", kicker: "Press kit · Booking 2026",
       position: "DJ Hardcore basé à Lille. Gabber, Early Hardcore et Millenium, du closing de club aux scènes de festival.",
       lblBios: "Textes", t1: "Les bios", biosNote: "Trois longueurs prêtes à coller dans vos annonces. Un clic sur copier, c'est dans le presse-papier.",
@@ -211,7 +140,7 @@
       copyIdle: "Copier", copyDone: "Copié ✓", bioMetaFmt: "Bio %s · %n signes"
     },
     en: {
-      /* Accueil */
+
       nav1: "Dates", nav2: "Listen", nav3: "Bio", nav4: "Gallery", nav5: "Socials",
       mBooking: "Booking contact",
       heroSub: "Back to the roots. Gabber, Early Hardcore and Millenium, from club closings to festival stages.",
@@ -232,7 +161,6 @@
       sndOn: "Mute", sndOff: "Unmute",
       e404Lbl: "Page not found", e404Body: "This page does not exist, or no longer does. The rest of the site is still here.", e404Cta: "Back to home", e404Dates: "See the dates",
 
-      /* Presskit */
       backSite: "Back to site", kicker: "Press kit · Booking 2026",
       position: "Hardcore DJ based in Lille, France. Gabber, Early Hardcore and Millenium, from club closings to festival stages.",
       lblBios: "Copy", t1: "The bios", biosNote: "Three lengths, ready to paste into your announcements. One click and it is in your clipboard.",
@@ -261,7 +189,6 @@
     }
   };
 
-  /* Les trois bios du presskit, validées, reprises telles quelles. */
   var BIOS = {
     fr: [
       "Basé à Lille, Formex propose une immersion dans l'univers Hardcore avec une sélection sans concession. Passionné par cette musique, il allie l'héritage du Gabber et de l'Early Hardcore à la puissance des productions modernes. En club comme en festival, l'objectif reste le même : partager l'énergie brute de cette culture.",
@@ -296,17 +223,13 @@
   var STORE = 'formex-lang';
   var lang = 'fr';
 
-  /* Renseignées plus bas, quand les blocs concernés existent sur la page.
-     Déclarées ici pour que setLang puisse les appeler sans rien poser sur
-     l'objet window. */
   var renderBio = null;
   var paintSound = null;
 
   function readLang() {
     var v = litCookie(STORE);
     if (v !== 'fr' && v !== 'en') {
-      /* Reprise des visiteurs qui avaient déjà choisi avant le passage au
-         cookie, et filet si les cookies sont refusés. */
+
       try { v = localStorage.getItem(STORE); } catch (e) { v = null; }
     }
     if (v === 'fr' || v === 'en') { return v; }
@@ -328,8 +251,7 @@
 
     Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function (el) {
       var k = el.getAttribute('data-i18n');
-      /* Le presskit et l'accueil partagent des clés de titre, les siennes
-         sont préfixées pkT pour ne pas se marcher dessus. */
+
       if (isPress && d[('pkT' + k.slice(1))] !== undefined && /^t[1-6]$/.test(k)) {
         k = 'pkT' + k.slice(1);
       }
@@ -352,12 +274,6 @@
     });
   });
 
-
-  /* ========================================================================
-     6. Lightbox
-     Aucun href vers un fichier image, la source est lue dans data-src.
-     ======================================================================== */
-
   var lb = document.getElementById('lightbox');
 
   if (lb) {
@@ -372,7 +288,7 @@
       var vignette = items[idx].querySelector('img');
       lbImg.alt = vignette ? (vignette.alt || '') : '';
       if (swap) {
-        /* Fondu croisé, pas de glissement horizontal. */
+
         lb.classList.add('is-swap');
         setTimeout(function () {
           lbImg.src = src;
@@ -413,11 +329,6 @@
     });
   }
 
-
-  /* ========================================================================
-     7. Dates passées
-     ======================================================================== */
-
   var arch = document.querySelector('.archive__toggle');
 
   if (arch) {
@@ -427,13 +338,6 @@
       arch.querySelector('.archive__sign').textContent = open ? '+' : '−';
     });
   }
-
-
-  /* ========================================================================
-     8. Lecteurs SoundCloud
-     L'iframe n'est jamais chargée au chargement de la page. Au clic, la
-     carte se transforme en vrai lecteur, injecté à la demande.
-     ======================================================================== */
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-sc]'), function (card) {
     card.addEventListener('click', function (e) {
@@ -452,11 +356,6 @@
       card.parentNode.replaceChild(box, card);
     });
   });
-
-
-  /* ========================================================================
-     9. Presskit, onglets de bio et bouton copier
-     ======================================================================== */
 
   var bioText = document.getElementById('bio-text');
 
@@ -480,7 +379,7 @@
         bioText.textContent = txt;
         return;
       }
-      /* Le texte se remplace en fondu, la hauteur du cadre suit. */
+
       bioText.classList.add('is-swap');
       setTimeout(function () {
         bioText.textContent = txt;
@@ -515,19 +414,6 @@
     });
   }
 
-
-  /* ========================================================================
-     10. Vidéo du hero
-     Un seul fichier est téléchargé, jamais les deux. Sous 768 px c'est la
-     boucle courte en portrait, un mégaoctet, au-dessus c'est le montage
-     complet. Le poster est déjà à l'écran, la vidéo ne fait que passer
-     devant une fois qu'elle joue.
-     Sous prefers-reduced-motion on ne charge rien du tout : le poster
-     suffit, et les mégaoctets ne partent pas pour rien. Même chose si le
-     visiteur a activé l'économiseur de données de son navigateur, c'est une
-     demande explicite de sa part, on la respecte.
-     ======================================================================== */
-
   var heroVideo  = document.querySelector('.hero__video');
   var heroLoaded = false;
 
@@ -544,24 +430,11 @@
 
     heroVideo.src = src;
 
-    /* La lecture automatique peut être refusée, notamment en économie de
-       données. Le poster reste alors affiché, il n'y a rien à rattraper. */
     var played = heroVideo.play();
     if (played && played.catch) { played.catch(function () {}); }
 
     heroLoaded = true;
   }
-
-
-  /* ========================================================================
-     11. Son de la vidéo
-     Coupé par défaut : aucun navigateur n'accepte une lecture automatique
-     avec le son. Le clic est un geste utilisateur, il a donc le droit de
-     le rétablir.
-     Le bouton n'apparaît que si la vidéo servie porte vraiment une piste
-     audio, signalée par l'attribut data-audio sur la balise. Un bouton qui
-     ne fait rien est pire que pas de bouton.
-     ======================================================================== */
 
   var SND_STORE = 'formex-son';
   var snds = document.querySelectorAll('.snd');
@@ -591,9 +464,6 @@
       enAttente = null;
     }
 
-    /* La lecture automatique avec le son est refusée tant que le visiteur
-       n'a pas interagi avec la page. Quand le choix mémorisé est « son
-       activé », on attend donc son premier geste pour le rétablir. */
     function arme() {
       if (enAttente) { return; }
       enAttente = function (e) {
@@ -612,9 +482,7 @@
       if (p && p.catch) { p.catch(function () {}); }
 
       if (on) {
-        /* Le navigateur peut avoir mis la vidéo en pause plutôt que de
-           laisser passer le son. On vérifie, et on retombe proprement sur
-           le muet plutôt que de laisser un hero figé. */
+
         window.setTimeout(function () {
           if (heroVideo.paused || heroVideo.muted) {
             heroVideo.muted = true;
@@ -637,9 +505,6 @@
       });
     });
 
-    /* Choix mémorisé un mois. C'est une préférence posée par un geste
-       explicite du visiteur, donc un cookie fonctionnel : il n'entre pas
-       dans le champ du consentement. */
     if (litSon()) {
       if (heroVideo.readyState >= 3 || !heroVideo.paused) {
         active(true);
@@ -650,21 +515,6 @@
 
     paintSound();
   }
-
-
-  /* ========================================================================
-     12. Bandeau défilant, sans raccord visible
-     Le piège : la translation de 0 à -50% n'est continue que si CHAQUE
-     segment est plus large que la fenêtre. En dessous, la fin du premier
-     segment sort de l'écran avant que le second n'ait fini de le couvrir,
-     et un trou apparaît. C'était le cas en 1440 px, où le segment mesurait
-     1431 px pour une fenêtre de 1440.
-     On répète donc le motif autant de fois qu'il le faut, puis on duplique
-     le segment à l'identique.
-     La vitesse suit la taille de police, 2,5 fois sa valeur en pixels par
-     seconde, ce qui reproduit exactement la cadence d'origine à toute
-     largeur au lieu de s'emballer sur les grands écrans.
-     ======================================================================== */
 
   Array.prototype.forEach.call(document.querySelectorAll('.marquee[data-marquee]'), function (m) {
     var track = m.querySelector('.marquee__track');
@@ -681,7 +531,6 @@
       var one = seg.getBoundingClientRect().width;
       if (!one) { return; }
 
-      /* + 80 px de marge, pour ne jamais tomber pile sur la largeur. */
       var times = Math.max(2, Math.ceil((m.getBoundingClientRect().width + 80) / one));
       seg.textContent = new Array(times + 1).join(unit);
 
@@ -693,33 +542,18 @@
       track.style.animation = '';
       track.style.animationDuration = (width / (size * 2.5)) + 's';
 
-      /* La hauteur du bandeau suit la taille de police fluide. Le bouton de
-         son flottant s'appuie dessus pour se poser juste au-dessus. */
       document.documentElement.style.setProperty(
         '--mq-h', Math.round(m.getBoundingClientRect().height) + 'px');
     }
 
     build();
 
-    /* Le nombre de répétitions dépend de la largeur, il faut refaire le
-       calcul quand elle change, rotation d'écran comprise. */
     var t;
     window.addEventListener('resize', function () {
       clearTimeout(t);
       t = setTimeout(build, 200);
     });
   });
-
-
-  /* ========================================================================
-     13. Ancres internes, sans les montrer dans l'URL
-     Les liens gardent leur href, indispensable sans JavaScript, pour le
-     clic milieu et pour les lecteurs d'écran. Mais on intercepte le clic
-     et on fait défiler nous-mêmes, sans poser de hash.
-     scrollIntoView sans option suit le scroll-behavior de la feuille,
-     donc doux normalement et instantané sous prefers-reduced-motion, et
-     il respecte le scroll-margin-top qui compense la barre fixe.
-     ======================================================================== */
 
   document.addEventListener('click', function (e) {
     var link = e.target.closest ? e.target.closest('a[href^="#"]') : null;
@@ -740,8 +574,6 @@
     }
   });
 
-  /* Une ancre reçue de l'extérieur, par exemple le bouton Voir les dates
-     du 404, fait bien son saut natif. On nettoie juste l'URL derrière. */
   if (window.location.hash && document.getElementById(window.location.hash.slice(1))) {
     window.addEventListener('load', function () {
       setTimeout(function () {
@@ -749,7 +581,6 @@
       }, 60);
     });
   }
-
 
   setLang(readLang(), true);
 }());
