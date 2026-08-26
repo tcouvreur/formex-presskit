@@ -174,18 +174,6 @@ img {
   -webkit-touch-callout: none;
 }
 
-/* Titrage : Anton n'existe qu'en 400, toujours en capitales. */
-.head {
-  font-family: var(--head);
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.goth {
-  font-family: var(--goth);
-  font-weight: 400;
-}
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -233,11 +221,9 @@ img {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Halftone, points rouges. Fonds de menu et visuels forts. */
-.halftone {
-  background-image: radial-gradient(var(--red) 1px, transparent 1.4px);
-  background-size: 6px 6px;
-}
+/* Le halftone, troisième texture du système, n'a pas de classe utilitaire :
+   ses deux usages ont des pas différents, .menu__tex en 7 px pour le fond
+   du menu mobile et .hero__dots en 5 px pour le hero du presskit. */
 
 /* Scanlines, sur la vidéo du hero. */
 .scanlines {
@@ -426,15 +412,6 @@ img {
   background: var(--fg);
   border-color: var(--fg);
   color: var(--bg);
-}
-
-.btn--dashed {
-  border: 1px dashed var(--line-soft);
-  color: var(--fg-3);
-}
-.btn--dashed:hover {
-  border-color: var(--red);
-  color: var(--fg);
 }
 
 /* Bouton dont le libellé et l'icône sont poussés aux extrémités. */

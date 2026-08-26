@@ -278,6 +278,12 @@
   var STORE = 'formex-lang';
   var lang = 'fr';
 
+  /* Renseignées plus bas, quand les blocs concernés existent sur la page.
+     Déclarées ici pour que setLang puisse les appeler sans rien poser sur
+     l'objet window. */
+  var renderBio = null;
+  var paintSound = null;
+
   /* localStorage peut échouer en navigation privée, d'où le try/catch. */
   function readLang() {
     try {
@@ -313,8 +319,8 @@
       b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
     });
 
-    if (typeof renderBio === 'function') { renderBio(silent); }
-    if (typeof paintSound === 'function') { paintSound(); }
+    if (renderBio) { renderBio(silent); }
+    if (paintSound) { paintSound(); }
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
@@ -438,7 +444,7 @@
     var bioIdx  = 0;
     var copyT   = null;
 
-    window.renderBio = function (silent) {
+    renderBio = function (silent) {
       var d = DICT[lang];
       var txt = BIOS[lang][bioIdx];
       var name = [d.bioS, d.bioM, d.bioL][bioIdx];
@@ -465,7 +471,7 @@
         Array.prototype.forEach.call(tabs, function (o) {
           o.setAttribute('aria-selected', o === t ? 'true' : 'false');
         });
-        window.renderBio(false);
+        renderBio(false);
       });
     });
 
@@ -539,7 +545,7 @@
   if (snds.length && heroVideo && heroLoaded && heroVideo.hasAttribute('data-audio')) {
     Array.prototype.forEach.call(snds, function (b) { b.hidden = false; });
 
-    window.paintSound = function () {
+    paintSound = function () {
       var on = !heroVideo.muted;
       var label = DICT[lang][on ? 'sndOn' : 'sndOff'];
       Array.prototype.forEach.call(snds, function (b) {
@@ -557,11 +563,11 @@
           var p = heroVideo.play();
           if (p && p.catch) { p.catch(function () {}); }
         }
-        window.paintSound();
+        paintSound();
       });
     });
 
-    window.paintSound();
+    paintSound();
   }
 
 

@@ -2,25 +2,25 @@
 
 Site officiel et press kit de **FORMEX**, DJ Hardcore basé à Lille.
 
-Live sur **https://formexhardcore.com**
+En ligne sur **https://formexhardcore.com**
 
-> ⚠️ **Ce dépôt est public.** Aucun identifiant, mot de passe, clé d'API ou fichier de configuration contenant un secret ne doit y être commité, jamais. La documentation d'infrastructure complète (DNS, comptes, mail, accès) est volontairement gardée **hors du dépôt**, dans `DOCS/INFRA_FORMEX.md` du dossier de travail local.
+> ⚠️ **Ce dépôt est public.** Aucun identifiant, mot de passe, clé d'API ou fichier de configuration contenant un secret ne doit y être commité, jamais. La documentation d'infrastructure complète, DNS, comptes, mail et accès, est volontairement gardée **hors du dépôt**, dans le dossier de travail local.
 
 ---
 
 ## Stack
 
-Aucun framework, aucun build, aucune dépendance. Un seul fichier HTML avec son CSS et son JS en ligne.
+Aucun framework, aucun build, aucun gestionnaire de paquets. Le site se déploie en copiant des fichiers.
 
 | | |
 |---|---|
 | Hébergement | **Cloudflare Pages**, projet `formex-presskit`, output directory `/` |
 | DNS et proxy | **Cloudflare** |
 | Domaine | acheté chez OVH, DNS délégué à Cloudflare |
-| Polices | Oswald et Inter, via Google Fonts |
-| Lecteurs audio | embeds SoundCloud |
+| Polices | **Anton**, **Archivo** et **Pirata One**, via Google Fonts |
+| Lecteurs audio | SoundCloud, iframe injectée au clic uniquement |
 
-Le site a été hébergé sur Netlify jusqu'au 25/06/2026. Il ne l'est plus. Le fichier `netlify.toml` encore présent est **obsolète**.
+Refonte complète en août 2026. Le site était auparavant une page unique avec son CSS et son JS en ligne, en Oswald et Inter.
 
 ---
 
@@ -32,39 +32,45 @@ Un `push` sur `main` déclenche le déploiement automatique via Cloudflare Pages
 git add -A && git commit -m "message" && git push
 ```
 
-Penser à **Ctrl+F5** pour contourner le cache navigateur au moment de vérifier.
+Penser à **Ctrl+F5** pour contourner le cache du navigateur au moment de vérifier.
 
 ---
 
-## Structure des fichiers
+## Structure
 
-| Fichier | Rôle |
-|---|---|
-| `index.html` | tout le site, page unique, CSS et JS inclus |
-| `_headers` | en-têtes de sécurité, **lu par Cloudflare Pages** (même syntaxe que Netlify) |
-| `netlify.toml` | ⚠️ obsolète, ignoré, à supprimer |
-| `landing-simple.html` | ancienne landing d'avant juin 2026, conservée pour archive |
-| `hero.jpg` | visuel du hero, 1440x2160, format portrait |
-| `photo1.jpg`, `cover.jpg` | visuels de la bio et de la cover |
-| `live1.jpg` à `live4.jpg` | bande photo de la section Médias, en lightbox |
-| `og.jpg` | vignette de partage social, 1200x630 |
-| `favicon.png` | favicon |
-| `FORMEX_Presskit_2026.pdf` | press kit téléchargeable |
-| `FORMEX_Technical_Rider.pdf` | fiche technique téléchargeable |
+```
+├── index.html          accueil
+├── presskit.html       press kit, en noindex, envoyé par lien
+├── 404.html            vraie page 404
+├── assets/
+│   ├── css/style.css   feuille unique, partagée par les trois pages
+│   ├── js/main.js      script unique, partagé par les trois pages
+│   ├── img/            images du site, WebP avec repli JPEG
+│   └── video/          boucles du hero, une version mobile et une desktop
+├── _headers            en-têtes de sécurité, lu par Cloudflare Pages
+├── og.jpg              aperçu social de l'accueil, 1200x630
+├── og-presskit.jpg     aperçu social du press kit
+├── favicon.ico / .png, apple-touch-icon.png
+├── FORMEX_Presskit_2026.pdf
+├── FORMEX_Technical_Rider.pdf
+└── landing-simple.html ancienne landing d'avant juin 2026, conservée
+```
+
+**Sections de l'accueil** : hero, 01 agenda, 02 sons, 03 bio, 04 live, 05 réseaux, pied de page.
+
+**Sections du press kit** : hero, 01 textes, 02 visuels, 03 écoute, 04 technique, 05 contact et 06 téléchargements.
+
+Le site est **bilingue français et anglais** sur les trois pages. Détection sur la langue du navigateur au premier passage, choix mémorisé ensuite. Le français reste la version canonique.
 
 ---
 
-## Structure de la page
+## Quelques règles à ne pas casser
 
-```
-hero #home  ->  #ecouter  ->  #bio  ->  #medias  ->  #rider  ->  #contact
-```
-
-L'écoute passe volontairement **avant** la bio, pour que quelqu'un qui arrive depuis un post tombe directement sur les sets.
-
-Éléments transverses, nav fixe, menu burger mobile, **bascule FR / EN globale**, lightbox avec navigation au clic et au clavier, année automatique en pied de page.
-
-Une section Vidéos existait, elle a été retirée parce que les embeds Instagram et YouTube ne se lisaient pas. Le CSS a été conservé pour pouvoir la réactiver.
+- Le **bandeau défilant** doit rester le dernier élément du flux de chaque page. C'est ce qui permet à son `position: sticky; bottom: 0` de tenir. La racine porte `overflow-x: clip` et surtout pas `hidden`.
+- Les **images sont plafonnées à 1600 px** sur le grand côté. Les versions haute définition vivent sur le Drive, pas ici.
+- Les vignettes n'ont **aucun `href` vers un fichier image**, la lightbox lit un `data-src`. C'est volontaire.
+- Le **HTML ne porte pas de commentaires**, ils seraient lisibles en inspectant la page. Les décisions sont documentées hors dépôt.
+- La **vidéo du hero** ne se charge qu'en un seul fichier, mobile ou desktop selon la largeur, jamais les deux, et pas du tout si l'économiseur de données ou `prefers-reduced-motion` est actif.
 
 ---
 
@@ -75,29 +81,10 @@ Une section Vidéos existait, elle a été retirée parce que les embeds Instagr
 | https://presskit.formexhardcore.com | redirection 301 vers le PDF du press kit |
 | https://rider.formexhardcore.com | redirection 301 vers le PDF du rider |
 
-Mécanisme, un CNAME **proxifié** (nuage orange obligatoire) plus une Redirect Rule Cloudflare. Ces liens sont utilisés dans les mails de booking, donc ne pas les casser.
+Mécanisme, un CNAME **proxifié** (nuage orange obligatoire) plus une Redirect Rule Cloudflare. Ces liens circulent dans les mails de booking, **ne pas les casser**.
 
 ---
 
-## Pièges connus
+## Contact
 
-**Le hero.** `hero.jpg` est en portrait 2:3. En `cover` sur mobile, l'image remplit déjà toute la hauteur, donc changer la position verticale en pourcentage **ne fait rien** tant qu'on n'a pas zoomé pour créer de la marge. Desktop et mobile ont des réglages distincts, ne pas toucher l'un en croyant régler l'autre.
-
-**Le contenu est dupliqué.** Les bios et le rider sont recopiés en dur dans `index.html`, alors que la référence reste les PDF. Toute modification de contenu doit être faite **des deux côtés**.
-
-**L'aperçu social est mis en cache.** Après un changement de `og.jpg` ou des balises Open Graph, repasser par le débogueur Facebook et cliquer sur Re-collecter.
-
-**Les photos du bandeau sont volontairement en basse définition.** `live1.jpg` à `live4.jpg` sont plafonnées à **1600 px sur le grand côté, qualité 78**, soit environ 90 Ko chacune. Ne **jamais** y remettre les versions HD, elles pesaient 4 à 5 Mo pièce et plombaient le chargement mobile. Les originaux haute définition sont sur le **Google Drive**, et c'est là que les gens doivent aller les chercher. Sauvegarde locale des anciennes versions dans `PICTURES/_HD_site_backup/`, hors dépôt.
-
-**Le téléchargement direct des photos est bridé, sur toute la page.** Pas de `href` vers le fichier (la lightbox lit un `data-src`), `draggable="false"`, appui long iOS désactivé via `-webkit-touch-callout`, et le clic droit est neutralisé sur **n'importe quelle balise `<img>`** du site, via un écouteur global qui filtre sur `e.target.tagName === 'IMG'`. Toute image ajoutée plus tard est donc protégée d'office, sans rien à câbler. Le hero n'a pas besoin de traitement, c'est un `background-image` CSS et le navigateur ne propose jamais de l'enregistrer.
-
-Ce n'est pas inviolable, rien ne l'est sur le web, mais le chemin courant est fermé et le fichier servi est de toute façon en basse définition.
-
----
-
-## À faire
-
-- [x] ~~Compresser `live2.jpg` et `live3.jpg`~~, fait le 26/08/2026, 9,7 Mo ramenés à 428 Ko
-- [ ] Supprimer `netlify.toml`, obsolète et servi publiquement
-- [ ] Ajouter un `404.html`, aujourd'hui toute URL inconnue renvoie 200 avec la page d'accueil
-- [ ] Ajouter une section **Dates**, alimentée par le futur back-office
+Booking, presse et partenariats : **booking@formexhardcore.com**
