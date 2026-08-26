@@ -369,6 +369,8 @@
     function showLb(i, swap) {
       idx = (i + items.length) % items.length;
       var src = items[idx].getAttribute('data-src');
+      var vignette = items[idx].querySelector('img');
+      lbImg.alt = vignette ? (vignette.alt || '') : '';
       if (swap) {
         /* Fondu croisé, pas de glissement horizontal. */
         lb.classList.add('is-swap');

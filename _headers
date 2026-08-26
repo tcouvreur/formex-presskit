@@ -4,3 +4,14 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Strict-Transport-Security: max-age=31536000
   Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()
+
+# Les PDF ne doivent pas etre references, seul le site principal l'est.
+# X-Robots-Tag plutot qu'un Disallow dans robots.txt : un Disallow
+# empeche l'exploration, donc empeche Google de LIRE le noindex, et
+# l'URL reste indexee sans contenu. Il faut laisser explorer pour que
+# la consigne soit vue.
+/FORMEX_Presskit_2026.pdf
+  X-Robots-Tag: noindex, noarchive
+
+/FORMEX_Technical_Rider.pdf
+  X-Robots-Tag: noindex, noarchive
