@@ -146,7 +146,7 @@
       /* Accueil */
       nav1: "Dates", nav2: "Écouter", nav3: "Bio", nav4: "Galerie", nav5: "Réseaux",
       mBooking: "Contact booking",
-      heroSub: "Retour aux racines. Gabber, Early Hardcore et Millennium, du closing de club aux scènes de festival.",
+      heroSub: "Retour aux racines. Gabber, Early Hardcore et Millenium, du closing de club aux scènes de festival.",
       cta1: "Prochaines dates", cta2: "Écouter un set", scroll: "Faites défiler",
       lblAgenda: "Agenda", t2: "Prochaines dates",
       bConf: "Confirmé", bTickets: "Billets", bSoon: "Bientôt", bTba: "À confirmer",
@@ -166,7 +166,7 @@
 
       /* Presskit */
       backSite: "Retour au site", kicker: "Press kit · Booking 2026",
-      position: "DJ Hardcore basé à Lille. Gabber, Early Hardcore et Millennium, du closing de club aux scènes de festival.",
+      position: "DJ Hardcore basé à Lille. Gabber, Early Hardcore et Millenium, du closing de club aux scènes de festival.",
       lblBios: "Textes", t1: "Les bios", biosNote: "Trois longueurs prêtes à coller dans vos annonces. Un clic sur copier, c'est dans le presse-papier.",
       bioS: "Courte", bioM: "Moyenne", bioL: "Longue",
       lblVisuals: "Visuels", pkT2: "Photos HD",
@@ -195,7 +195,7 @@
       /* Accueil */
       nav1: "Dates", nav2: "Listen", nav3: "Bio", nav4: "Gallery", nav5: "Socials",
       mBooking: "Booking contact",
-      heroSub: "Back to the roots. Gabber, Early Hardcore and Millennium, from club closings to festival stages.",
+      heroSub: "Back to the roots. Gabber, Early Hardcore and Millenium, from club closings to festival stages.",
       cta1: "Upcoming dates", cta2: "Listen to a set", scroll: "Scroll",
       lblAgenda: "Agenda", t2: "Upcoming dates",
       bConf: "Confirmed", bTickets: "Tickets", bSoon: "Soon", bTba: "To be confirmed",
@@ -215,7 +215,7 @@
 
       /* Presskit */
       backSite: "Back to site", kicker: "Press kit · Booking 2026",
-      position: "Hardcore DJ based in Lille, France. Gabber, Early Hardcore and Millennium, from club closings to festival stages.",
+      position: "Hardcore DJ based in Lille, France. Gabber, Early Hardcore and Millenium, from club closings to festival stages.",
       lblBios: "Copy", t1: "The bios", biosNote: "Three lengths, ready to paste into your announcements. One click and it is in your clipboard.",
       bioS: "Short", bioM: "Medium", bioL: "Long",
       lblVisuals: "Visuals", pkT2: "HD photos",
