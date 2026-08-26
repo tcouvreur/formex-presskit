@@ -12,7 +12,6 @@
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-<!-- ===== APERÇU SOCIAL (Open Graph / Twitter) ===== -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="FORMEX">
 <meta property="og:locale" content="fr_FR">
@@ -32,21 +31,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Pirata+One&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/assets/css/style.css">
-<!-- Posé avant le premier rendu : sans animation-timeline, les apparitions
-     au scroll passent par le repli JavaScript, sans clignotement. -->
 <script>if(!(window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()'))){document.documentElement.className+=' no-vt';}</script>
 </head>
 
 <body>
 <div class="page">
 
-  <!-- Grain, voile plein écran, fixe. Aucune image, zéro octet. -->
   <div class="grain" aria-hidden="true"></div>
 
-
-  <!-- ==================================================================
-       BARRE FIXE
-       =================================================================== -->
   <header class="bar">
     <div class="bar__left">
       <a class="bar__logo" href="#hero">FOR<em>M</em>EX</a>
@@ -60,8 +52,6 @@
         <a href="#galerie" data-i18n="nav4">Galerie</a>
       </nav>
 
-      <!-- Son de la vidéo, version mobile. En desktop c'est la version
-           flottante en bas à droite qui prend le relais. -->
       <button class="snd snd--bar" type="button" aria-pressed="false" hidden>
       <span class="snd__wave" aria-hidden="true"><i></i><i></i><i></i></span>
       <svg class="snd__mute" aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="none">
@@ -86,11 +76,6 @@
     </div>
   </header>
 
-
-  <!-- ==================================================================
-       MENU MOBILE
-       Sous la barre fixe, qui reste visible et sert à refermer.
-       =================================================================== -->
   <div class="menu" id="menu" hidden>
     <div class="menu__tex" aria-hidden="true"></div>
 
@@ -114,27 +99,12 @@
     </div>
   </div>
 
-
-  <!-- ==================================================================
-       HERO
-       Le poster s'affiche instantanément et ne bloque jamais le premier
-       rendu. La vidéo se charge derrière, en un seul fichier : main.js
-       choisit hero-mobile sous 768 px et hero-desktop au-dessus, jamais
-       les deux. Si prefers-reduced-motion est actif, aucune vidéo n'est
-       chargée du tout et le poster reste.
-       Les deux montages sont muets, sans piste audio. La durée du
-       desktop, 65,434 s, est calée pour que le rebouclage enchaîne sur le
-       drop d'ouverture. Ne pas y toucher.
-       =================================================================== -->
   <section class="hero" id="hero">
     <div class="hero__bg" aria-hidden="true">
       <picture class="hero__poster">
         <source media="(max-width: 767px)" srcset="/assets/img/hero-poster-mobile.jpg" width="720" height="1280">
         <img src="/assets/img/hero-poster.jpg" alt="" width="1280" height="720" fetchpriority="high" draggable="false">
       </picture>
-      <!-- data-audio : les deux montages portent une piste audio depuis le
-           ré-encodage du 26/08/2026, le bouton de son est donc actif.
-           Retirer cet attribut si un jour on resert une vidéo muette. -->
       <video class="hero__video" data-audio muted playsinline loop autoplay preload="none"
              data-mobile="/assets/video/hero-mobile.mp4"
              data-desktop="/assets/video/hero-desktop.mp4"></video>
@@ -168,13 +138,6 @@
 
   </section>
 
-
-  <!-- ==================================================================
-       01 / AGENDA
-       Toutes les dates dans un seul bloc identifiable, une structure de
-       balisage identique pour chacune, un gabarit unique pour le rendu.
-       En phase 2 il suffira de lui passer un objet de l'API.
-       =================================================================== -->
   <section class="section" id="dates">
     <div class="wrap">
       <div class="section-head section-head--split rv">
@@ -185,9 +148,6 @@
         <span class="section-aside">2026</span>
       </div>
 
-      <!-- Toutes les dates dans un seul bloc, une structure identique pour
-           chacune. En phase 2, main.js remplacera ces lignes écrites à la
-           main par le même gabarit alimenté par l'API. -->
       <div class="dates" id="dates-list">
 
         <a class="date rv" href="https://shotgun.live/fr/events/systemdclaudemurder" target="_blank" rel="noopener">
@@ -240,8 +200,6 @@
 
       </div>
 
-      <!-- État vide, masqué tant qu'il reste des dates. Il servira dès que
-           l'agenda sera branché sur l'API en phase 2. -->
       <div class="empty" id="dates-empty" hidden>
         <p class="empty__title" data-i18n="eTitle">Aucune date annoncée</p>
         <p class="empty__body" data-i18n="eBody">Rien d'officiel pour le moment. Les prochaines annonces passent d'abord par Instagram.</p>
@@ -297,10 +255,6 @@
     </div>
   </section>
 
-
-  <!-- ==================================================================
-       02 / SONS
-       =================================================================== -->
   <section class="section section--alt section--ruled" id="ecouter">
     <div class="wrap">
       <div class="section-head rv">
@@ -308,8 +262,6 @@
         <h2 class="section-title" data-i18n="t3">Écouter</h2>
       </div>
 
-      <!-- L'iframe SoundCloud n'est jamais chargée au chargement de la page.
-           Au clic, la carte se transforme en vrai lecteur. -->
       <div class="sets">
 
         <a class="set set--lead rv" href="https://soundcloud.com/formex/gabba-dimension-2"
@@ -358,10 +310,6 @@
     </div>
   </section>
 
-
-  <!-- ==================================================================
-       03 / BIO
-       =================================================================== -->
   <section class="section section--ruled" id="bio">
     <div class="wrap bio">
       <div class="rv">
@@ -377,8 +325,6 @@
         </div>
       </div>
 
-      <!-- Le crédit Leo Villalba ne figure QUE sur cette photo. Les autres
-           photos du site sont d'auteurs non identifiés. -->
       <div class="portrait rv">
         <div class="portrait__frame">
           <img src="/assets/img/portrait.jpg" alt="FORMEX" width="1069" height="1600" draggable="false">
@@ -388,10 +334,6 @@
     </div>
   </section>
 
-
-  <!-- ==================================================================
-       04 / LIVE
-       =================================================================== -->
   <section class="section section--alt section--ruled" id="galerie">
     <div class="wrap">
       <div class="section-head rv">
@@ -421,10 +363,6 @@
     </div>
   </section>
 
-
-  <!-- ==================================================================
-       05 / RÉSEAUX
-       =================================================================== -->
   <section class="section section--ruled" id="reseaux">
     <div class="wrap">
       <div class="section-head rv">
@@ -457,10 +395,6 @@
     </div>
   </section>
 
-
-  <!-- ==================================================================
-       PIED DE PAGE
-       =================================================================== -->
   <footer class="foot">
     <div class="wrap foot__grid">
       <div>
@@ -485,11 +419,6 @@
     </div>
   </footer>
 
-
-  <!-- ==================================================================
-       LIGHTBOX
-       Aucun href vers un fichier image, la source est lue dans data-src.
-       =================================================================== -->
   <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo" hidden>
     <div class="lb__bar">
       <span class="lb__count" id="lb-count">1 / 3</span>
@@ -505,13 +434,6 @@
     </div>
   </div>
 
-  <!-- ==================================================================
-       BANDEAU DÉFILANT
-       Dernier élément du flux, obligatoirement. Un sticky en bottom ne
-       retient l'élément que tant que sa position naturelle est sous le
-       bas de la fenêtre. Placé plus haut, il se décroche au premier
-       défilement. Ne pas le remonter.
-       =================================================================== -->
   <div class="marquee" aria-hidden="true" data-marquee="HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENIUM / DJ / EARLY / VINYLS / FRANCE">
     <div class="marquee__track">
       <span>HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENIUM / DJ / EARLY / VINYLS / FRANCE / HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENIUM / DJ / EARLY / VINYLS / FRANCE / HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENIUM / DJ / EARLY / VINYLS / FRANCE / </span>
@@ -521,10 +443,6 @@
 
 </div>
 
-<!-- Son de la vidéo, version desktop, épinglée en bas à droite juste
-     au-dessus du bandeau. Volontairement hors de .page : son
-     container-type ferait de .page le bloc conteneur du position: fixed,
-     et le bouton défilerait avec la page. -->
 <button class="snd snd--float" type="button" aria-pressed="false" hidden>
   <span class="snd__wave" aria-hidden="true"><i></i><i></i><i></i></span>
   <svg class="snd__mute" aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="none">
