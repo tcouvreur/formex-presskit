@@ -145,8 +145,11 @@
 
   /* photo strip */
   .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px;}
-  .strip a{display:block;border-radius:10px;overflow:hidden;position:relative;aspect-ratio:1/1;border:1px solid var(--line);}
+  .strip a{display:block;border-radius:10px;overflow:hidden;position:relative;aspect-ratio:1/1;border:1px solid var(--line);cursor:pointer;}
+  .strip a:focus-visible{outline:2px solid var(--red);outline-offset:2px;}
   .strip img{width:100%;height:100%;object-fit:cover;transition:transform .35s,filter .35s;filter:grayscale(.2);}
+  /* protection : pas de glisser-deposer, pas de selection, pas d'appui long iOS */
+  .strip img,.lightbox img{-webkit-user-drag:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;}
   .strip a:hover img{transform:scale(1.07);filter:grayscale(0);}
 
   /* ===== ECOUTER ===== */
@@ -417,10 +420,10 @@
     </div>
 
     <div class="strip reveal">
-      <a class="lb" href="live1.jpg"><img src="live1.jpg" alt="FORMEX live" loading="lazy"></a>
-      <a class="lb" href="live2.jpg"><img src="live2.jpg" alt="FORMEX live" loading="lazy"></a>
-      <a class="lb" href="live3.jpg"><img src="live3.jpg" alt="FORMEX live" loading="lazy"></a>
-      <a class="lb" href="live4.jpg"><img src="live4.jpg" alt="FORMEX live" loading="lazy"></a>
+      <a class="lb" role="button" tabindex="0" data-src="live1.jpg"><img src="live1.jpg" alt="FORMEX live" loading="lazy" draggable="false"></a>
+      <a class="lb" role="button" tabindex="0" data-src="live2.jpg"><img src="live2.jpg" alt="FORMEX live" loading="lazy" draggable="false"></a>
+      <a class="lb" role="button" tabindex="0" data-src="live3.jpg"><img src="live3.jpg" alt="FORMEX live" loading="lazy" draggable="false"></a>
+      <a class="lb" role="button" tabindex="0" data-src="live4.jpg"><img src="live4.jpg" alt="FORMEX live" loading="lazy" draggable="false"></a>
     </div>
   </div>
 </section>
@@ -593,10 +596,17 @@
   var lb=document.getElementById('lightbox'), lbImg=lb.querySelector('img');
   var lbLinks=Array.prototype.slice.call(document.querySelectorAll('a.lb'));
   var lbIndex=0;
-  function showLb(i){ lbIndex=(i+lbLinks.length)%lbLinks.length; lbImg.src=lbLinks[lbIndex].getAttribute('href'); }
+  function showLb(i){ lbIndex=(i+lbLinks.length)%lbLinks.length; lbImg.src=lbLinks[lbIndex].getAttribute('data-src'); }
   function openLb(i){ showLb(i); lb.classList.add('open'); document.body.classList.add('lb-open'); }
   lbLinks.forEach(function(a,i){
     a.addEventListener('click',function(e){ e.preventDefault(); openLb(i); });
+    a.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openLb(i); }
+    });
+  });
+  // protection : neutralise le clic droit sur le bandeau photo et la lightbox
+  document.querySelectorAll('.strip, #lightbox').forEach(function(el){
+    el.addEventListener('contextmenu',function(e){ e.preventDefault(); });
   });
   function closeLb(){ lb.classList.remove('open'); document.body.classList.remove('lb-open'); lbImg.src=''; }
   document.getElementById('lbClose').addEventListener('click',closeLb);
