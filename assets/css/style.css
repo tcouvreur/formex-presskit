@@ -1,0 +1,2496 @@
+/* ==========================================================================
+   FORMEX — feuille de style unique
+   Partagée par index.html, presskit.html et 404.html.
+   Refonte 2026, d'après le handoff Claude Design du 26/08/2026.
+
+   Thème sombre uniquement. Mobile first, point de rupture unique à 900 px.
+   Sommaire
+     1.  Variables
+     2.  Reset et base
+     3.  Barres de défilement
+     4.  Textures (grain, halftone, scanlines)
+     5.  Racine de page et conteneurs
+     6.  Bloc-titre de section
+     7.  Boutons
+     8.  Hero
+     9.  Barre fixe
+     10. Bascule de langue
+     11. Hamburger et menu mobile
+     12. Bandeau défilant
+     13. Pied de page
+     14. Section Dates
+     15. Section Écouter
+     16. Section Bio
+     17. Section Galerie et lightbox
+     18. Section Réseaux
+     19. Presskit
+     20. Animations
+     21. prefers-reduced-motion
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. Variables
+   ========================================================================== */
+
+:root {
+  /* Fonds */
+  --bg:           #0a0a0a;   /* corps de page, sections impaires */
+  --bg-alt:       #0d0d0d;   /* sections paires, pied de page */
+  --panel:        #141414;   /* cartes de sets, surfaces surélevées */
+  --panel-hover:  #111111;   /* surbrillance des lignes de liste */
+  --control:      #101010;   /* boutons secondaires, bascule de langue */
+
+  /* Filets */
+  --line:         #222222;   /* séparateurs, bordures de cartes */
+  --line-soft:    #2a2a2a;   /* bordures de boutons secondaires */
+  --line-strong:  #333333;   /* bordures de badges, boutons au repos */
+  --line-head:    #1c1c1c;   /* filet de la barre fixe et haut de section */
+  --line-menu:    #171717;   /* séparateurs du menu mobile */
+
+  /* Accent, le rouge est le seul accent du site */
+  --red:          #e21c1c;
+  --red-dark:     #b31515;
+
+  /* Textes */
+  --fg:           #ededed;   /* texte principal */
+  --fg-2:         #cfcfcf;   /* chapôs, corps mis en avant */
+  --fg-3:         #9a9a9a;   /* texte courant secondaire, valeurs */
+  --fg-4:         #6f6f6f;   /* métadonnées, mentions */
+  --fg-5:         #4a4a4a;   /* états désactivés, état vide */
+
+  /* Typographies */
+  --head: 'Anton', Impact, 'Arial Narrow Bold', sans-serif;
+  --body: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --goth: 'Pirata One', 'Times New Roman', serif;
+
+  /* Échelle typographique fluide.
+     Le handoff l'exprime en cqi, l'unité de largeur du conteneur. La racine
+     .page porte container-type: inline-size, les valeurs sont donc reprises
+     telles quelles. cqh n'est pas disponible sans confinement en hauteur,
+     il est remplacé par svh, ce que fait déjà la maquette. */
+  --fs-logo-hero:   min(clamp(66px, 25.5cqi, 340px), 24svh);
+  --fs-logo-press:  clamp(56px, 21cqi, 240px);
+  --fs-goth-hero:   min(clamp(26px, 8.4cqi, 62px), 9svh);
+  --fs-title:       clamp(34px, 10.5cqi, 88px);
+  --fs-title-press: clamp(32px, 10cqi, 80px);
+  --fs-day:         clamp(46px, 14cqi, 92px);
+  --fs-venue:       clamp(22px, 6.6cqi, 38px);
+  --fs-card:        clamp(17px, 5cqi, 22px);
+  --fs-lead:        clamp(15px, 4.2cqi, 19px);
+  --fs-body:        clamp(13px, 3.6cqi, 15px);
+  --fs-eyebrow:     clamp(10px, 3cqi, 12px);
+
+  /* Espacements */
+  --wrap:         1280px;
+  --pad-x:        20px;
+  --pad-y:        20px;
+  --head-h:       65px;
+
+  /* Mouvement. Une seule courbe, trois durées et pas une de plus. */
+  --ease:         cubic-bezier(0.16, 0.84, 0.24, 1);
+  --t-micro:      200ms;   /* micro-interaction */
+  --t-hover:      250ms;   /* survol */
+  --t-reveal:     850ms;   /* apparition au scroll */
+}
+
+@media (min-width: 900px) {
+  :root {
+    --pad-x: 56px;
+    --pad-y: 60px;
+  }
+}
+
+
+/* ==========================================================================
+   2. Reset et base
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--fg);
+  text-decoration: none;
+  transition: color var(--t-hover) ease;
+}
+a:hover { color: var(--red); }
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+
+::selection { background: var(--red); color: var(--bg); }
+
+:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+/* Bridage du téléchargement des images, décidé le 26/08/2026.
+   Sélecteur img nu, volontairement global : toute image ajoutée plus tard
+   est couverte sans intervention. Ne pas restreindre à une section.
+   Le pendant JavaScript est l'écouteur contextmenu de main.js. */
+img {
+  display: block;
+  max-width: 100%;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Titrage : Anton n'existe qu'en 400, toujours en capitales. */
+.head {
+  font-family: var(--head);
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.goth {
+  font-family: var(--goth);
+  font-weight: 400;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   3. Barres de défilement
+   La barre système blanche casse le thème sombre.
+   ========================================================================== */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2f2f2f transparent;
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--line-soft); border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
+::-webkit-scrollbar-corner { background: var(--bg); }
+
+
+/* ==========================================================================
+   4. Textures
+   Trois textures, toutes calculées par le navigateur. Aucune image,
+   zéro octet ajouté. Elles ne sont pas des animations de contenu :
+   prefers-reduced-motion ne les retire pas, la matière reste.
+   ========================================================================== */
+
+/* Grain, voile plein écran. Fixe, non animé : une version animée avait été
+   essayée et rejetée, le décalage faisait apparaître un liseré noir. */
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: .07;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Halftone, points rouges. Fonds de menu et visuels forts. */
+.halftone {
+  background-image: radial-gradient(var(--red) 1px, transparent 1.4px);
+  background-size: 6px 6px;
+}
+
+/* Scanlines, sur la vidéo du hero. */
+.scanlines {
+  background-image: repeating-linear-gradient(180deg, rgba(0, 0, 0, .55) 0 1px, rgba(0, 0, 0, 0) 1px 3px);
+}
+
+
+/* ==========================================================================
+   5. Racine de page et conteneurs
+   ========================================================================== */
+
+/* container-type: inline-size rend les unités cqi de l'échelle typographique
+   disponibles, exactement comme dans la maquette.
+   overflow-x: clip et surtout pas hidden : hidden ferait de la racine un
+   conteneur de défilement, et le bandeau collé en bas n'aurait plus aucune
+   amplitude pour s'activer. */
+.page {
+  container-type: inline-size;
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+  overflow-y: visible;
+  height: auto;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Menu mobile ouvert : on supprime toute amplitude de défilement de la page
+   derrière le panneau. Classe posée par main.js. */
+.page.is-locked {
+  overflow-y: hidden;
+  height: 100svh;
+}
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+}
+
+.section {
+  position: relative;
+  z-index: 2;
+  padding: var(--pad-y) var(--pad-x);
+  background: var(--bg);
+  scroll-margin-top: var(--head-h);
+}
+
+.section--alt { background: var(--bg-alt); }
+
+.section--ruled { border-top: 1px solid var(--line-head); }
+
+/* Le presskit respire un peu moins : le booker qui l'ouvre a une intention
+   forte et trente secondes. */
+.section--press { padding-top: 64px; padding-bottom: 64px; }
+
+@media (min-width: 900px) {
+  .section--press { padding-top: 116px; padding-bottom: 116px; }
+}
+
+
+/* ==========================================================================
+   6. Bloc-titre de section
+   Deux valeurs uniques appliquées partout, sans exception :
+   gouttière libellé vers titre 20 px, interligne du titre 1.08.
+   ========================================================================== */
+
+.section-head { margin-bottom: 30px; }
+
+/* Variante avec une mention alignée à droite (le millésime de l'agenda). */
+.section-head--split {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 20px;
+  font-size: var(--fs-eyebrow);
+  font-weight: 700;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.eyebrow--muted { color: var(--fg-4); }
+
+/* 1.08 n'est pas décoratif. Anton place l'accent des capitales très haut
+   dans sa boîte de police : sous 1.05 le É de ÉCOUTER touche le libellé
+   au-dessus. Ne pas descendre cette valeur. */
+.section-title {
+  margin: 0;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-title);
+  line-height: 1.08;
+  letter-spacing: -.025em;
+  text-transform: uppercase;
+}
+
+.section-title--press { font-size: var(--fs-title-press); }
+
+.section-note {
+  margin: 10px 0 0;
+  max-width: 52ch;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--fg-3);
+}
+
+.section-aside {
+  flex: none;
+  padding-bottom: 8px;
+  font-size: clamp(10px, 2.8cqi, 12px);
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--fg-4);
+}
+
+
+/* ==========================================================================
+   7. Boutons
+   Toutes les cibles tactiles font au moins 44 px.
+   white-space: nowrap et line-height: 1 sont obligatoires, sinon le libellé
+   traduit passe à la ligne et le bouton s'étire.
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 0;
+  background: none;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background var(--t-micro) ease,
+    border-color var(--t-micro) ease,
+    color var(--t-micro) ease,
+    transform var(--t-micro) var(--ease),
+    box-shadow var(--t-micro) ease;
+}
+
+.btn--primary {
+  background: var(--red);
+  color: var(--bg);
+}
+.btn--primary:hover {
+  background: var(--fg);
+  color: var(--bg);
+  transform: translateY(-3px);
+}
+.btn--primary:active { background: var(--red-dark); }
+
+.btn--ghost {
+  border: 1px solid var(--line-strong);
+  background: rgba(20, 20, 20, .6);
+  color: var(--fg);
+}
+.btn--ghost:hover {
+  border-color: var(--fg);
+  background: var(--panel);
+  color: var(--fg);
+  transform: translateY(-3px);
+}
+
+.btn--quiet {
+  border: 1px solid var(--line-soft);
+  color: var(--fg-3);
+}
+.btn--quiet:hover {
+  border-color: var(--line-strong);
+  color: var(--fg);
+}
+
+/* Seul endroit du site où le blanc devient un fond. */
+.btn--invert:hover {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+
+.btn--dashed {
+  border: 1px dashed var(--line-soft);
+  color: var(--fg-3);
+}
+.btn--dashed:hover {
+  border-color: var(--red);
+  color: var(--fg);
+}
+
+/* Bouton dont le libellé et l'icône sont poussés aux extrémités. */
+.btn--split { justify-content: space-between; }
+.btn--block { width: 100%; }
+
+
+/* ==========================================================================
+   8. Hero
+   Coquille commune aux deux pages, le contenu diffère.
+   La hauteur est bornée sur la hauteur disponible, fenêtre moins barre fixe.
+   Le rembourrage bas de 72 px est supérieur à la hauteur du bandeau (52 px),
+   ce qui garantit que le repère de scroll tombe 20 px au-dessus du bandeau
+   épinglé, sans jamais passer derrière. Les plafonds en svh sur le logo et
+   la signature évitent que le texte déborde sous le bandeau sur un écran bas
+   ou en paysage. Ne pas remplacer ces contraintes par un simple rembourrage,
+   ça ne tient pas sur écran court.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: calc(100svh - var(--head-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px var(--pad-x) 72px;
+  overflow: hidden;
+}
+
+/* Fond du hero : vidéo ou photo, dégradé, scanlines, halo rouge. */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero__bg > * {
+  position: absolute;
+  inset: 0;
+}
+
+/* Tout le contenu passe au-dessus des couches de fond. */
+.hero > *:not(.hero__bg):not(.snd) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Bouton de son, en bas à droite du hero, en miroir du repère de scroll.
+   Il s'arrête au même niveau, donc toujours au-dessus du bandeau épinglé. */
+.snd {
+  position: absolute;
+  right: var(--pad-x);
+  bottom: 72px;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  background: rgba(20, 20, 20, .6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color var(--t-micro) ease, background var(--t-micro) ease;
+}
+
+.snd[hidden] { display: none; }
+.snd:hover { border-color: var(--red); background: var(--panel); }
+
+.snd__bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+}
+
+.snd__bars i {
+  display: block;
+  width: 3px;
+  background: var(--fg-3);
+  transform-origin: center;
+}
+
+.snd__bars i:nth-child(1) { height: 45%; }
+.snd__bars i:nth-child(2) { height: 100%; }
+.snd__bars i:nth-child(3) { height: 65%; }
+
+/* Son actif : les barres passent au rouge et se mettent à bouger. */
+.snd[aria-pressed="true"] .snd__bars i {
+  background: var(--red);
+  animation: fx-bar 1.2s ease-in-out infinite;
+}
+.snd[aria-pressed="true"] .snd__bars i:nth-child(2) { animation-delay: .12s; }
+.snd[aria-pressed="true"] .snd__bars i:nth-child(3) { animation-delay: .24s; }
+
+/* Barre oblique tant que le son est coupé. */
+.snd__cut {
+  position: absolute;
+  width: 26px;
+  height: 2px;
+  background: var(--red);
+  transform: rotate(-45deg);
+  transform-origin: center;
+  transition: opacity var(--t-micro) ease, transform var(--t-micro) ease;
+}
+
+.snd[aria-pressed="true"] .snd__cut {
+  opacity: 0;
+  transform: rotate(-45deg) scaleX(0);
+}
+
+/* Empilement de l'arrière-plan du hero, du fond vers l'avant.
+   Le poster est un vrai <picture>, servi en portrait sous 768 px. Il
+   s'affiche immédiatement et reste dessous : si la vidéo ne se charge
+   pas, ou si elle n'est jamais demandée, il prend le relais sans le
+   moindre saut de mise en page. */
+.hero__poster,
+.hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  filter: grayscale(.35) contrast(1.18) brightness(.72);
+}
+
+.hero__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: inherit;
+}
+
+/* La vidéo ne se dévoile qu'une fois qu'elle joue vraiment, sinon on
+   verrait une boîte vide passer devant le poster. */
+.hero__video {
+  opacity: 0;
+  transition: opacity 600ms ease;
+  animation: fx-ken 22s ease-in-out infinite alternate;
+}
+
+.hero__video.is-on { opacity: 1; }
+
+.hero__fade {
+  background: linear-gradient(180deg,
+    rgba(10, 10, 10, .72) 0%,
+    rgba(10, 10, 10, .18) 34%,
+    rgba(10, 10, 10, .86) 76%,
+    var(--bg) 100%);
+}
+
+.hero__scan { opacity: .5; }
+
+.hero__halo {
+  mix-blend-mode: overlay;
+  opacity: .35;
+  background: radial-gradient(120% 80% at 50% 30%, rgba(226, 28, 28, .55), transparent 70%);
+}
+
+
+/* Contenu du hero de l'accueil. */
+.hero__kick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: auto;
+}
+
+.hero__dot {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  animation: fx-dot 1.6s steps(2) infinite;
+}
+
+.hero__kick span:last-child {
+  font-size: clamp(10px, 2.9cqi, 12px);
+  font-weight: 700;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+/* margin-left compense l'approche gauche naturelle du F d'Anton, qui
+   décalerait visuellement le mot par rapport aux autres textes. */
+.hero__logo {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0 0 4px;
+  margin-left: -.055em;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-logo-hero);
+  line-height: .82;
+  letter-spacing: -.035em;
+  text-transform: uppercase;
+}
+
+.hero__logo span { display: inline-block; }
+.hero__logo em { font-style: normal; color: var(--red); }
+
+.hero__sig {
+  margin: 0 0 14px;
+  font-family: var(--goth);
+  font-size: var(--fs-goth-hero);
+  line-height: 1;
+  letter-spacing: .01em;
+  color: var(--fg);
+}
+
+.hero__sub {
+  margin: 0 0 22px;
+  max-width: 46ch;
+  font-size: clamp(14px, 4cqi, 17px);
+  line-height: 1.5;
+  color: var(--fg-3);
+  text-wrap: pretty;
+}
+
+.hero__cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero__cta .btn {
+  min-height: 54px;
+  padding: 0 26px;
+  font-size: clamp(13px, 3.6cqi, 14px);
+  letter-spacing: .16em;
+}
+
+.hero__cta .btn--primary:hover { box-shadow: 6px 6px 0 var(--red); }
+
+.hero__cue {
+  margin-top: 26px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg-4);
+}
+
+.hero__cue span:first-child {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.hero__cue i {
+  display: inline-block;
+  width: 1px;
+  height: 26px;
+  background: linear-gradient(180deg, var(--red), transparent);
+  animation: fx-cue 1.8s ease-in-out infinite;
+}
+
+/* Presskit : mention d'accroche du hero. */
+.hero__kick--press {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 12px;
+  font-size: clamp(10px, 2.9cqi, 12px);
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+.hero__kick--press b { width: 7px; height: 7px; background: var(--red); }
+
+@media (min-width: 900px) {
+  .hero__cta { flex-direction: row; align-items: center; }
+}
+
+/* Presskit : bloc de texte centré verticalement et aligné à gauche.
+   width: 100% et margin-right: auto, surtout pas margin: 0 auto, qui
+   recentrerait le bloc dans un conteneur flex en colonne. */
+.hero--press {
+  min-height: calc(100svh - var(--head-h) - 42px);
+  justify-content: center;
+  padding: 34px var(--pad-x) 40px;
+  border-bottom: 1px solid var(--line-head);
+}
+
+.hero--press .hero__body {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-right: auto;
+}
+
+/* Arrière-plan du hero du presskit, le tout à 50 % d'opacité. */
+.hero__bg--press { opacity: .5; }
+
+.hero__shot {
+  background-image: url("/assets/img/booth.jpg");
+  background-size: cover;
+  background-position: 62% 30%;
+  filter: grayscale(1) contrast(1.15) brightness(.5);
+}
+
+.hero__slant {
+  background: linear-gradient(100deg, var(--bg) 12%, rgba(10, 10, 10, .72) 58%, rgba(10, 10, 10, .35) 100%);
+}
+
+.hero__dots {
+  opacity: .35;
+  background-image: radial-gradient(var(--red) .9px, transparent 1.3px);
+  background-size: 5px 5px;
+}
+
+.hero__logo--press {
+  font-size: var(--fs-logo-press);
+  line-height: .84;
+  margin-bottom: 6px;
+}
+
+.hero__sig--press {
+  font-size: clamp(22px, 7cqi, 44px);
+  line-height: 1.05;
+  margin-bottom: 22px;
+}
+
+.hero__pos {
+  margin: 0 0 26px;
+  max-width: 52ch;
+  font-size: clamp(15px, 4.2cqi, 20px);
+  line-height: 1.5;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.hero__back {
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 56px;
+  padding: 0 20px;
+  background: rgba(20, 20, 20, .72);
+  font-size: clamp(12px, 3.4cqi, 13px);
+}
+
+.hero__back span:last-child { color: var(--red); }
+.hero__back:hover span:last-child { color: inherit; }
+
+@media (min-width: 900px) {
+  .hero { padding: 40px 56px 82px; }
+  .hero--press { padding: 56px 56px 72px; }
+}
+
+
+/* Page 404, même matière que le reste du site. */
+.lost {
+  position: relative;
+  z-index: 2;
+  min-height: calc(100svh - var(--head-h) - 52px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--pad-y) var(--pad-x);
+  max-width: var(--wrap);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lost__code {
+  margin: 0 0 4px;
+  margin-left: -.055em;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: min(clamp(90px, 30cqi, 300px), 26svh);
+  line-height: .82;
+  letter-spacing: -.045em;
+  color: var(--red);
+}
+
+.lost__sig {
+  margin: 0 0 20px;
+  font-family: var(--goth);
+  font-size: clamp(24px, 7cqi, 44px);
+  line-height: 1;
+  color: var(--fg);
+}
+
+.lost__body {
+  margin: 0 0 28px;
+  max-width: 46ch;
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--fg-3);
+  text-wrap: pretty;
+}
+
+.lost__cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lost__cta .btn { min-height: 54px; padding: 0 26px; letter-spacing: .16em; }
+
+@media (min-width: 900px) {
+  .lost__cta { flex-direction: row; align-items: center; }
+}
+
+/* ==========================================================================
+   9. Barre fixe
+   Hauteur 65 px : 10 + 44 + 10 de rembourrage, plus le filet bas.
+   ========================================================================== */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px var(--pad-x);
+  background: rgba(10, 10, 10, .82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line-head);
+}
+
+.bar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.bar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bar__logo {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 2px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(20px, 5.2cqi, 26px);
+  line-height: 1;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.bar__logo:hover { color: var(--fg); }
+.bar__logo em { font-style: normal; color: var(--red); }
+
+.bar__tag {
+  flex: none;
+  padding: 5px 8px;
+  border: 1px solid var(--line-soft);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+/* Navigation en clair, desktop uniquement. */
+.bar__nav {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.bar__nav a {
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* Éléments réservés au desktop ou au mobile. */
+.only-desk { display: none; }
+
+@media (min-width: 900px) {
+  .bar__nav { display: flex; }
+  .only-desk { display: inline-flex; }
+  .only-mob { display: none !important; }
+}
+
+
+/* ==========================================================================
+   10. Bascule de langue
+   Deux boutons accolés, 46 x 44 px minimum. Présente deux fois :
+   dans la barre fixe et en bas du menu mobile.
+   ========================================================================== */
+
+.lang {
+  display: flex;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+}
+
+.lang button {
+  min-width: 46px;
+  height: 44px;
+  border: 0;
+  background: none;
+  color: var(--fg-3);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  transition: background var(--t-micro) ease, color var(--t-micro) ease;
+}
+
+.lang button[aria-pressed="true"] {
+  background: var(--red);
+  color: var(--bg);
+}
+
+/* Variante pleine largeur du menu mobile, en zone basse atteignable au pouce. */
+.lang--wide {
+  display: flex;
+  gap: 10px;
+  border: 0;
+  background: none;
+}
+
+.lang--wide button {
+  flex: 1;
+  min-height: 52px;
+  height: auto;
+  border: 1px solid var(--line-soft);
+  font-size: 14px;
+  letter-spacing: .16em;
+}
+
+
+/* ==========================================================================
+   11. Hamburger et menu mobile
+   ========================================================================== */
+
+.burger {
+  width: 48px;
+  height: 44px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.burger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--fg);
+  transition: transform 300ms var(--ease), opacity var(--t-micro) ease;
+}
+
+.burger span:nth-child(2) { background: var(--red); }
+
+.burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Le panneau est collé sous la barre fixe, qui reste visible au-dessus et
+   sert de bouton de fermeture. La marge négative annule sa hauteur dans le
+   flux, il ne pousse donc rien. Il doit tenir à l'écran sans défilement
+   interne, d'où le plafond en svh sur la taille des items. */
+.menu {
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  height: calc(100svh - var(--head-h));
+  margin-bottom: calc(var(--head-h) - 100svh);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fx-menu 340ms var(--ease) both;
+}
+
+.menu[hidden] { display: none; }
+
+.menu__tex {
+  position: absolute;
+  inset: 0;
+  opacity: .3;
+  background-image: radial-gradient(var(--red) 1px, transparent 1.4px);
+  background-size: 7px 7px;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, .9), transparent 55%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, .9), transparent 55%);
+}
+
+.menu__nav {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 16px;
+}
+
+.menu__nav a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line-menu);
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: min(clamp(32px, 11cqi, 56px), 7.4svh);
+  line-height: 1.05;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+
+.menu__nav a:last-child { border-bottom: 0; }
+
+.menu__num {
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  color: var(--red);
+}
+
+.menu__foot {
+  position: relative;
+  padding: 16px 16px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--line-head);
+}
+
+.menu__sig {
+  margin-top: 4px;
+  font-family: var(--goth);
+  font-size: 18px;
+  letter-spacing: .02em;
+  color: var(--fg-4);
+  text-align: center;
+}
+
+
+/* ==========================================================================
+   12. Bandeau défilant
+   Épinglé en bas de fenêtre en permanence.
+   Il doit être le DERNIER élément du flux, après le pied de page :
+   un sticky en bottom ne retient l'élément que tant que sa position
+   naturelle est sous le bas de la fenêtre. Placé en haut du document,
+   il se décroche au premier défilement.
+   ========================================================================== */
+
+.marquee {
+  position: sticky;
+  bottom: 0;
+  z-index: 45;
+  padding: 9px 0;
+  border-top: 1px solid var(--bg);
+  background: var(--red);
+  color: var(--bg);
+  overflow: hidden;
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: fx-marquee 26s linear infinite;
+}
+
+/* white-space: pre plutôt qu'un rembourrage de raccord. L'espace
+   typographique de fin de segment est sinon mangé au raccord et les mots
+   se collent. Avec pre il est conservé au pixel, et rien ne se replie. */
+.marquee__track span {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(16px, 4.6cqi, 22px);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: pre;
+}
+
+
+/* Bandeau du presskit, un cran plus discret et plus lent. */
+.marquee--press { padding: 8px 0; }
+.marquee--press .marquee__track span {
+  font-size: clamp(14px, 4cqi, 19px);
+  letter-spacing: .05em;
+}
+
+
+/* ==========================================================================
+   13. Pied de page
+   Rembourrage bas de 22 px pour qu'il s'arrête juste au-dessus du bandeau.
+   ========================================================================== */
+
+.foot {
+  position: relative;
+  z-index: 2;
+  padding: 60px var(--pad-x) 22px;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--line);
+}
+
+.foot__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 34px;
+}
+
+.foot__mail {
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--red);
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(20px, 6.4cqi, 44px);
+  line-height: 1.05;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+.foot__note {
+  margin-top: 16px;
+  max-width: 40ch;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--fg-3);
+}
+
+.foot__links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.foot__bottom {
+  max-width: var(--wrap);
+  margin: 34px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-head);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.foot__copy {
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--fg-4);
+}
+
+.foot__sig {
+  font-family: var(--goth);
+  font-size: 15px;
+  color: var(--fg-4);
+}
+
+/* Le pied du presskit tient sur une ligne : retour au site, mention, signature. */
+.foot--press { padding-top: 26px; }
+
+.foot__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 900px) {
+  .foot__grid { grid-template-columns: 1.2fr .8fr; }
+}
+
+
+/* ==========================================================================
+   14. Section Dates
+   Le coeur de la page. Toutes les dates vivent dans un seul bloc et
+   partagent exactement le même balisage, pour qu'en phase 2 il suffise de
+   passer un objet de l'API au gabarit de main.js.
+   ========================================================================== */
+
+/* Le conteneur porte le même retrait négatif que les lignes, sinon son filet
+   supérieur est plus court que les séparateurs. */
+.dates {
+  border-top: 1px solid var(--line);
+  padding: 0 16px;
+  margin: 0 -16px;
+}
+
+.date {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px 16px;
+  padding: 24px 16px;
+  margin: 0 -16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  transition: background var(--t-hover) ease, padding var(--t-hover) ease;
+}
+
+a.date:hover { background: var(--panel-hover); color: var(--fg); }
+
+/* Annulé : toute la ligne à 40 %, le jour barré. */
+.date--off { opacity: .4; }
+.date--off .date__num { text-decoration: line-through; }
+
+.date__day {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.date__num {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-day);
+  line-height: .8;
+  letter-spacing: -.03em;
+}
+
+.date__mon {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(15px, 4.4cqi, 24px);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.date__info {
+  min-width: 0;
+  text-align: right;
+}
+
+.date__venue {
+  display: block;
+  margin: 0 0 6px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-venue);
+  line-height: 1;
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+
+.date__city {
+  display: block;
+  margin: 0 0 4px;
+  font-size: var(--fs-body);
+  color: var(--fg-3);
+}
+
+.date__tags {
+  margin: 0 0 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.date__ctx {
+  display: block;
+  margin: 0;
+  font-size: clamp(12px, 3.3cqi, 13px);
+  color: var(--fg-4);
+}
+
+.date__meta {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  justify-items: stretch;
+}
+
+/* Pastille de style. Obligatoire sur chaque date, elle évite qu'on prenne
+   une date techno pour une date Hardcore. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid var(--red);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.pill--techno {
+  border-color: var(--line-strong);
+  color: var(--fg-3);
+}
+
+/* Une date encore à confirmer s'annonce en retrait, sans être éteinte. */
+.date--tba .date__num { color: var(--fg-3); }
+.date--tba .date__mon { color: var(--red-dark); }
+.date--tba .date__venue { color: var(--fg-2); }
+
+/* Alias XEM. Ces dates doivent être immédiatement identifiables comme
+   n'étant pas des dates FORMEX. Le rouge reste réservé à FORMEX. */
+.date--alias .date__num,
+.date--alias .date__mon { color: var(--fg-4); }
+.date--alias .date__venue { color: var(--fg-3); }
+
+.alias {
+  margin: 0 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: clamp(10px, 2.9cqi, 11px);
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* Badges d'état. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+/* Une diode, pas une respiration : deux pas, sans fondu. */
+.badge__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  animation: fx-dot 1.8s steps(2) infinite;
+}
+
+.date--alias .badge { color: var(--fg-3); }
+.date--alias .badge__dot { background: var(--fg-3); animation: none; }
+
+.badge--full { background: var(--red); border-color: var(--red); color: var(--bg); }
+.badge--tba { border-style: dashed; border-color: #444; color: var(--fg-3); }
+.badge--off { border-color: var(--line-soft); color: var(--fg-4); text-decoration: line-through; }
+
+.date__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 0 20px;
+  background: var(--red);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transition: background var(--t-micro) ease;
+}
+
+a.date:hover .date__cta { background: var(--fg); }
+
+.date__cta--wait {
+  background: none;
+  border: 1px solid var(--line-soft);
+  color: var(--fg-4);
+  cursor: not-allowed;
+}
+
+/* État vide. Il servira dès que l'agenda sera branché sur l'API. */
+.empty {
+  padding: 44px 20px;
+  border: 1px dashed var(--line-soft);
+  background: var(--bg-alt);
+  text-align: center;
+}
+
+.empty__title {
+  margin: 0 0 8px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(24px, 7cqi, 40px);
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+  color: var(--fg-5);
+}
+
+.empty__body {
+  margin: 0 auto 20px;
+  max-width: 34ch;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--fg-3);
+}
+
+.empty__cta {
+  min-height: 50px;
+  padding: 0 22px;
+  border: 1px solid var(--line-strong);
+}
+.empty__cta:hover { border-color: var(--red); color: var(--red); }
+
+/* Dates passées, panneau dépliant. */
+.archive { margin-top: 22px; }
+
+.archive__toggle {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: var(--panel-hover);
+  border: 1px solid var(--line);
+  color: var(--fg-3);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  transition: color var(--t-micro) ease, border-color var(--t-micro) ease;
+}
+.archive__toggle:hover { color: var(--fg); border-color: var(--line-strong); }
+
+.archive__sign { color: var(--red); font-size: 16px; }
+
+/* Dépliage par transition sur grid-template-rows, seule façon d'animer
+   vers une hauteur automatique. */
+.archive__wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms var(--ease);
+}
+.archive__toggle[aria-expanded="true"] + .archive__wrap { grid-template-rows: 1fr; }
+
+.archive__inner { overflow: hidden; }
+
+.archive__panel {
+  padding: 6px 16px 16px;
+  border: 1px solid var(--line);
+  border-top: 0;
+  background: var(--bg-alt);
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+}
+.archive__toggle[aria-expanded="true"] + .archive__wrap .archive__panel { opacity: 1; }
+
+.archive__note {
+  margin: 12px 0 14px;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.arch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line-head);
+}
+
+a.arch { min-height: 68px; }
+
+.arch__name {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(15px, 4.4cqi, 20px);
+  text-transform: uppercase;
+  color: var(--fg-2);
+}
+
+.arch__meta {
+  display: block;
+  font-size: 12px;
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
+.arch__date {
+  flex: none;
+  font-size: 12px;
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Un vrai bouton visible, pas une flèche discrète. */
+.arch__cta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--red);
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background var(--t-micro) ease, color var(--t-micro) ease;
+}
+a.arch:hover .arch__cta { background: var(--red); color: var(--bg); }
+
+@media (min-width: 900px) {
+  .dates { padding: 0 24px; margin: 0 -24px; }
+  .date {
+    grid-template-columns: 190px minmax(0, 1fr) 230px;
+    align-items: center;
+    gap: 40px;
+    padding: 34px 24px;
+    margin: 0 -24px;
+  }
+  .date__info { text-align: left; }
+  .date__tags { justify-content: flex-start; }
+}
+
+
+/* ==========================================================================
+   15. Section Écouter
+   ========================================================================== */
+
+.sets {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.set {
+  display: block;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  transition: border-color var(--t-hover) ease, transform var(--t-hover) var(--ease);
+}
+.set:hover { border-color: var(--red); color: var(--fg); transform: translateY(-4px); }
+
+.set__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.set__play {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 15px;
+}
+
+.set--lead .set__play { background: var(--red); }
+
+.set__title {
+  display: block;
+  margin: 0 0 3px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-card);
+  letter-spacing: -.005em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.set__type {
+  display: block;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 44px;
+}
+
+.wave span {
+  flex: 1;
+  background: #3a3a3a;
+  transform-origin: bottom;
+}
+
+/* Cinq barres rouges qui pulsent, sur la carte mise en avant seulement. */
+.set--lead .wave span:nth-child(-n+5) {
+  background: var(--red);
+  animation: fx-bar 1.2s ease-in-out infinite;
+}
+.set--lead .wave span:nth-child(1) { animation-delay: 0s; }
+.set--lead .wave span:nth-child(2) { animation-delay: .08s; }
+.set--lead .wave span:nth-child(3) { animation-delay: .16s; }
+.set--lead .wave span:nth-child(4) { animation-delay: .24s; }
+.set--lead .wave span:nth-child(5) { animation-delay: .32s; }
+
+/* Le vrai lecteur SoundCloud remplace la carte au clic. L'iframe n'est
+   jamais chargée au chargement de la page. */
+.set__player {
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.set__player iframe { display: block; width: 100%; border: 0; }
+
+.plats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.plat {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 18px;
+  border: 1px solid var(--line-soft);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  transition: color var(--t-micro) ease, border-color var(--t-micro) ease;
+}
+.plat:hover { color: var(--fg); border-color: var(--red); }
+
+@media (min-width: 900px) {
+  .sets { grid-template-columns: repeat(3, 1fr); }
+}
+
+
+/* ==========================================================================
+   16. Section Bio
+   ========================================================================== */
+
+.bio {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.bio .section-title { margin-bottom: 20px; }
+
+.bio__lead {
+  margin: 0 0 18px;
+  max-width: 54ch;
+  font-size: var(--fs-lead);
+  line-height: 1.62;
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.bio__sig {
+  margin: 0 0 24px;
+  font-family: var(--goth);
+  font-size: clamp(22px, 6.5cqi, 34px);
+  line-height: 1.1;
+  color: var(--red);
+}
+
+.bio__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 9px 13px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+.portrait { position: relative; }
+
+.portrait__frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.portrait__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  filter: grayscale(1) contrast(1.1);
+}
+
+.portrait__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .28;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(#000 1px, transparent 1.5px);
+  background-size: 4px 4px;
+}
+
+/* Le crédit Leo Villalba n'apparaît que sur cette photo. Toutes les photos
+   du site ne sont pas de lui. */
+.portrait__credit {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  padding: 7px 11px;
+  background: var(--red);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 900px) {
+  .bio { grid-template-columns: 1.05fr .95fr; gap: 56px; }
+}
+
+
+/* ==========================================================================
+   17. Section Galerie et lightbox
+   ========================================================================== */
+
+.gal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.gal__item {
+  position: relative;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  min-height: 44px;
+}
+
+.gal__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08);
+  transition: transform 500ms var(--ease), filter 400ms ease;
+}
+
+.gal__item:hover img { transform: scale(1.07); }
+
+/* Sur la photo couleur, le noir et blanc se retire au même moment. */
+.gal__item--color img { filter: none; }
+.gal__item--bw:hover img { filter: grayscale(0) contrast(1.15); }
+
+.gal__num {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  color: var(--fg);
+  text-shadow: 0 1px 6px #000;
+}
+
+.gal__play {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(226, 28, 28, .92);
+  color: var(--bg);
+  font-size: 10px;
+}
+
+.gal__more {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border: 1px dashed var(--line-soft);
+  background: var(--control);
+  text-align: center;
+  transition: border-color var(--t-hover) ease, background var(--t-hover) ease;
+}
+.gal__more:hover { border-color: var(--red); background: var(--panel); }
+
+.gal__more b {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(20px, 6cqi, 28px);
+  line-height: .95;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.gal__more span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+/* Lightbox. L'image est lue depuis un data-src, il n'y a jamais de href
+   vers un fichier image. */
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  background: rgba(6, 6, 6, .97);
+  animation: fx-in var(--t-hover) ease both;
+}
+.lb[hidden] { display: none; }
+
+.lb__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line-head);
+}
+
+.lb__count {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  color: var(--fg-3);
+}
+
+.lb__close {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.lb__view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.lb__view img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  transition: opacity 180ms ease;
+}
+
+.lb.is-swap .lb__view img { opacity: 0; }
+
+.lb__foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-top: 1px solid var(--line-head);
+}
+
+.lb__nav {
+  flex: 1;
+  min-height: 54px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+.lb__nav:hover { border-color: var(--red); }
+
+.lb__gap { flex: 2; }
+
+@media (min-width: 900px) {
+  .gal { grid-template-columns: repeat(4, 1fr); }
+}
+
+
+/* ==========================================================================
+   18. Section Réseaux
+   ========================================================================== */
+
+.socials { border-top: 1px solid var(--line); }
+
+.social {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  transition: padding-left var(--t-hover) ease, background var(--t-hover) ease;
+}
+.social:hover { padding-left: 14px; background: var(--panel-hover); color: var(--fg); }
+
+.social__name {
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(22px, 6.6cqi, 34px);
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+
+.social__id {
+  font-size: clamp(12px, 3.3cqi, 14px);
+  color: var(--fg-4);
+}
+
+.social__id i { font-style: normal; color: var(--red); }
+
+
+/* ==========================================================================
+   19. Presskit
+   ========================================================================== */
+
+/* Les trois bios, en onglets. */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  background: var(--control);
+}
+
+.tab {
+  flex: 1;
+  min-height: 48px;
+  border: 0;
+  background: none;
+  color: var(--fg-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transition: background var(--t-micro) ease, color var(--t-micro) ease;
+}
+
+.tab[aria-selected="true"] { background: var(--red); color: var(--bg); }
+
+.biobox {
+  border: 1px solid var(--line);
+  background: var(--bg-alt);
+}
+
+.biobox__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line-head);
+}
+
+.biobox__meta {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+/* Aucune alerte, aucun message bloquant : le bouton passe en rouge plein
+   pendant 1,8 s puis revient à son état de repos. */
+.copy {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  color: var(--fg-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transition: background var(--t-micro) ease, color var(--t-micro) ease, border-color var(--t-micro) ease;
+}
+.copy:hover { color: var(--fg); border-color: var(--line-strong); }
+
+.copy.is-done {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bg);
+}
+
+/* white-space: pre-line conserve les paragraphes des bios longues. */
+.biobox__text {
+  margin: 0;
+  padding: 20px 16px 24px;
+  font-size: clamp(15px, 4.1cqi, 18px);
+  line-height: 1.68;
+  color: var(--fg-2);
+  white-space: pre-line;
+  text-wrap: pretty;
+}
+
+.biobox__text.is-swap { opacity: 0; }
+.biobox__text { transition: opacity 350ms var(--ease); }
+
+/* Photos HD. Pas de crédit ici, seule la photo de la bio de l'accueil
+   est de Leo Villalba. */
+.shots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.shot {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08);
+  transition: transform 500ms var(--ease);
+}
+
+.shot--color img { filter: none; }
+.shot:hover img { transform: scale(1.06); }
+
+.drives {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.drive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 72px;
+  padding: 16px 18px;
+  border: 1px solid var(--line-soft);
+  background: var(--control);
+  color: var(--fg);
+  transition: border-color var(--t-hover) ease, transform var(--t-hover) ease;
+}
+.drive:hover { border-color: var(--red); color: var(--fg); transform: translateY(-3px); }
+
+.drive__name {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: var(--fs-card);
+  text-transform: uppercase;
+}
+
+.drive__sub {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--fg-4);
+}
+
+.drive__go { flex: none; color: var(--red); font-size: 20px; }
+
+/* Sets de référence. */
+.pksets { border-top: 1px solid var(--line); }
+
+.pkset {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  transition: background var(--t-hover) ease, padding-left var(--t-hover) ease;
+}
+.pkset:hover { background: var(--panel-hover); padding-left: 12px; color: var(--fg); }
+
+.pkset__play {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-strong);
+  color: var(--fg);
+  font-size: 13px;
+}
+
+.pkset--lead .pkset__play {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--bg);
+}
+
+.pkset__body { flex: 1; min-width: 0; }
+
+.pkset__title {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(18px, 5.4cqi, 26px);
+  letter-spacing: -.005em;
+  text-transform: uppercase;
+}
+
+.pkset__type {
+  display: block;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.pkset__go { flex: none; color: var(--red); }
+
+/* Rider technique. Seule section du site où le matériel se mentionne,
+   c'est un document contractuel destiné aux régisseurs. */
+.rider {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.card {
+  padding: 20px 18px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.card__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(19px, 5.6cqi, 26px);
+  letter-spacing: -.005em;
+  text-transform: uppercase;
+}
+
+.card__title i { width: 10px; height: 10px; background: var(--red); }
+.card__title--alt i { background: var(--fg); }
+
+.card__lbl {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.card__list {
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.card__list:last-child { margin-bottom: 0; }
+
+.card__list li {
+  display: flex;
+  gap: 10px;
+  font-size: clamp(14px, 3.9cqi, 16px);
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+
+.card__list li::before {
+  content: "·";
+  flex: none;
+  color: var(--red);
+}
+
+.rider__dl {
+  margin-top: 14px;
+  width: 100%;
+  min-height: 58px;
+  padding: 0 22px;
+  border: 1px solid var(--line-strong);
+  background: var(--control);
+  color: var(--fg);
+  font-size: 12px;
+  letter-spacing: .16em;
+}
+.rider__dl:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+
+/* Contact et téléchargements. */
+.contact {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 34px;
+}
+
+.contact__mail {
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--red);
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(19px, 5.8cqi, 38px);
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+.contact__note {
+  margin: 18px 0 0;
+  max-width: 44ch;
+  font-size: clamp(13px, 3.7cqi, 16px);
+  line-height: 1.6;
+  color: var(--fg-3);
+}
+
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.contact__links a {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+  border: 1px solid var(--line-soft);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  transition: color var(--t-micro) ease, border-color var(--t-micro) ease;
+}
+.contact__links a:hover { color: var(--fg); border-color: var(--red); }
+
+.dls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 84px;
+  padding: 18px;
+  color: var(--fg);
+  transition: transform 220ms var(--ease), box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.dl__name {
+  display: block;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: clamp(19px, 5.6cqi, 26px);
+  letter-spacing: -.01em;
+  text-transform: uppercase;
+}
+
+.dl__sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+
+.dl__go { flex: none; font-size: 26px; font-weight: 800; }
+
+.dl--main {
+  background: var(--red);
+  color: var(--bg);
+}
+.dl--main .dl__sub { color: inherit; opacity: .72; }
+.dl--main:hover {
+  color: var(--bg);
+  transform: translateY(-3px);
+  box-shadow: 8px 8px 0 rgba(226, 28, 28, .32);
+}
+
+.dl--alt {
+  border: 1px solid var(--line-strong);
+  background: var(--control);
+}
+.dl--alt .dl__go { color: var(--red); }
+.dl--alt:hover { color: var(--fg); border-color: var(--fg); transform: translateY(-3px); }
+
+.dl--drive {
+  min-height: 64px;
+  padding: 16px 18px;
+  border: 1px dashed var(--line-soft);
+  color: var(--fg-3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.dl--drive:hover { border-color: var(--red); color: var(--fg); }
+
+@media (min-width: 900px) {
+  .drives { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .rider { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .contact { grid-template-columns: .85fr 1.15fr; gap: 56px; }
+}
+
+
+/* ==========================================================================
+   20. Animations
+   On n'anime que transform, opacity et filter, pour rester fluide sur un
+   téléphone d'entrée de gamme.
+   ========================================================================== */
+
+@keyframes fx-letter {
+  from { opacity: 0; transform: translateY(22%) scaleY(1.35); filter: blur(7px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+
+@keyframes fx-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes fx-ken {
+  from { transform: scale(1.04) translateY(0); }
+  to   { transform: scale(1.16) translateY(-1.5%); }
+}
+
+/* Volontairement saccadé, en deux pas. C'est une diode, pas une respiration. */
+@keyframes fx-dot {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .15; }
+}
+
+@keyframes fx-cue {
+  0%, 100% { transform: translateY(0); opacity: .45; }
+  50%      { transform: translateY(9px); opacity: 1; }
+}
+
+@keyframes fx-reveal {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes fx-bar {
+  0%, 100% { transform: scaleY(.35); }
+  50%      { transform: scaleY(1); }
+}
+
+@keyframes fx-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fx-menu {
+  from { opacity: 0; transform: translateY(-2%); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Apparition au scroll.
+   Chemin principal, tout en CSS sur les navigateurs récents. */
+.rv {
+  animation: fx-reveal var(--t-reveal) var(--ease) both;
+  animation-timeline: view();
+  animation-range: entry 4% cover 26%;
+}
+
+/* Repli. La classe .no-vt est posée dès le <head> quand le navigateur ne
+   gère pas animation-timeline, donc avant le premier rendu, sans clignotement.
+   main.js pose ensuite .is-in une seule fois et ne la retire jamais : un
+   élément déjà apparu ne doit pas redisparaître au défilement inverse. */
+.no-vt .rv {
+  animation: none;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--t-reveal) var(--ease), transform var(--t-reveal) var(--ease);
+}
+.no-vt .rv.is-in { opacity: 1; transform: none; }
+
+/* Filet de sécurité. Une view timeline sans amplitude de défilement reste
+   inactive : l'animation garde son état de départ et le contenu ne s'affiche
+   jamais. Sur une page trop courte pour défiler, main.js neutralise l'effet
+   plutôt que de laisser une section invisible. */
+.rv-off {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Le logo se déplace de la barre de l'accueil vers le titre du presskit.
+   Sans effet sur les navigateurs qui ne gèrent pas les View Transitions. */
+@view-transition { navigation: auto; }
+
+
+/* ==========================================================================
+   21. prefers-reduced-motion
+   Tout reste lisible, rien ne bouge, aucune fonctionnalité perdue.
+   Le grain, le halftone et les scanlines ne sont pas des animations de
+   contenu : ils restent visibles, la matière ne disparaît pas.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    animation-timeline: auto !important;
+  }
+  html { scroll-behavior: auto; }
+}
