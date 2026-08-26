@@ -1231,6 +1231,13 @@ body.is-over .snd--float { display: none !important; }
 .date {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
+  /* En mobile le jour et le lieu tiennent la première ligne, l'état et les
+     pastilles se font face sur la seconde. Sans ça, le bloc d'informations
+     imposait seul la hauteur de la ligne et creusait un vide en bas à
+     droite, la colonne de l'état étant deux fois plus courte. */
+  grid-template-areas:
+    "day  info"
+    "meta aside";
   gap: 14px 16px;
   padding: 24px 16px;
   margin: 0 -16px;
@@ -1246,6 +1253,7 @@ a.date:hover { background: var(--panel-hover); color: var(--fg); }
 .date--off .date__num { text-decoration: line-through; }
 
 .date__day {
+  grid-area: day;
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -1269,6 +1277,16 @@ a.date:hover { background: var(--panel-hover); color: var(--fg); }
 }
 
 .date__info {
+  grid-area: info;
+  min-width: 0;
+  text-align: right;
+}
+
+/* Pastilles et ligne de contexte, calées en bas pour venir à hauteur du
+   bouton d'action qui leur fait face. */
+.date__aside {
+  grid-area: aside;
+  align-self: end;
   min-width: 0;
   text-align: right;
 }
@@ -1307,6 +1325,7 @@ a.date:hover { background: var(--panel-hover); color: var(--fg); }
 }
 
 .date__meta {
+  grid-area: meta;
   display: grid;
   gap: 8px;
   align-content: start;
@@ -1554,14 +1573,23 @@ a.arch:hover .arch__cta { background: var(--red); color: var(--bg); }
 
 @media (min-width: 900px) {
   .dates { padding: 0 24px; margin: 0 -24px; }
+  /* En desktop on revient aux trois colonnes du handoff. Le bloc des
+     pastilles se replace juste sous les informations, dans la même
+     colonne, ce qui redonne exactement la mise en page d'origine. */
   .date {
     grid-template-columns: 190px minmax(0, 1fr) 230px;
+    grid-template-areas:
+      "day info  meta"
+      "day aside meta";
     align-items: center;
-    gap: 40px;
+    gap: 0 40px;
     padding: 34px 24px;
     margin: 0 -24px;
   }
-  .date__info { text-align: left; }
+  .date__info,
+  .date__aside { text-align: left; }
+  .date__aside { align-self: start; }
+  .date__ctx { padding-bottom: 0; }
   .date__tags { justify-content: flex-start; }
 }
 
