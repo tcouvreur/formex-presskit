@@ -469,9 +469,74 @@ img {
 }
 
 /* Tout le contenu passe au-dessus des couches de fond. */
-.hero > *:not(.hero__bg) {
+.hero > *:not(.hero__bg):not(.snd) {
   position: relative;
   z-index: 1;
+}
+
+/* Bouton de son, en bas à droite du hero, en miroir du repère de scroll.
+   Il s'arrête au même niveau, donc toujours au-dessus du bandeau épinglé. */
+.snd {
+  position: absolute;
+  right: var(--pad-x);
+  bottom: 72px;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  background: rgba(20, 20, 20, .6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color var(--t-micro) ease, background var(--t-micro) ease;
+}
+
+.snd[hidden] { display: none; }
+.snd:hover { border-color: var(--red); background: var(--panel); }
+
+.snd__bars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 18px;
+}
+
+.snd__bars i {
+  display: block;
+  width: 3px;
+  background: var(--fg-3);
+  transform-origin: center;
+}
+
+.snd__bars i:nth-child(1) { height: 45%; }
+.snd__bars i:nth-child(2) { height: 100%; }
+.snd__bars i:nth-child(3) { height: 65%; }
+
+/* Son actif : les barres passent au rouge et se mettent à bouger. */
+.snd[aria-pressed="true"] .snd__bars i {
+  background: var(--red);
+  animation: fx-bar 1.2s ease-in-out infinite;
+}
+.snd[aria-pressed="true"] .snd__bars i:nth-child(2) { animation-delay: .12s; }
+.snd[aria-pressed="true"] .snd__bars i:nth-child(3) { animation-delay: .24s; }
+
+/* Barre oblique tant que le son est coupé. */
+.snd__cut {
+  position: absolute;
+  width: 26px;
+  height: 2px;
+  background: var(--red);
+  transform: rotate(-45deg);
+  transform-origin: center;
+  transition: opacity var(--t-micro) ease, transform var(--t-micro) ease;
+}
+
+.snd[aria-pressed="true"] .snd__cut {
+  opacity: 0;
+  transform: rotate(-45deg) scaleX(0);
 }
 
 /* Empilement de l'arrière-plan du hero, du fond vers l'avant.
@@ -712,6 +777,60 @@ img {
   .hero--press { padding: 56px 56px 72px; }
 }
 
+
+/* Page 404, même matière que le reste du site. */
+.lost {
+  position: relative;
+  z-index: 2;
+  min-height: calc(100svh - var(--head-h) - 52px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--pad-y) var(--pad-x);
+  max-width: var(--wrap);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lost__code {
+  margin: 0 0 4px;
+  margin-left: -.055em;
+  font-family: var(--head);
+  font-weight: 400;
+  font-size: min(clamp(90px, 30cqi, 300px), 26svh);
+  line-height: .82;
+  letter-spacing: -.045em;
+  color: var(--red);
+}
+
+.lost__sig {
+  margin: 0 0 20px;
+  font-family: var(--goth);
+  font-size: clamp(24px, 7cqi, 44px);
+  line-height: 1;
+  color: var(--fg);
+}
+
+.lost__body {
+  margin: 0 0 28px;
+  max-width: 46ch;
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--fg-3);
+  text-wrap: pretty;
+}
+
+.lost__cta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lost__cta .btn { min-height: 54px; padding: 0 26px; letter-spacing: .16em; }
+
+@media (min-width: 900px) {
+  .lost__cta { flex-direction: row; align-items: center; }
+}
 
 /* ==========================================================================
    9. Barre fixe
@@ -981,22 +1100,21 @@ img {
   animation: fx-marquee 26s linear infinite;
 }
 
-/* padding-right: .5em sur chaque segment, sinon l'espace typographique de
-   fin est mangé au raccord et les mots se collent. */
+/* white-space: pre plutôt qu'un rembourrage de raccord. L'espace
+   typographique de fin de segment est sinon mangé au raccord et les mots
+   se collent. Avec pre il est conservé au pixel, et rien ne se replie. */
 .marquee__track span {
-  padding-right: .5em;
   font-family: var(--head);
   font-weight: 400;
   font-size: clamp(16px, 4.6cqi, 22px);
   letter-spacing: .04em;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: pre;
 }
 
 
 /* Bandeau du presskit, un cran plus discret et plus lent. */
 .marquee--press { padding: 8px 0; }
-.marquee--press .marquee__track { animation-duration: 30s; }
 .marquee--press .marquee__track span {
   font-size: clamp(14px, 4cqi, 19px);
   letter-spacing: .05em;

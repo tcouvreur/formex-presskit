@@ -1,90 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>404 — FORMEX</title>
-<meta name="robots" content="noindex">
+<title>404 · FORMEX</title>
 <meta name="description" content="Cette page n'existe pas. FORMEX, DJ Hardcore basé à Lille.">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="robots" content="noindex">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0a0a0a; --fg:#ededed; --muted:#9a9a9a; --line:#222;
-    --red:#e21c1c; --red-d:#b31515;
-    --head:'Oswald',Impact,sans-serif;
-    --body:'Inter','Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--body);
-    display:flex;align-items:center;justify-content:center;text-align:center;
-    padding:40px 32px;overflow-x:hidden;
-    background-image:
-      radial-gradient(circle at 50% 42%,rgba(226,28,28,.16),transparent 62%),
-      repeating-linear-gradient(0deg,rgba(255,255,255,.022) 0 1px,transparent 1px 3px);
-  }
-  .wrap{max-width:620px;animation:up .55s cubic-bezier(.2,.7,.3,1) both;}
-  @keyframes up{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Pirata+One&display=swap" rel="stylesheet">
 
-  .code{
-    font-family:var(--head);font-weight:700;line-height:.85;
-    font-size:clamp(80px,17vw,180px);letter-spacing:-.02em;margin:0;
-    color:transparent;-webkit-text-stroke:2px var(--red);
-    text-shadow:0 0 46px rgba(226,28,28,.32);
-    animation:flick 5.5s steps(1) infinite;
-  }
-  @keyframes flick{
-    0%,42%,46%,58%,100%{opacity:1;}
-    43%,45%{opacity:.55;}
-    59%{opacity:.72;}
-  }
-
-  h1{
-    font-family:var(--head);font-weight:600;text-transform:uppercase;
-    letter-spacing:.14em;font-size:clamp(17px,3.4vw,25px);
-    margin:22px 0 12px;
-  }
-  p{color:var(--muted);font-size:15px;line-height:1.65;margin:0 0 6px;}
-  p.en{font-size:13.5px;color:#6f6f6f;margin-bottom:30px;}
-
-  .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-  .btn{
-    display:inline-block;font-family:var(--head);font-weight:600;
-    text-transform:uppercase;letter-spacing:.1em;font-size:13.5px;
-    padding:13px 26px;border-radius:8px;text-decoration:none;
-    transition:transform .18s,background .18s,border-color .18s,color .18s;
-  }
-  .btn-primary{background:var(--red);color:#fff;border:1px solid var(--red);}
-  .btn-primary:hover{background:var(--red-d);border-color:var(--red-d);transform:translateY(-2px);}
-  .btn-ghost{border:1px solid var(--line);color:var(--muted);}
-  .btn-ghost:hover{border-color:var(--red);color:var(--fg);transform:translateY(-2px);}
-
-  .sig{
-    margin-top:38px;font-family:var(--head);font-weight:500;
-    text-transform:uppercase;letter-spacing:.3em;font-size:11px;color:#4a4a4a;
-  }
-
-  @media (prefers-reduced-motion:reduce){
-    .wrap{animation:none;}
-    .code{animation:none;}
-    .btn:hover{transform:none;}
-  }
-</style>
+<link rel="stylesheet" href="/assets/css/style.css">
+<script>if(!(window.CSS&&CSS.supports&&CSS.supports('animation-timeline','view()'))){document.documentElement.className+=' no-vt';}</script>
 </head>
+
 <body>
-  <main class="wrap">
-    <p class="code">404</p>
-    <h1>Cette page n'existe pas</h1>
-    <p>Le lien est cassé, ou la page a bougé.</p>
-    <p class="en">This page doesn't exist. The link is broken, or the page has moved.</p>
-    <div class="actions">
-      <a class="btn btn-primary" href="/">Retour au site</a>
-      <a class="btn btn-ghost" href="/#contact">Booking</a>
+<div class="page">
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="bar">
+    <div class="bar__left">
+      <a class="bar__logo" href="/">FOR<em>M</em>EX</a>
     </div>
-    <p class="sig">Hardcore will never die</p>
-  </main>
+    <div class="bar__right">
+      <div class="lang" role="group" aria-label="Langue">
+        <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <!-- En mobile la place manque dans la barre, et le bouton est de
+           toute façon présent dans le corps de la page. -->
+      <a class="btn btn--primary only-desk" href="/" data-i18n="e404Cta">Retour à l'accueil</a>
+    </div>
+  </header>
+
+  <section class="lost">
+    <p class="eyebrow">404 / <span data-i18n="e404Lbl">Page introuvable</span></p>
+    <h1 class="lost__code">404</h1>
+    <p class="lost__sig">Hardcore will never die</p>
+    <p class="lost__body" data-i18n="e404Body">Cette page n'existe pas ou n'existe plus. Le reste du site, lui, est toujours là.</p>
+
+    <div class="lost__cta">
+      <a class="btn btn--primary" href="/" data-i18n="e404Cta">Retour à l'accueil</a>
+      <a class="btn btn--ghost" href="/#dates" data-i18n="e404Dates">Voir les dates</a>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div class="foot__bottom">
+      <span class="foot__copy">© <span data-year>2026</span> FORMEX · Lille</span>
+      <span class="foot__sig">Hardcore will never die</span>
+    </div>
+  </footer>
+
+  <!-- Dernier élément du flux, comme sur les deux autres pages. -->
+  <div class="marquee" aria-hidden="true" data-marquee="HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENNIUM / DJ / EARLY / VINYLS / FRANCE">
+    <div class="marquee__track">
+      <span>HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENNIUM / DJ / EARLY / VINYLS / FRANCE / HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENNIUM / DJ / EARLY / VINYLS / FRANCE / HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENNIUM / DJ / EARLY / VINYLS / FRANCE / </span>
+      <span>HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENNIUM / DJ / EARLY / VINYLS / FRANCE / HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENNIUM / DJ / EARLY / VINYLS / FRANCE / HARDCORE WILL NEVER DIE / MIX / LILLE / GABBER / PODCAST / MILLENNIUM / DJ / EARLY / VINYLS / FRANCE / </span>
+    </div>
+  </div>
+
+</div>
+
+<script src="/assets/js/main.js" defer></script>
 </body>
 </html>

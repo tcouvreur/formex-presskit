@@ -13,6 +13,9 @@
      8. Lecteurs SoundCloud
      9. Presskit, onglets de bio et bouton copier
      10. Vidéo du hero
+     11. Son de la vidéo
+     12. Bandeau défilant, sans raccord visible
+     13. Ancres internes, sans les montrer dans l'URL
    ========================================================================== */
 
 (function () {
@@ -158,6 +161,8 @@
       lblBooking: "Booking", footNote: "Pour les dates, les demandes presse et les partenariats. Réponse sous 48 h.",
       footPress: "Presskit", credit: "Photos : Leo Villalba",
       lbPrev: "Préc", lbNext: "Suiv",
+      sndOn: "Couper le son", sndOff: "Activer le son",
+      e404Lbl: "Page introuvable", e404Body: "Cette page n'existe pas ou n'existe plus. Le reste du site, lui, est toujours là.", e404Cta: "Retour à l'accueil", e404Dates: "Voir les dates",
 
       /* Presskit */
       backSite: "Retour au site", kicker: "Press kit · Booking 2026",
@@ -205,6 +210,8 @@
       lblBooking: "Booking", footNote: "For dates, press requests and partnerships. Reply within 48 hours.",
       footPress: "Press kit", credit: "Photos: Leo Villalba",
       lbPrev: "Prev", lbNext: "Next",
+      sndOn: "Mute", sndOff: "Unmute",
+      e404Lbl: "Page not found", e404Body: "This page does not exist, or no longer does. The rest of the site is still here.", e404Cta: "Back to home", e404Dates: "See the dates",
 
       /* Presskit */
       backSite: "Back to site", kicker: "Press kit · Booking 2026",
@@ -288,6 +295,7 @@
     });
 
     if (typeof renderBio === 'function') { renderBio(silent); }
+    if (typeof paintSound === 'function') { paintSound(); }
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
@@ -470,7 +478,8 @@
      suffit, et cinq mégaoctets ne partent pas pour rien.
      ======================================================================== */
 
-  var heroVideo = document.querySelector('.hero__video');
+  var heroVideo  = document.querySelector('.hero__video');
+  var heroLoaded = false;
 
   if (heroVideo && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var small = window.matchMedia('(max-width: 767px)').matches;
@@ -486,6 +495,139 @@
        données. Le poster reste alors affiché, il n'y a rien à rattraper. */
     var played = heroVideo.play();
     if (played && played.catch) { played.catch(function () {}); }
+
+    heroLoaded = true;
+  }
+
+
+  /* ========================================================================
+     11. Son de la vidéo
+     Coupé par défaut : aucun navigateur n'accepte une lecture automatique
+     avec le son. Le clic est un geste utilisateur, il a donc le droit de
+     le rétablir.
+     Le bouton n'apparaît que si la vidéo servie porte vraiment une piste
+     audio, signalée par l'attribut data-audio sur la balise. Un bouton qui
+     ne fait rien est pire que pas de bouton.
+     ======================================================================== */
+
+  var snd = document.querySelector('.snd');
+
+  if (snd && heroVideo && heroLoaded && heroVideo.hasAttribute('data-audio')) {
+    snd.hidden = false;
+
+    window.paintSound = function () {
+      var on = !heroVideo.muted;
+      snd.setAttribute('aria-pressed', on ? 'true' : 'false');
+      var label = DICT[lang][on ? 'sndOn' : 'sndOff'];
+      snd.setAttribute('aria-label', label);
+      snd.querySelector('.sr-only').textContent = label;
+    };
+
+    snd.addEventListener('click', function () {
+      heroVideo.muted = !heroVideo.muted;
+      if (!heroVideo.muted) {
+        heroVideo.volume = 1;
+        var p = heroVideo.play();
+        if (p && p.catch) { p.catch(function () {}); }
+      }
+      window.paintSound();
+    });
+
+    window.paintSound();
+  }
+
+
+  /* ========================================================================
+     12. Bandeau défilant, sans raccord visible
+     Le piège : la translation de 0 à -50% n'est continue que si CHAQUE
+     segment est plus large que la fenêtre. En dessous, la fin du premier
+     segment sort de l'écran avant que le second n'ait fini de le couvrir,
+     et un trou apparaît. C'était le cas en 1440 px, où le segment mesurait
+     1431 px pour une fenêtre de 1440.
+     On répète donc le motif autant de fois qu'il le faut, puis on duplique
+     le segment à l'identique.
+     La vitesse suit la taille de police, 2,5 fois sa valeur en pixels par
+     seconde, ce qui reproduit exactement la cadence d'origine à toute
+     largeur au lieu de s'emballer sur les grands écrans.
+     ======================================================================== */
+
+  Array.prototype.forEach.call(document.querySelectorAll('.marquee[data-marquee]'), function (m) {
+    var track = m.querySelector('.marquee__track');
+    var unit  = m.getAttribute('data-marquee').replace(/\s*\/\s*$/, '') + ' / ';
+
+    function build() {
+      track.style.animation = 'none';
+      track.textContent = '';
+
+      var seg = document.createElement('span');
+      seg.textContent = unit;
+      track.appendChild(seg);
+
+      var one = seg.getBoundingClientRect().width;
+      if (!one) { return; }
+
+      /* + 80 px de marge, pour ne jamais tomber pile sur la largeur. */
+      var times = Math.max(2, Math.ceil((m.getBoundingClientRect().width + 80) / one));
+      seg.textContent = new Array(times + 1).join(unit);
+
+      track.appendChild(seg.cloneNode(true));
+
+      var width = seg.getBoundingClientRect().width;
+      var size  = parseFloat(window.getComputedStyle(seg).fontSize) || 20;
+
+      track.style.animation = '';
+      track.style.animationDuration = (width / (size * 2.5)) + 's';
+    }
+
+    build();
+
+    /* Le nombre de répétitions dépend de la largeur, il faut refaire le
+       calcul quand elle change, rotation d'écran comprise. */
+    var t;
+    window.addEventListener('resize', function () {
+      clearTimeout(t);
+      t = setTimeout(build, 200);
+    });
+  });
+
+
+  /* ========================================================================
+     13. Ancres internes, sans les montrer dans l'URL
+     Les liens gardent leur href, indispensable sans JavaScript, pour le
+     clic milieu et pour les lecteurs d'écran. Mais on intercepte le clic
+     et on fait défiler nous-mêmes, sans poser de hash.
+     scrollIntoView sans option suit le scroll-behavior de la feuille,
+     donc doux normalement et instantané sous prefers-reduced-motion, et
+     il respecte le scroll-margin-top qui compense la barre fixe.
+     ======================================================================== */
+
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!link) { return; }
+
+    var id = link.getAttribute('href').slice(1);
+    if (!id) { return; }
+
+    var target = document.getElementById(id);
+    if (!target) { return; }
+
+    e.preventDefault();
+
+    if (id === 'hero') {
+      window.scrollTo({ top: 0, left: 0 });
+    } else {
+      target.scrollIntoView({ block: 'start' });
+    }
+  });
+
+  /* Une ancre reçue de l'extérieur, par exemple le bouton Voir les dates
+     du 404, fait bien son saut natif. On nettoie juste l'URL derrière. */
+  if (window.location.hash && document.getElementById(window.location.hash.slice(1))) {
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }, 60);
+    });
   }
 
 
