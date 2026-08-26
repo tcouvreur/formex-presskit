@@ -60,6 +60,19 @@
         <a href="#galerie" data-i18n="nav4">Galerie</a>
       </nav>
 
+      <!-- Son de la vidéo, version mobile. En desktop c'est la version
+           flottante en bas à droite qui prend le relais. -->
+      <button class="snd snd--bar" type="button" aria-pressed="false" hidden>
+      <span class="snd__wave" aria-hidden="true"><i></i><i></i><i></i></span>
+      <svg class="snd__mute" aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="none">
+        <path d="M4 9.3v5.4h3.6L12 18.6V5.4L7.6 9.3H4Z" fill="currentColor"/>
+        <path d="M15.4 9.4a3.6 3.6 0 0 1 0 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M18 7a7 7 0 0 1 0 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path class="snd__slash" d="M3.4 3.4 20.6 20.6" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span class="sr-only" data-i18n="sndOff">Activer le son</span>
+      </button>
+
       <div class="lang" role="group" aria-label="Langue">
         <button type="button" data-lang="fr" aria-pressed="true">FR</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -153,15 +166,6 @@
       <i aria-hidden="true"></i>
     </p>
 
-    <!-- Son de la vidéo. Coupé par défaut, la lecture automatique avec le
-         son est refusée par tous les navigateurs. Le clic est un geste
-         utilisateur, il a donc le droit de le rétablir.
-         Masqué tant que la vidéo servie n'a pas de piste audio. -->
-    <button class="snd" type="button" aria-pressed="false" hidden>
-      <span class="snd__bars" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span class="snd__cut" aria-hidden="true"></span>
-      <span class="sr-only" data-i18n="sndOff">Activer le son</span>
-    </button>
   </section>
 
 
@@ -516,6 +520,21 @@
   </div>
 
 </div>
+
+<!-- Son de la vidéo, version desktop, épinglée en bas à droite juste
+     au-dessus du bandeau. Volontairement hors de .page : son
+     container-type ferait de .page le bloc conteneur du position: fixed,
+     et le bouton défilerait avec la page. -->
+<button class="snd snd--float" type="button" aria-pressed="false" hidden>
+  <span class="snd__wave" aria-hidden="true"><i></i><i></i><i></i></span>
+  <svg class="snd__mute" aria-hidden="true" viewBox="0 0 24 24" width="21" height="21" fill="none">
+    <path d="M4 9.3v5.4h3.6L12 18.6V5.4L7.6 9.3H4Z" fill="currentColor"/>
+    <path d="M15.4 9.4a3.6 3.6 0 0 1 0 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M18 7a7 7 0 0 1 0 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path class="snd__slash" d="M3.4 3.4 20.6 20.6" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>
+  <span class="sr-only" data-i18n="sndOff">Activer le son</span>
+</button>
 
 <script src="/assets/js/main.js" defer></script>
 </body>

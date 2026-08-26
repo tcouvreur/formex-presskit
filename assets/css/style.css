@@ -474,70 +474,85 @@ img {
   z-index: 1;
 }
 
-/* Bouton de son, en bas à droite du hero, en miroir du repère de scroll.
-   Il s'arrête au même niveau, donc toujours au-dessus du bandeau épinglé. */
+/* Bouton de son de la vidéo du hero.
+   Deux exemplaires dans la page, un seul visible à la fois : dans la barre
+   fixe en mobile, flottant en bas à droite en desktop. Les deux sont
+   pilotés ensemble par main.js.
+   Au repos on montre une enceinte barrée, c'est ce qui se lit le mieux
+   comme « le son est coupé, clique pour l'activer ». Une fois actif, la
+   forme d'onde animée prend le relais. */
 .snd {
-  position: absolute;
-  right: var(--pad-x);
-  bottom: 72px;
-  z-index: 2;
-  width: 48px;
-  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
   padding: 0;
   border: 1px solid var(--line-strong);
   background: rgba(20, 20, 20, .6);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  transition: border-color var(--t-micro) ease, background var(--t-micro) ease;
+  color: var(--fg-3);
+  transition: border-color var(--t-micro) ease, background var(--t-micro) ease, color var(--t-micro) ease;
 }
 
-.snd[hidden] { display: none; }
-.snd:hover { border-color: var(--red); background: var(--panel); }
+.snd[hidden] { display: none !important; }
+.snd:hover { border-color: var(--red); background: var(--panel); color: var(--fg); }
 
-.snd__bars {
+/* Dans la barre fixe, on colle à la hauteur des autres contrôles. */
+.snd--bar {
+  display: none;
+  width: 46px;
+  height: 44px;
+  background: var(--control);
+  border-color: var(--line-soft);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Flottant, épinglé juste au-dessus du bandeau rouge. --mq-h est mesurée
+   par main.js, la hauteur du bandeau dépend de la taille de police fluide. */
+.snd--float {
+  display: none;
+  position: fixed;
+  right: 10px;
+  bottom: calc(var(--mq-h, 52px) + 14px);
+  z-index: 46;
+}
+
+@media (max-width: 899px) { .snd--bar   { display: flex; } }
+@media (min-width: 900px) { .snd--float { display: flex; } }
+
+/* Le menu mobile et la lightbox passent devant, le bouton flottant sort. */
+body.is-over .snd--float { display: none !important; }
+
+/* --- état coupé, l'enceinte barrée --- */
+.snd__mute .snd__slash { stroke: var(--red); }
+.snd[aria-pressed="true"] .snd__mute { display: none; }
+
+/* --- état actif, la forme d'onde qui bouge --- */
+.snd__wave {
   display: flex;
   align-items: center;
   gap: 3px;
   height: 18px;
 }
 
-.snd__bars i {
+.snd__wave i {
   display: block;
   width: 3px;
-  background: var(--fg-3);
-  transform-origin: center;
-}
-
-.snd__bars i:nth-child(1) { height: 45%; }
-.snd__bars i:nth-child(2) { height: 100%; }
-.snd__bars i:nth-child(3) { height: 65%; }
-
-/* Son actif : les barres passent au rouge et se mettent à bouger. */
-.snd[aria-pressed="true"] .snd__bars i {
   background: var(--red);
+  transform-origin: center;
   animation: fx-bar 1.2s ease-in-out infinite;
 }
-.snd[aria-pressed="true"] .snd__bars i:nth-child(2) { animation-delay: .12s; }
-.snd[aria-pressed="true"] .snd__bars i:nth-child(3) { animation-delay: .24s; }
 
-/* Barre oblique tant que le son est coupé. */
-.snd__cut {
-  position: absolute;
-  width: 26px;
-  height: 2px;
-  background: var(--red);
-  transform: rotate(-45deg);
-  transform-origin: center;
-  transition: opacity var(--t-micro) ease, transform var(--t-micro) ease;
-}
+.snd__wave i:nth-child(1) { height: 45%; }
+.snd__wave i:nth-child(2) { height: 100%; animation-delay: .12s; }
+.snd__wave i:nth-child(3) { height: 65%;  animation-delay: .24s; }
 
-.snd[aria-pressed="true"] .snd__cut {
-  opacity: 0;
-  transform: rotate(-45deg) scaleX(0);
-}
+.snd:not([aria-pressed="true"]) .snd__wave { display: none; }
+.snd[aria-pressed="true"] { border-color: var(--red); color: var(--fg); }
 
 /* Empilement de l'arrière-plan du hero, du fond vers l'avant.
    Le poster est un vrai <picture>, servi en portrait sous 768 px. Il

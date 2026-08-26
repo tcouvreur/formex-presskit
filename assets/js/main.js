@@ -64,6 +64,7 @@
     menu.hidden = !open;
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     page.classList.toggle('is-locked', open);
+    document.body.classList.toggle('is-over', open);
   }
 
   if (burger && menu) {
@@ -340,12 +341,14 @@
       showLb(i, false);
       lb.hidden = false;
       page.classList.add('is-locked');
+      document.body.classList.add('is-over');
       lb.querySelector('.lb__close').focus();
     }
 
     function closeLb() {
       lb.hidden = true;
       page.classList.remove('is-locked');
+      document.body.classList.remove('is-over');
       if (items[idx]) { items[idx].focus(); }
     }
 
@@ -475,13 +478,18 @@
      complet. Le poster est déjà à l'écran, la vidéo ne fait que passer
      devant une fois qu'elle joue.
      Sous prefers-reduced-motion on ne charge rien du tout : le poster
-     suffit, et cinq mégaoctets ne partent pas pour rien.
+     suffit, et les mégaoctets ne partent pas pour rien. Même chose si le
+     visiteur a activé l'économiseur de données de son navigateur, c'est une
+     demande explicite de sa part, on la respecte.
      ======================================================================== */
 
   var heroVideo  = document.querySelector('.hero__video');
   var heroLoaded = false;
 
-  if (heroVideo && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  var conn     = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  var saveData = !!(conn && conn.saveData);
+
+  if (heroVideo && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !saveData) {
     var small = window.matchMedia('(max-width: 767px)').matches;
     var src = heroVideo.getAttribute(small ? 'data-mobile' : 'data-desktop');
 
@@ -510,27 +518,31 @@
      ne fait rien est pire que pas de bouton.
      ======================================================================== */
 
-  var snd = document.querySelector('.snd');
+  var snds = document.querySelectorAll('.snd');
 
-  if (snd && heroVideo && heroLoaded && heroVideo.hasAttribute('data-audio')) {
-    snd.hidden = false;
+  if (snds.length && heroVideo && heroLoaded && heroVideo.hasAttribute('data-audio')) {
+    Array.prototype.forEach.call(snds, function (b) { b.hidden = false; });
 
     window.paintSound = function () {
       var on = !heroVideo.muted;
-      snd.setAttribute('aria-pressed', on ? 'true' : 'false');
       var label = DICT[lang][on ? 'sndOn' : 'sndOff'];
-      snd.setAttribute('aria-label', label);
-      snd.querySelector('.sr-only').textContent = label;
+      Array.prototype.forEach.call(snds, function (b) {
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.setAttribute('aria-label', label);
+        b.querySelector('.sr-only').textContent = label;
+      });
     };
 
-    snd.addEventListener('click', function () {
-      heroVideo.muted = !heroVideo.muted;
-      if (!heroVideo.muted) {
-        heroVideo.volume = 1;
-        var p = heroVideo.play();
-        if (p && p.catch) { p.catch(function () {}); }
-      }
-      window.paintSound();
+    Array.prototype.forEach.call(snds, function (b) {
+      b.addEventListener('click', function () {
+        heroVideo.muted = !heroVideo.muted;
+        if (!heroVideo.muted) {
+          heroVideo.volume = 1;
+          var p = heroVideo.play();
+          if (p && p.catch) { p.catch(function () {}); }
+        }
+        window.paintSound();
+      });
     });
 
     window.paintSound();
@@ -577,6 +589,11 @@
 
       track.style.animation = '';
       track.style.animationDuration = (width / (size * 2.5)) + 's';
+
+      /* La hauteur du bandeau suit la taille de police fluide. Le bouton de
+         son flottant s'appuie dessus pour se poser juste au-dessus. */
+      document.documentElement.style.setProperty(
+        '--mq-h', Math.round(m.getBoundingClientRect().height) + 'px');
     }
 
     build();
