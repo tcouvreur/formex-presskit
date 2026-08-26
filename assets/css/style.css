@@ -600,7 +600,7 @@ body.is-over .snd--float { display: none !important; }
   width: 8px;
   height: 8px;
   background: var(--red);
-  animation: fx-dot 1.6s steps(2) infinite;
+  animation: fx-dot 1.6s linear infinite;
 }
 
 .hero__kick span:last-child {
@@ -1397,7 +1397,7 @@ a.date:hover { background: var(--panel-hover); color: var(--fg); }
   width: 6px;
   height: 6px;
   background: var(--red);
-  animation: fx-dot 1.8s steps(2) infinite;
+  animation: fx-dot 1.8s linear infinite;
 }
 
 .date--alias .badge { color: var(--fg-3); }
@@ -2445,10 +2445,9 @@ a.arch:hover .arch__cta { background: var(--red); color: var(--bg); }
   to   { transform: scale(1.16) translateY(-1.5%); }
 }
 
-/* Volontairement saccadé, en deux pas. C'est une diode, pas une respiration. */
 @keyframes fx-dot {
   0%, 100% { opacity: 1; }
-  50%      { opacity: .15; }
+  50%      { opacity: .2; }
 }
 
 @keyframes fx-cue {
