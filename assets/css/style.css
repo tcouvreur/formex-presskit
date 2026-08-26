@@ -51,7 +51,7 @@
 @media (min-width: 900px) {
   :root {
     --pad-x: 56px;
-    --pad-y: 60px;
+    --pad-y: 45px;
   }
 }
 
