@@ -76,7 +76,7 @@
       "name": "System D invite Claude Murder",
       "startDate": "2026-09-10T23:59:00+02:00",
       "endDate": "2026-09-11T06:00:00+02:00",
-      "eventStatus": "https://schema.org/EventScheduled",
+      "eventStatus": "https://schema.org/EventCancelled",
       "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "image": "https://formexhardcore.com/og.jpg",
       "performer": {
@@ -94,7 +94,7 @@
       "offers": {
         "@type": "Offer",
         "url": "https://shotgun.live/fr/events/systemdclaudemurder",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/Discontinued"
       }
     },
     {
@@ -244,7 +244,12 @@
 
       <div class="dates" id="dates-list">
 
-        <a class="date rv" href="https://shotgun.live/fr/events/systemdclaudemurder" target="_blank" rel="noopener">
+        <!-- Annulee le 10/09/2026. La date RESTE affichee : la retirer laisserait
+             sans reponse ceux qui ont un billet ou qui avaient prevu de venir.
+             Plus de lien vers la billetterie, plus d'appel a l'action : on
+             n'envoie personne acheter un billet pour une soiree qui n'a pas
+             lieu. -->
+        <div class="date date--annulee rv">
           <span class="date__day">
             <span class="date__num">10</span><span class="date__mon">Sep</span>
           </span>
@@ -258,10 +263,9 @@
             <span class="date__time">23:59 – 06:00</span>
           </span>
           <span class="date__meta">
-            <span class="badge"><i class="badge__dot" aria-hidden="true"></i><span data-i18n="bConf">Confirmé</span></span>
-            <span class="date__cta"><span data-i18n="bTickets">Billets</span> <span aria-hidden="true">↗</span></span>
+            <span class="badge badge--annulee"><span data-i18n="bOff">Annulée</span></span>
           </span>
-        </a>
+        </div>
 
         <div class="date date--alias rv">
           <span class="date__day">

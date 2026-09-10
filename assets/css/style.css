@@ -1048,6 +1048,44 @@ a.date:hover { background: var(--panel-hover); color: var(--fg); }
 .date--off { opacity: .4; }
 .date--off .date__num { text-decoration: line-through; }
 
+/* --- Date annulee ---------------------------------------------------------
+   A ne pas confondre avec .date--off, qui efface une date devenue sans objet.
+   Une annulation doit se LIRE : quelqu'un a peut-etre un billet, ou a prevu
+   de venir. On la barre, on la desature, mais on ne la fait pas disparaitre.
+   L'opacite reste haute, sinon l'information la plus importante de la ligne
+   serait la moins lisible.
+   ------------------------------------------------------------------------ */
+.date--annulee { opacity: .72; }
+
+/* Le jour et le mois sont en tres grandes lettres, le seuil de contraste
+   tombe a 3:1. --fg-3 tient, --fg-4 non. */
+.date--annulee .date__num,
+.date--annulee .date__mon { color: var(--fg-3); }
+
+/* Le nom de la salle garde sa couleur pleine : c'est ce qui permet de
+   reconnaitre SA date dans la liste avant de lire qu'elle est annulee. Seule
+   la barre dit qu'elle ne tient plus. */
+.date--annulee .date__venue { text-decoration: line-through; }
+
+/* Le nom de la soiree est en petit : a --fg-3 et sous l'opacite de la carte
+   il tombe a 4.12:1, sous le seuil. On le laisse a sa couleur, barre. */
+.date--annulee .date__ctx { text-decoration: line-through; }
+
+
+/* Le badge ne se barre pas et ne se desature pas : c'est le mot qu'on vient
+   lire, il doit rester le plus net de la ligne. Il reprend donc son opacite
+   pleine malgre celle de la carte.
+
+   Le rouge est eclairci par rapport a celui de la charte. En 10px gras sur le
+   fond, #e21c1c plafonne a 4.16:1, sous le seuil AA de 4.5:1 pour du petit
+   texte, et l'opacite de la carte le faisait tomber a 2.6:1. Autant dire
+   illisible pour l'information la plus importante de la ligne. */
+.badge--annulee {
+  opacity: 1;
+  border-color: var(--red-dark);
+  color: #ff4d4d;
+}
+
 .date__day {
   grid-column: 1;
   grid-row: 1;
